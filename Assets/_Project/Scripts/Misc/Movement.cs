@@ -17,11 +17,15 @@ public class Movement : MonoBehaviour {
         Move();
     }
 
+    public void AllowMovement(bool canMove){
+        _canMove = canMove;
+    }
+
     private void Move(){
         _controller.Move(MoveSpeed * Time.deltaTime * _direction);
     }
 
-    public void SetDirection(Vector2 direction){
-        _direction = new Vector3(direction.x, 0, direction.y);
+    public void SetDirection(Vector3 direction){
+        _direction = direction;
     }
 }

@@ -1184,7 +1184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb1664bbf91a56c4395bad9bc2cc3c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 10
+  MoveSpeed: 5
   _controller: {fileID: 0}
   _direction: {x: 0, y: 0, z: 0}
 --- !u!114 &1682717330
@@ -1237,8 +1237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTransform: {fileID: 1204461595}
-  _sensitivity: 0.2
-  clamp: 0.1
+  _sensitivity: 3
 --- !u!1 &1789855778
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,15 +3,14 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour {
     [SerializeField] private Transform CameraTransform;
 
-    [Range(0.1f,1f)]
-    [SerializeField] private float _sensitivity;
-
-    [Range(0.1f,0.3f)]
-    [SerializeField] private float clamp;
+    [Range(1,10)]
+    [SerializeField] private int _sensitivity;
     public float Sensitivity => _sensitivity;
+    private float _rotationValue = 0f;
 
     public void UpdateRotationCamera(float mouseInput){
-        mouseInput = Mathf.Clamp(mouseInput, -clamp, clamp) * -1f;
-        transform.localRotation = Quaternion.Euler(CameraTransform.rotation.eulerAngles + new Vector3(mouseInput, 0f, 0f));
+        _rotationValue -= mouseInput;
+        _rotationValue = Mathf.Clamp(_rotationValue, -60f, 60f);
+        CameraTransform.localRotation = Quaternion.Euler(_rotationValue, 0f, 0f);
     }
 }
