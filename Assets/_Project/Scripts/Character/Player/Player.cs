@@ -8,6 +8,10 @@ public class Player : Character {
     public Movement Movement {get; private set;}
     public PlayerCamera Camera {get; private set;}
 
+    public IdleState Idle => StateMachine.IdleState;
+    public JumpState Jump => StateMachine.JumpState;
+    public MoveState Move => StateMachine.MoveState;
+
     private void Awake() {
         Movement = GetComponent<Movement>();
         Camera = GetComponent<PlayerCamera>();
@@ -20,10 +24,19 @@ public class Player : Character {
         StateMachine.ChangeState(StateMachine.IdleState);
     }
 
+    private void Update() {
+        HandleRotation();
+    }
+
+    public void ChangeState(AbstractState newState){
+        StateMachine.ChangeState(newState);
+    }
+
     private void SetStates(){
         StateMachine.SetStates(new StatesData{
             Idle = new PlayerIdle(),
             Move = new PlayerMove(),
+            Jump = new PlayerJump(),
         });
     }
 
@@ -39,6 +52,6 @@ public class Player : Character {
         float mouseX = lookInput.x * Camera.Sensitivity * Time.deltaTime;
         float mouseY = lookInput.y * Camera.Sensitivity * Time.deltaTime;
         transform.Rotate(Vector3.up * mouseX);
-        Camera.UpdateRotationCamera(mouseY);
+        Camera.CameraRotation(mouseY);
     }
 }

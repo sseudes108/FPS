@@ -6,8 +6,12 @@ public class PlayerIdle : IdleState{
     }
 
     public override void LogicUpdate(){
-        Player.HandleMovement();
-        Player.HandleRotation();
+        if(Player.Input.Move.x != 0 || Player.Input.Move.y != 0){
+            Player.ChangeState(Player.Move);
+        }
+        if(!Player.Movement.IsGrounded()){
+            Player.ChangeState(Player.Jump);
+        }
     }
 
     public override void Exit(){

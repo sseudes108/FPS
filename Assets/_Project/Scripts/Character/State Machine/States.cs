@@ -14,7 +14,16 @@ public class MoveState : AbstractState{
     public override void LogicUpdate(){}
 }
 
+public class JumpState : AbstractState{
+    public override void Enter(){}
+
+    public override void Exit(){}
+
+    public override void LogicUpdate(){}
+}
+
 public struct StatesData{
     public IdleState Idle;
     public MoveState Move;
+    public JumpState Jump;
 }

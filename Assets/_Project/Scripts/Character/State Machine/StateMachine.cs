@@ -5,6 +5,7 @@ public class StateMachine : MonoBehaviour {
 
     public IdleState IdleState;
     public MoveState MoveState;
+    public JumpState JumpState;
 
     public void ChangeState(AbstractState newState){
         CurrentState?.Exit();
@@ -22,5 +23,6 @@ public class StateMachine : MonoBehaviour {
     public void SetStates(StatesData states){
         IdleState = states.Idle;
         MoveState = states.Move;
+        JumpState = states.Jump;
     }
 }
