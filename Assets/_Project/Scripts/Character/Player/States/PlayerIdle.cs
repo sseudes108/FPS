@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class PlayerIdle : IdleState{
     public override void Enter(){
-        Debug.Log("Enter Player Idle State");
+
     }
 
     public override void LogicUpdate(){
+        Player.HandleJump();
         if(Player.Input.Move.x != 0 || Player.Input.Move.y != 0){
             Player.ChangeState(Player.Move);
         }
-        if(!Player.Movement.IsGrounded()){
+        if(!Player.IsGrounded()){
             Player.ChangeState(Player.Jump);
         }
     }

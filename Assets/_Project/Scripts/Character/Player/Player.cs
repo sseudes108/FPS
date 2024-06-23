@@ -12,6 +12,9 @@ public class Player : Character {
     public JumpState Jump => StateMachine.JumpState;
     public MoveState Move => StateMachine.MoveState;
 
+    public Transform checkGroundBox;
+    public Vector3 checkGroundBoxSize;
+    
     private void Awake() {
         Movement = GetComponent<Movement>();
         Camera = GetComponent<PlayerCamera>();
@@ -30,6 +33,8 @@ public class Player : Character {
 
     public void ChangeState(AbstractState newState){
         StateMachine.ChangeState(newState);
+        GameManager.Instance.Testing.UpdatePlayerState(newState.ToString());
+        GameManager.Instance.Testing.UpdatePlayerGrounded(IsGrounded().ToString());
     }
 
     private void SetStates(){
@@ -53,5 +58,26 @@ public class Player : Character {
         float mouseY = lookInput.y * Camera.Sensitivity * Time.deltaTime;
         transform.Rotate(Vector3.up * mouseX);
         Camera.CameraRotation(mouseY);
+    }
+
+    public void HandleJump(){
+        if(Input.Jump){
+            Movement.Jump(true);
+        }
+    }
+
+    public bool IsGrounded(){
+        Collider[] grounded = Physics.OverlapBox(checkGroundBox.position,checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));
+
+        if(grounded.Length > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(checkGroundBox.position, checkGroundBoxSize);
     }
 }

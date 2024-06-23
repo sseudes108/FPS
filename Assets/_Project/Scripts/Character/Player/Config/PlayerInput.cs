@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour{
     private InputSystem_Actions _inputActions;
     private InputAction _move,_aim,_look,_shoot,_jump,_run,_crouch;
-
-    public FrameInput FrameInput;
+    public FrameInput FrameInput{get; private set;}
 
     private void OnEnable() {
         _inputActions.Enable();
@@ -39,7 +38,7 @@ public class PlayerInput : MonoBehaviour{
     }
 }
 
-[System.Serializable]
+[Serializable]
 public struct FrameInput {
     public Vector2 Move;
     public Vector2 Look;

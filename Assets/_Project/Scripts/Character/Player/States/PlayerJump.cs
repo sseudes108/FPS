@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class PlayerJump : JumpState {
     public override void Enter(){
-        Debug.Log("Enter Player Jump State");
+
     }
 
     public override void LogicUpdate(){
-        Player.Movement.ApplyExtraGravityForce();
-        if(Player.Movement.IsGrounded()){
+        Player.HandleMovement();
+        Player.Movement.ApplyExtraGravity();
+        if(Player.IsGrounded()){
             Player.ChangeState(Player.StateMachine.IdleState);
         }
     }
 
     public override void Exit(){
         Player.Movement.ResetGravityForce();
+        Player.Movement.SetDirection(Vector3.zero);
     }
 }
