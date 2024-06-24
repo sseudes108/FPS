@@ -3,4 +3,12 @@
     <ui:VisualElement name="Battle" style="flex-grow: 1; align-content: auto; align-self: auto; justify-content: space-around; align-items: flex-end;">
         <ui:VisualElement name="CrossHair" style="flex-grow: 0; width: 50px; height: 50px; flex-shrink: 0; align-self: center; background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=4bf23652db6150b4c973cefc9551055e&amp;type=3#60&quot;); -unity-background-image-tint-color: rgb(255, 255, 255);" />
     </ui:VisualElement>
+    <ui:VisualElement name="Debug" style="flex-grow: 1; position: absolute; width: 552px; height: 187px; background-color: rgb(185, 185, 185);">
+        <ui:VisualElement name="State" style="flex-grow: 1; height: 50%;">
+            <ui:Label text="State: Idle" name="DebugState" style="flex-grow: 1; flex-shrink: 1; font-size: 54px; -unity-text-align: upper-left; -unity-font-style: bold; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Grounded" style="flex-grow: 1; height: 50%;">
+            <ui:Label text="Grounded: False" name="DebugGrounded" style="flex-grow: 1; flex-shrink: 1; font-size: 54px; -unity-text-align: upper-left; -unity-font-style: bold; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>

@@ -22,8 +22,9 @@ public class Bullet : MonoBehaviour{
         StartCoroutine(ReleaseBulletRoutine());
     }
     
-    private void OnTriggerEnter() {
+    private void OnTriggerEnter(Collider other) {
         OnBulletImpact?.Invoke(this);
+        Debug.LogWarning($"Trigged on: {other.gameObject.name}");
         DisableBullet();
     }
 

@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour{
     public static GameManager Instance { get; private set;}
+    public UIManager UIManager;
+    
     //**Apagar**//
     public Testing Testing;
+    //**Apagar**//
 
     private void Awake() {
-        Testing = GetComponent<Testing>();
         SetInstance();
+        SetManagers();
     }
 
     private void Start() {
@@ -20,6 +23,11 @@ public class GameManager : MonoBehaviour{
             Destroy(Instance);
         }
         Instance = this;
+    }
+
+    private void SetManagers(){
+        UIManager = GetComponentInChildren<UIManager>();
+        Testing = GetComponentInChildren<Testing>();
     }
     
 }

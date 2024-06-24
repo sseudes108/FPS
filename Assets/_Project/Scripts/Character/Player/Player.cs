@@ -9,6 +9,7 @@ public class Player : Character {
     public StateMachine StateMachine {get; private set;}
     public Movement Movement {get; private set;}
     public PlayerCamera Camera {get; private set;}
+    private Transform _firstPersonCameraTransform;
 
     public IdleState Idle => StateMachine.IdleState;
     public JumpState Jump => StateMachine.JumpState;
@@ -24,9 +25,10 @@ public class Player : Character {
     
     private void Awake() {
         _gun = GetComponent<Gun>();
-        Anim = GetComponentInChildren<AnimationController>();
+        Anim = GetComponent<AnimationController>();
         Movement = GetComponent<Movement>();
         Camera = GetComponent<PlayerCamera>();
+        _firstPersonCameraTransform = Camera.GetCameraTransform();
         PlayerInput = GetComponent<PlayerInput>();
         StateMachine = GetComponent<StateMachine>();
         SetStates();
@@ -47,8 +49,7 @@ public class Player : Character {
 
     public void ChangeState(AbstractState newState){
         StateMachine.ChangeState(newState);
-        GameManager.Instance.Testing.UpdatePlayerState(newState.ToString());
-        GameManager.Instance.Testing.UpdatePlayerGrounded(IsGrounded().ToString());
+        GameManager.Instance.UIManager.UpdateDebugStateLabel(newState.ToString());
     }
 
     private void SetStates(){
@@ -83,24 +84,25 @@ public class Player : Character {
     public void HandleShot(){
         if(Input.Shoot){
 
-            if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out RaycastHit hit, 50f)){
+            if(Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit)){
                 _gun.GetFirePoint().LookAt(hit.point);
             }else{
-                _gun.GetFirePoint().LookAt(Camera.transform.position + (Camera.transform.forward * 30f));
-
+                _gun.GetFirePoint().LookAt(_firstPersonCameraTransform.transform.position + (_firstPersonCameraTransform.forward * 30f));
             }
-            
+
+
             _gun.Shoot();
         }
     }
-
 
     public bool IsGrounded(){
         Collider[] grounded = Physics.OverlapBox(checkGroundBox.position,checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));
 
         if(grounded.Length > 0){
+            GameManager.Instance.UIManager.UpdateDebugGroundedLabel("true");
             return true;
         }else{
+            GameManager.Instance.UIManager.UpdateDebugGroundedLabel("false");
             return false;
         }
     }
