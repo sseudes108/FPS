@@ -17,13 +17,8 @@ public class PlayerInput : MonoBehaviour{
         _run = _inputActions.Player.Sprint;
     }
 
-    private void OnDisable() {
-        _inputActions.Disable();
-    }
-
-    private void Awake() {
-        _inputActions = new();
-    }
+    private void OnDisable() { _inputActions.Disable(); }
+    private void Awake() { _inputActions = new(); }
 
     private void Update() {
         FrameInput = new FrameInput{

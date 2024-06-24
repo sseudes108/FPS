@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public class Player : Character {
+    private Gun _gun;
+
     public PlayerInput PlayerInput {get; private set;}
     public FrameInput Input => PlayerInput.FrameInput;
 
@@ -14,8 +16,15 @@ public class Player : Character {
 
     public Transform checkGroundBox;
     public Vector3 checkGroundBoxSize;
+
+    public AnimationController Anim;
+    public readonly int IDLE = Animator.StringToHash("Player_Idle");
+    public readonly int WALK = Animator.StringToHash("Player_Walk");
+    public readonly int RUN = Animator.StringToHash("Player_Run");
     
     private void Awake() {
+        _gun = GetComponent<Gun>();
+        Anim = GetComponentInChildren<AnimationController>();
         Movement = GetComponent<Movement>();
         Camera = GetComponent<PlayerCamera>();
         PlayerInput = GetComponent<PlayerInput>();
@@ -29,6 +38,11 @@ public class Player : Character {
 
     private void Update() {
         HandleRotation();
+        HandleShot();
+    }
+
+    public void ChangeAnimation(int newAnimation){
+        Anim.ChangeAnimation(newAnimation);
     }
 
     public void ChangeState(AbstractState newState){
@@ -49,7 +63,7 @@ public class Player : Character {
         Vector3 forward = transform.forward * Input.Move.y;
         Vector3 right = transform.right * Input.Move.x;
         Vector3 direction = (forward + right).normalized;
-        Movement.SetDirection(direction);
+        Movement.SetCharacterDirection(direction);
     }
 
     public void HandleRotation(){
@@ -63,6 +77,12 @@ public class Player : Character {
     public void HandleJump(){
         if(Input.Jump){
             Movement.Jump(true);
+        }
+    }
+
+    public void HandleShot(){
+        if(Input.Shoot){
+            _gun.Shoot();
         }
     }
 

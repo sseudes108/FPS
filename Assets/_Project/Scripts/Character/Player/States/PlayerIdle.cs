@@ -1,10 +1,4 @@
-using UnityEngine;
-
 public class PlayerIdle : IdleState{
-    public override void Enter(){
-
-    }
-
     public override void LogicUpdate(){
         Player.HandleJump();
         if(Player.Input.Move.x != 0 || Player.Input.Move.y != 0){
@@ -13,9 +7,5 @@ public class PlayerIdle : IdleState{
         if(!Player.IsGrounded()){
             Player.ChangeState(Player.Jump);
         }
-    }
-
-    public override void Exit(){
-        
     }
 }
