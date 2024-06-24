@@ -12,6 +12,14 @@ public class Gun : MonoBehaviour{
         CreateBulletPool();
     }
 
+    public Transform GetFirePoint(){
+        return _firePoint;
+    }
+
+    public void SetFirePoint(Vector3 position){
+        _firePoint.LookAt(position);
+    }
+
     public void Shoot(){
         Bullet newBullet = _bulletPool.Get();
         newBullet.Init(this, _firePoint);

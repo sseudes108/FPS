@@ -29,7 +29,7 @@ public class VFXManager : MonoBehaviour{
 
     //Since the effects are configured to 'none' at end of execution this routine releases it (disable object) from the pool
     private IEnumerator EffectRoutine(ObjectPool<VFXHelper> objectPool, VFXHelper VFX){
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         ReleaseFromPool(objectPool, VFX);
         yield return null;
     }

@@ -17,7 +17,7 @@ public class Player : Character {
     public Transform checkGroundBox;
     public Vector3 checkGroundBoxSize;
 
-    public AnimationController Anim;
+    public AnimationController Anim {get; private set;}
     public readonly int IDLE = Animator.StringToHash("Player_Idle");
     public readonly int WALK = Animator.StringToHash("Player_Walk");
     public readonly int RUN = Animator.StringToHash("Player_Run");
@@ -82,9 +82,18 @@ public class Player : Character {
 
     public void HandleShot(){
         if(Input.Shoot){
+
+            if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out RaycastHit hit, 50f)){
+                _gun.GetFirePoint().LookAt(hit.point);
+            }else{
+                _gun.GetFirePoint().LookAt(Camera.transform.position + (Camera.transform.forward * 30f));
+
+            }
+            
             _gun.Shoot();
         }
     }
+
 
     public bool IsGrounded(){
         Collider[] grounded = Physics.OverlapBox(checkGroundBox.position,checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));

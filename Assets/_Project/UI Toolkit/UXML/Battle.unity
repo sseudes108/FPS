@@ -358,8 +358,9 @@ GameObject:
   m_Component:
   - component: {fileID: 169811742}
   - component: {fileID: 169811741}
+  - component: {fileID: 169811743}
   m_Layer: 5
-  m_Name: Battle UI
+  m_Name: UI Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -379,7 +380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: f98740481b8d356429fd58159d11665a, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 9c6588124ebc1ce4bbaeabc5a6cec271, type: 3}
   m_SortingOrder: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -392,13 +393,27 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169811740}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.03844, y: -0.7423373, z: -1.717389}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 635130326}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &169811743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169811740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d5ad4b23e251745b8c97e11acad4fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _crosshairSprite: {fileID: 2800000, guid: 4bf23652db6150b4c973cefc9551055e, type: 3}
+  _crosshairColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &218399350
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,6 +946,7 @@ Transform:
   m_Children:
   - {fileID: 1194436777}
   - {fileID: 1841463791}
+  - {fileID: 169811742}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677132117
@@ -2433,4 +2449,3 @@ SceneRoots:
   - {fileID: 635130326}
   - {fileID: 288858145}
   - {fileID: 1272366317}
-  - {fileID: 169811742}
