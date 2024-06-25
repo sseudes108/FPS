@@ -24,7 +24,9 @@ public class Bullet : MonoBehaviour{
     
     private void OnTriggerEnter(Collider other) {
         OnBulletImpact?.Invoke(this);
-        Debug.LogWarning($"Trigged on: {other.gameObject.name}");
+        if(other.CompareTag("Enemy")){
+            Destroy(other.gameObject);
+        }
         DisableBullet();
     }
 

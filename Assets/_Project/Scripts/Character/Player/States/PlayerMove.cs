@@ -33,4 +33,8 @@ public class PlayerMove : MoveState{
             _needReset = false;
         }
     }
+
+    public override string ToString(){
+        return "Move";
+    }
 }

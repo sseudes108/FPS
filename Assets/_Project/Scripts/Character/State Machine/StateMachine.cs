@@ -10,7 +10,9 @@ public class StateMachine : MonoBehaviour {
 
     private void Awake() { _character = GetComponent<Character>(); }
 
-    private void Update() { CurrentState.LogicUpdate(); }
+    private void Update() { 
+        CurrentState.LogicUpdate(); 
+    }
 
     public void ChangeState(AbstractState newState){
         CurrentState?.Exit();

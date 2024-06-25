@@ -138,7 +138,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &6963129615117718901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +166,8 @@ MonoBehaviour:
   _moveSpeed: 100
   _gravityModifier: 0
   _jumpForce: 0
+  _jumpTime: 0.2
+  _jumpForceMultiplier: 2
 --- !u!96 &5098214686749827070
 TrailRenderer:
   serializedVersion: 3

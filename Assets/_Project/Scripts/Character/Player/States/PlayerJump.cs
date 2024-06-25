@@ -10,7 +10,7 @@ public class PlayerJump : JumpState {
         Player.HandleMovement();
         
         if(Player.Input.Jump && _canDoubleJump){
-            Player.Movement.Jump(true);
+            Player.Movement.Jump();
             _canDoubleJump =  false;
         }
 
@@ -21,5 +21,9 @@ public class PlayerJump : JumpState {
 
     public override void Exit(){
         Player.Movement.SetCharacterDirection(Vector3.zero);
+    }
+
+    public override string ToString(){
+        return "Jump";
     }
 }

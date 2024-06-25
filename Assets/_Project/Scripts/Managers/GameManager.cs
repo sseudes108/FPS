@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour{
 
     private void SetManagers(){
         UIManager = GetComponentInChildren<UIManager>();
-        Testing = GetComponentInChildren<Testing>();
+        Testing = GetComponent<Testing>();
     }
     
 }

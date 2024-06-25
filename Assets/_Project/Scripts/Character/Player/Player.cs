@@ -1,34 +1,34 @@
 using UnityEngine;
 
 public class Player : Character {
-    private Gun _gun;
-
-    public PlayerInput PlayerInput {get; private set;}
-    public FrameInput Input => PlayerInput.FrameInput;
-
-    public StateMachine StateMachine {get; private set;}
-    public Movement Movement {get; private set;}
-    public PlayerCamera Camera {get; private set;}
-    private Transform _firstPersonCameraTransform;
-
-    public IdleState Idle => StateMachine.IdleState;
-    public JumpState Jump => StateMachine.JumpState;
-    public MoveState Move => StateMachine.MoveState;
-
-    public Transform checkGroundBox;
-    public Vector3 checkGroundBoxSize;
 
     public AnimationController Anim {get; private set;}
     public readonly int IDLE = Animator.StringToHash("Player_Idle");
     public readonly int WALK = Animator.StringToHash("Player_Walk");
     public readonly int RUN = Animator.StringToHash("Player_Run");
+
+    public PlayerInput PlayerInput {get; private set;}
+    public FrameInput Input => PlayerInput.FrameInput;
+
+    public StateMachine StateMachine {get; private set;}
+    public IdleState Idle => StateMachine.IdleState;
+    public JumpState Jump => StateMachine.JumpState;
+    public MoveState Move => StateMachine.MoveState;
+
+    public PlayerCamera Camera {get; private set;}
+    private Transform _firstPersonCameraTransform;
+
+    public Movement Movement {get; private set;}
+    public Transform checkGroundBox;
+    public Vector3 checkGroundBoxSize;
+
+    private Gun _gun;
     
     private void Awake() {
         _gun = GetComponent<Gun>();
         Anim = GetComponent<AnimationController>();
         Movement = GetComponent<Movement>();
         Camera = GetComponent<PlayerCamera>();
-        _firstPersonCameraTransform = Camera.GetCameraTransform();
         PlayerInput = GetComponent<PlayerInput>();
         StateMachine = GetComponent<StateMachine>();
         SetStates();
@@ -49,7 +49,7 @@ public class Player : Character {
 
     public void ChangeState(AbstractState newState){
         StateMachine.ChangeState(newState);
-        GameManager.Instance.UIManager.UpdateDebugStateLabel(newState.ToString());
+        GameManager.Instance.Testing.UpdateDebugStateLabel(newState.ToString());
     }
 
     private void SetStates(){
@@ -77,19 +77,22 @@ public class Player : Character {
 
     public void HandleJump(){
         if(Input.Jump){
-            Movement.Jump(true);
+            Movement.Jump();
         }
     }
 
     public void HandleShot(){
         if(Input.Shoot){
 
+            if(_firstPersonCameraTransform == null){
+                _firstPersonCameraTransform = Camera.GetCameraTransform();
+            }
+
             if(Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit)){
                 _gun.GetFirePoint().LookAt(hit.point);
             }else{
                 _gun.GetFirePoint().LookAt(_firstPersonCameraTransform.transform.position + (_firstPersonCameraTransform.forward * 30f));
             }
-
 
             _gun.Shoot();
         }
@@ -99,10 +102,10 @@ public class Player : Character {
         Collider[] grounded = Physics.OverlapBox(checkGroundBox.position,checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));
 
         if(grounded.Length > 0){
-            GameManager.Instance.UIManager.UpdateDebugGroundedLabel("true");
+            GameManager.Instance.Testing.UpdateDebugGroundedLabel("true");
             return true;
         }else{
-            GameManager.Instance.UIManager.UpdateDebugGroundedLabel("false");
+            GameManager.Instance.Testing.UpdateDebugGroundedLabel("false");
             return false;
         }
     }

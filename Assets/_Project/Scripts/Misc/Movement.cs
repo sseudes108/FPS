@@ -6,13 +6,18 @@ public class Movement : MonoBehaviour {
     private float _runSpeed;
     private bool _canMove = true;
 
-    [SerializeField] private float _gravityModifier;
-    [SerializeField] private int _jumpForce;
-    private bool _jump = false;
-
     private CharacterController _controller;
     private Rigidbody _rigidbody;
     private Vector3 _direction;
+
+    [Header("Jump")]
+    [SerializeField] private float _gravityModifier;
+    [SerializeField] private float _jumpForce;
+    private bool _isJumping = false;
+    private float _jumpTimeCounter;
+    [SerializeField] private float _jumpTime = 0.2f;
+    [SerializeField] private float _jumpForceMultiplier = 2f;
+    private float _verticalVelocity = 0f;
 
     private void Awake() {
         _controller = GetComponent<CharacterController>();
@@ -26,35 +31,49 @@ public class Movement : MonoBehaviour {
 
     private void FixedUpdate() {
         //The NPCS and the Player use the Character Controller the bullet use Rigidbody
-        if(_controller != null){
-            if(_canMove){
+        if (_controller != null){
+            if (_canMove){
                 MoveCharacter();
             }
-
-            if(_jump){
+            if(_isJumping){
                 ApplyJumpForce();
             }
         }else if (_rigidbody != null){
             MoveRigidbody();
         }
     }
-
-    public void Jump(bool jump){_jump = jump; }
-
-    private void ApplyJumpForce(){
-        _direction.y += _jumpForce;
-        _controller.Move(_direction * Time.deltaTime);
-        _jump = false;
-    }
-    
+   
     public void AllowMovement(bool canMove){ _canMove = canMove; }
-
     public float GetDefaultSpeed(){ return _defaultMoveSpeed; }
     public float GetRunSpeed(){ return _runSpeed; }
     public void SetSpeed(float speed){ _moveSpeed = speed;}
 
+    public void Jump(){
+        _isJumping = true;
+        _jumpTimeCounter = _jumpTime;
+    }
+
+    private void ApplyJumpForce(){
+        if (_isJumping){
+            if (_jumpTimeCounter > 0){
+                _direction.y = _jumpForce * _jumpForceMultiplier;
+                _jumpTimeCounter -= Time.deltaTime;
+            }else{
+                _isJumping = false;
+            }
+        }
+
+        _controller.Move(_direction * Time.deltaTime);
+    }
+
     private void MoveCharacter(){
-        _direction.y = Physics.gravity.y * _gravityModifier;
+        if (_isJumping){
+            _verticalVelocity = _jumpForce * _jumpForceMultiplier;
+        }else{
+            _verticalVelocity += Physics.gravity.y * _gravityModifier * Time.deltaTime;
+        }
+
+        _direction.y = _verticalVelocity;
         _controller.Move(_moveSpeed * Time.deltaTime * _direction);
     }
 
