@@ -7,10 +7,15 @@ public class Bullet : MonoBehaviour{
     private Movement _movement;
     private Gun _gun;
     private TrailRenderer _trail;
+    [SerializeField] private int _damageValue;
 
     private void Awake() {
         _movement = GetComponent<Movement>();
         _trail  = GetComponent<TrailRenderer>();
+    }
+
+    public int GetDamageValue(){
+        return _damageValue;
     }
 
     public void Init(Gun gun, Transform firePoint) {
@@ -25,7 +30,9 @@ public class Bullet : MonoBehaviour{
     private void OnTriggerEnter(Collider other) {
         OnBulletImpact?.Invoke(this);
         if(other.CompareTag("Enemy")){
-            Destroy(other.gameObject);
+            if(other.TryGetComponent(out Health health)){
+                health.TakeDamage(_damageValue);
+            }
         }
         DisableBullet();
     }

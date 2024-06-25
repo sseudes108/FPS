@@ -8,7 +8,6 @@ public class PlayerIdle : IdleState{
             Player.ChangeState(Player.Jump);
         }
     }
-
     public override string ToString(){
         return "Idle";
     }

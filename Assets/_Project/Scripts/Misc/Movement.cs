@@ -10,13 +10,12 @@ public class Movement : MonoBehaviour {
     private Rigidbody _rigidbody;
     private Vector3 _direction;
 
-    [Header("Jump")]
-    [SerializeField] private float _gravityModifier;
-    [SerializeField] private float _jumpForce;
+    private float _gravityModifier = 0.1f;
+    private float _jumpForce = 0.5f;
     private bool _isJumping = false;
     private float _jumpTimeCounter;
-    [SerializeField] private float _jumpTime = 0.2f;
-    [SerializeField] private float _jumpForceMultiplier = 2f;
+    private float _jumpTime = 0.2f;
+    private float _jumpForceMultiplier = 1f;
     private float _verticalVelocity = 0f;
 
     private void Awake() {
@@ -30,7 +29,7 @@ public class Movement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        //The NPCS and the Player use the Character Controller the bullet use Rigidbody
+        //Rigidbody move the bullets
         if (_controller != null){
             if (_canMove){
                 MoveCharacter();

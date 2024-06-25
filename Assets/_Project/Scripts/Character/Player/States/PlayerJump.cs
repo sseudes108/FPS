@@ -15,7 +15,7 @@ public class PlayerJump : JumpState {
         }
 
         if(Player.IsGrounded()){
-            Player.ChangeState(Player.StateMachine.IdleState);
+            Player.ChangeState(Player.Idle);
         }
     }
 

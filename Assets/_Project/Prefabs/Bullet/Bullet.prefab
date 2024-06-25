@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a214f032e138044e80ac17adb003209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damageValue: 1
 --- !u!114 &4595786339680183184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,11 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb1664bbf91a56c4395bad9bc2cc3c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 100
-  _gravityModifier: 0
-  _jumpForce: 0
-  _jumpTime: 0.2
-  _jumpForceMultiplier: 2
+  _moveSpeed: 60
 --- !u!96 &5098214686749827070
 TrailRenderer:
   serializedVersion: 3

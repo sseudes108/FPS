@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour {
     public VisualElement Root {get; private set;}
 
     private VisualElement _crosshair;
-    [SerializeField] private Texture2D _crosshairSprite;
+    [SerializeField] private Texture2D _crosshairTexture;
     [SerializeField] private Color _crosshairColor;
 
     private void OnEnable() {
@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour {
     }
 
     private void CrosshairSettings(){
-        _crosshair.style.backgroundImage = _crosshairSprite;
+        _crosshair.style.backgroundImage = _crosshairTexture;
         _crosshair.style.unityBackgroundImageTintColor = _crosshairColor;
     }
 }
