@@ -18,12 +18,14 @@ public class VFXManager : MonoBehaviour{
         _bulletImpactVFXPool = CreateEffectPool(_bulletImpact);
     }
 
-    private void BulletImpactEffect(Bullet bullet){
+    private void BulletImpactEffect(Bullet bullet, Material material){
         var bulletImpact = _bulletImpactVFXPool.Get();
+
         //Makes sure that the effect is instantiated outside the other object
         Vector3 impactPositionOffset = bullet.transform.position - (bullet.transform.forward * 1f);
         bulletImpact.transform.SetPositionAndRotation(impactPositionOffset, Quaternion.identity);
-        bulletImpact.Play();
+
+        bulletImpact.Play(material);
         StartCoroutine(EffectRoutine(_bulletImpactVFXPool, bulletImpact));
     }
 

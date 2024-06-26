@@ -8,15 +8,13 @@ public class EnemyIdle : IdleState {
     }
 
     public override void LogicUpdate(){
-        if(Enemy.PlayerDetected()){
-            Enemy.ChangeState(Enemy.Move);
-        }
+        Enemy.HandlePlayerDetection();
     }
 
     public override void Exit(){}
 
     private IEnumerator WaitRoutine(){
-        yield return new WaitForSeconds(Random.Range(0.5f, 2.5f));
+        yield return new WaitForSeconds(Random.Range(2f, 3f));
         Enemy.ChangeState(Enemy.PatrolState);
         yield return null;
     }

@@ -7,9 +7,11 @@ public class Enemy : Character {
     public readonly int RUN = Animator.StringToHash("Player_Run");
 
     public NavMeshAgent NavmeshAgent {get; private set;}
+    public Vector3 InitialPosition {get; private set;}
 
     public EnemyPatrol PatrolState;
     public Player Target {get; private set;}
+
 
     //The _aggroRadius is the distance at which the enemy starts chasing the player.
     [SerializeField] private float _aggroRadius;
@@ -17,16 +19,23 @@ public class Enemy : Character {
     [SerializeField] private float _deAggroRadius;
     public float DeAggroRadius => _deAggroRadius;
 
+    public override void Start(){
+        base.Start();
+        InitialPosition = transform.position;
+    }
+
     public override void Awake(){
         base.Awake();
         NavmeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    public override void HandleJump(){}
-
-    public override void HandleMovement(){}
-
     public override void HandleShot(){}
+
+    public void HandlePlayerDetection(){
+        if(PlayerDetected()){
+            ChangeState(Move);
+        }
+    }
 
     public override void SetStates(){
         PatrolState = new();
@@ -42,7 +51,9 @@ public class Enemy : Character {
         var targetInRange = Physics.OverlapSphereNonAlloc(transform.position, _aggroRadius, target, LayerMask.GetMask("Player"));
 
         if(targetInRange > 0 && target[0] != null){
-            Target = target[0].GetComponent<Player>();
+            if(Target == null){
+                Target = target[0].GetComponent<Player>();
+            }
             return true;
         }else{
             return false;

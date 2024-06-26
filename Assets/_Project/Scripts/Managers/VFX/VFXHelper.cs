@@ -4,7 +4,8 @@ using UnityEngine;
 public class VFXHelper :MonoBehaviour {
 
     //Play the particle effect. Is called by the VFXManager at GET from pool
-    public void Play(){
+    public void Play(Material material){
+        GetComponent<Renderer>().material = material;
         GetComponent<ParticleSystem>().Play();
     }
 }

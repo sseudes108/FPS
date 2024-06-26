@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour {
         SetStates();
     }
 
-    private void Start() {
+    public virtual void Start() {
         StateMachine.ChangeState(StateMachine.IdleState);
     }
     
@@ -34,7 +34,7 @@ public abstract class Character : MonoBehaviour {
         }
     }
 
-    public abstract void HandleMovement();
-    public abstract void HandleJump();
-    public abstract void HandleShot();
+    public virtual void HandleMovement(){}
+    public virtual void HandleJump(){}
+    public virtual void HandleShot(){}
 }

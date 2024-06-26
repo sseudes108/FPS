@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageValue: 1
+  _playerMaterial: {fileID: 2100000, guid: 5b2e49afc1a9a7f4b96a6af009435176, type: 2}
+  _enemyMaterial: {fileID: 2100000, guid: 937bd2bb6b8de084b99297af4cb8df09, type: 2}
 --- !u!114 &4595786339680183184
 MonoBehaviour:
   m_ObjectHideFlags: 0
