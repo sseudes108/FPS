@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemyPatrol : AbstractState {
     public override void Enter(){
-        Debug.Log("Enemy Patrol State");
     }
     public override void LogicUpdate(){
         Enemy.HandlePlayerDetection();

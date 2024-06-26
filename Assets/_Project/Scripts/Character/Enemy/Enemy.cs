@@ -29,7 +29,10 @@ public class Enemy : Character {
         NavmeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    public override void HandleShot(){}
+    public override void HandleShot(){
+        Gun.GetFirePoint().LookAt(Target.transform.position);
+        Gun.Shoot();
+    }
 
     public void HandlePlayerDetection(){
         if(PlayerDetected()){

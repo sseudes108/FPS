@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Bullet : MonoBehaviour{
     public static Action<Bullet, Material> OnBulletImpact;
     private Movement _movement;
     private Gun _gun;
     private TrailRenderer _trail;
+    private Character _character;
     [SerializeField] private int _damageValue;
     [SerializeField] private Material _playerMaterial, _enemyMaterial;
     private Material _currentMaterial;
@@ -16,26 +18,25 @@ public class Bullet : MonoBehaviour{
         _trail  = GetComponent<TrailRenderer>();
     }
 
-    public int GetDamageValue(){
-        return _damageValue;
-    }
-
     public void Init(Gun gun, Transform firePoint) {
-        _gun = gun;
+        SetGunAndCharacter(gun);
         SetMaterial();
         SetDirection(firePoint);
         _trail.enabled = true;
         StartCoroutine(ReleaseBulletRoutine());
     }
-    
+
     private void OnTriggerEnter(Collider other) {
-        OnBulletImpact?.Invoke(this, _currentMaterial);
-        if(other.CompareTag("Enemy")){
-            if(other.TryGetComponent(out Health health)){
-                health.TakeDamage(_damageValue);
-            }
+        if(_character is Player && other.CompareTag("Enemy")){
+            HandleImpact(other);
+            return;
+        }else if (_character is Enemy && other.CompareTag("Player")){
+            HandleImpact(other);
+            return;
+        }else{
+            HandleImpact();
+            return;
         }
-        DisableBullet();
     }
 
     private IEnumerator ReleaseBulletRoutine(){
@@ -49,8 +50,27 @@ public class Bullet : MonoBehaviour{
         _gun.ReleaseFromPool(this);
     }
 
+    //No health on the other object
+    private void HandleImpact(){
+        OnBulletImpact?.Invoke(this, _currentMaterial);
+        DisableBullet();
+    }
+
+    //Other is NPC
+    private void HandleImpact(Collider other){
+        OnBulletImpact?.Invoke(this, _currentMaterial);
+        other.TryGetComponent(out Health health);
+        health.TakeDamage(_damageValue);
+        DisableBullet();
+    }
+
+    private void SetGunAndCharacter(Gun gun){
+        _gun = gun;
+        _character = _gun.GetComponent<Character>();
+    }
+
     private void SetMaterial(){
-        if(_gun.GetComponent<Character>() is Player){
+        if(_character is Player){
             GetComponent<Renderer>().material = _playerMaterial;
             GetComponent<TrailRenderer>().material = _playerMaterial;
             _currentMaterial = _playerMaterial;

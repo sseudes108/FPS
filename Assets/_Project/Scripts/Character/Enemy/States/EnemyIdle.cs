@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyIdle : IdleState {
     public override void Enter(){
-        Debug.Log("Enemy Idle State");
         Enemy.StartCoroutine(WaitRoutine());
     }
 
