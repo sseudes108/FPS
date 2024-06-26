@@ -14,8 +14,11 @@ public class Gun : MonoBehaviour{
 
     private ObjectPool<Bullet> _bulletPool;
 
+    private Character _character;
+
     private void Awake() {
         CreateBulletPool();
+        _character = GetComponent<Character>();
     }
 
     public Transform GetFirePoint(){
@@ -24,7 +27,7 @@ public class Gun : MonoBehaviour{
 
     public void Shoot(){
         Bullet newBullet = _bulletPool.Get();
-        newBullet.Init(this, _firePoint);
+        newBullet.Init(this, _character, _firePoint);
     }
 
     private void CreateBulletPool(){

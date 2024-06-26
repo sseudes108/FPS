@@ -1,28 +1,30 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Bullet : MonoBehaviour{
     public static Action<Bullet, Material> OnBulletImpact;
-    private Movement _movement;
-    private Gun _gun;
-    private TrailRenderer _trail;
-    private Character _character;
+
     [SerializeField] private int _damageValue;
     [SerializeField] private Material _playerMaterial, _enemyMaterial;
     private Material _currentMaterial;
+    private TrailRenderer _trailRenderer;
+    private Renderer _renderer;
+
+    private Movement _movement;
+    private Gun _gun;
+    private Character _character;
 
     private void Awake() {
         _movement = GetComponent<Movement>();
-        _trail  = GetComponent<TrailRenderer>();
+        _renderer = GetComponent<Renderer>();
+        _trailRenderer  = GetComponent<TrailRenderer>();
     }
 
-    public void Init(Gun gun, Transform firePoint) {
-        SetGunAndCharacter(gun);
+    public void Init(Gun gun, Character character, Transform firePoint) {
+        SetGunAndCharacter(gun, character);
         SetMaterial();
         SetDirection(firePoint);
-        _trail.enabled = true;
         StartCoroutine(ReleaseBulletRoutine());
     }
 
@@ -40,13 +42,14 @@ public class Bullet : MonoBehaviour{
     }
 
     private IEnumerator ReleaseBulletRoutine(){
+        //Time to release bullet case dont hit anything
         yield return new WaitForSeconds(5f);
         DisableBullet();
         yield return null;
     }
 
     private void DisableBullet(){
-        _trail.enabled = false;
+        _trailRenderer.enabled = false;
         _gun.ReleaseFromPool(this);
     }
 
@@ -56,7 +59,7 @@ public class Bullet : MonoBehaviour{
         DisableBullet();
     }
 
-    //Other is NPC
+    //Other has health
     private void HandleImpact(Collider other){
         OnBulletImpact?.Invoke(this, _currentMaterial);
         other.TryGetComponent(out Health health);
@@ -64,26 +67,25 @@ public class Bullet : MonoBehaviour{
         DisableBullet();
     }
 
-    private void SetGunAndCharacter(Gun gun){
+    private void SetGunAndCharacter(Gun gun, Character character){
         _gun = gun;
-        _character = _gun.GetComponent<Character>();
+        _character = character;
     }
 
     private void SetMaterial(){
         if(_character is Player){
-            GetComponent<Renderer>().material = _playerMaterial;
-            GetComponent<TrailRenderer>().material = _playerMaterial;
             _currentMaterial = _playerMaterial;
         }else{
-            GetComponent<Renderer>().material = _enemyMaterial;
-            GetComponent<TrailRenderer>().material = _enemyMaterial;
             _currentMaterial = _enemyMaterial;
-        }     
+        }
+        _renderer.material = _currentMaterial;
+        _trailRenderer.material  = _currentMaterial;
     }
 
     private void SetDirection(Transform firePoint){
         transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
         Vector3 direction = firePoint.forward;
         _movement.SetRigidbodyDirection(direction);
+        _trailRenderer.enabled = true;
     }
 }

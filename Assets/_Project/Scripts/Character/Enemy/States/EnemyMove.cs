@@ -10,6 +10,7 @@ public class EnemyMove : MoveState {
     public override void Enter(){
         _shootRoutine = ShootRoutine();
         Enemy.StartCoroutine(_shootRoutine);
+        Enemy.ChangeAnimation(Enemy.RUN);
     }
 
     public override void LogicUpdate(){
@@ -50,7 +51,12 @@ public class EnemyMove : MoveState {
         for(int i = 0; i < Enemy.Gun.BulletBurst ; i++){
             while(Vector3.Distance(Enemy.transform.position, Enemy.Target.transform.position) < Enemy.DeAggroRadius){
                 isShooting = true;
+
                 Enemy.HandleShot();
+                if(Enemy.Anim.CurrentAnimation != Enemy.SHOOT){
+                    Enemy.ChangeAnimation(Enemy.SHOOT);
+                }
+
                 yield return new WaitForSeconds(Enemy.Gun.Firerate);
 
                 i++;
@@ -61,6 +67,9 @@ public class EnemyMove : MoveState {
                 }
 
                 yield return null;
+            }
+            if(Enemy.Anim.CurrentAnimation != Enemy.IDLE){
+                Enemy.ChangeAnimation(Enemy.IDLE);
             }
         }
     }

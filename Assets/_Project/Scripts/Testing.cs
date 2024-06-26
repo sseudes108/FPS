@@ -16,6 +16,6 @@ public class Testing : MonoBehaviour{
     }
 
     public void UpdateDebugGroundedLabel(string grounded){
-        groundedDebug.text = $"Grounded: {grounded}";;
+        groundedDebug.text = $"Grounded: {grounded}";
     }
 }

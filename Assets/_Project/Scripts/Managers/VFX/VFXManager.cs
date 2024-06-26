@@ -50,7 +50,7 @@ public class VFXManager : MonoBehaviour{
         return VFXPool;
     }
 
-    public void ReleaseFromPool<T>(ObjectPool<T> objectPool, T VFX) where T : MonoBehaviour{
+    public void ReleaseFromPool(ObjectPool<VFXHelper> objectPool, VFXHelper VFX){
         objectPool.Release(VFX);
     }
 }

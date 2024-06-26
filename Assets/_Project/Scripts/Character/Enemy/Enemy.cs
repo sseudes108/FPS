@@ -2,15 +2,15 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : Character {
-    public readonly int IDLE = Animator.StringToHash("Player_Idle");
-    public readonly int WALK = Animator.StringToHash("Player_Walk");
-    public readonly int RUN = Animator.StringToHash("Player_Run");
+    public readonly int IDLE = Animator.StringToHash("Enemy_Idle");
+    public readonly int RUN = Animator.StringToHash("Enemy_Run");
+    public readonly int SHOOT = Animator.StringToHash("Enemy_Shoot");
 
     public NavMeshAgent NavmeshAgent {get; private set;}
     public Vector3 InitialPosition {get; private set;}
 
     public EnemyPatrol PatrolState;
-    public Player Target {get; private set;}
+    public Player Target; //{get; private set;}
 
 
     //The _aggroRadius is the distance at which the enemy starts chasing the player.
@@ -56,6 +56,8 @@ public class Enemy : Character {
         if(targetInRange > 0 && target[0] != null){
             if(Target == null){
                 Target = target[0].GetComponent<Player>();
+                Debug.Log($"Target {Target}");
+                Debug.Log($"target[0].GetComponent<Player>(); {target[0].GetComponent<Player>().name}");
             }
             return true;
         }else{

@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyIdle : IdleState {
     public override void Enter(){
         Enemy.StartCoroutine(WaitRoutine());
+        Enemy.ChangeAnimation(Enemy.IDLE);
     }
 
     public override void LogicUpdate(){

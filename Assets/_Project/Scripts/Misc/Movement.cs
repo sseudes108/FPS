@@ -10,12 +10,12 @@ public class Movement : MonoBehaviour {
     private Rigidbody _rigidbody;
     private Vector3 _direction;
 
-    private float _gravityModifier = 0.1f;
-    private float _jumpForce = 0.5f;
+    private readonly float _gravityModifier = 0.1f;
+    private readonly float _jumpForce = 0.5f;
     private bool _isJumping = false;
     private float _jumpTimeCounter;
-    private float _jumpTime = 0.2f;
-    private float _jumpForceMultiplier = 1f;
+    private readonly float _jumpTime = 0.2f;
+    private readonly float _jumpForceMultiplier = 1f;
     private float _verticalVelocity = 0f;
 
     private void Awake() {
