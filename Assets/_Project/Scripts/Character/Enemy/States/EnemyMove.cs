@@ -4,12 +4,11 @@ using UnityEngine;
 //Move - Chase
 public class EnemyMove : MoveState {
     private Vector3 _lastKnownTargetPosition;
-    private IEnumerator _shootRoutine;
-    private bool isShooting;
+    float wait;
+    IEnumerator shotRoutine;
+    bool isShooting;
 
     public override void Enter(){
-        _shootRoutine = ShootRoutine();
-        Enemy.StartCoroutine(_shootRoutine);
         Enemy.ChangeAnimation(Enemy.RUN);
     }
 
@@ -19,60 +18,56 @@ public class EnemyMove : MoveState {
         Enemy.NavmeshAgent.destination = targetPoint;
         Enemy.transform.LookAt(targetPoint);
 
-        if(isShooting){
-            Enemy.NavmeshAgent.destination = Enemy.transform.position;
-        }else{
-            if(Enemy.Anim.CurrentAnimation != Enemy.RUN){
-                Enemy.ChangeAnimation(Enemy.RUN);
-            }
-        }
-
-        //If the player is out of aggro range move enemy to the lastknown position
+        /*
+            Se fora do range de aggro o destino var ser o _lastKnown e quando chegar na posição muda o state para idle. 
+                Caso contrario atualiza a cada frame a _lasknown para a posição atual do target
+        */
         if(Vector3.Distance(Enemy.transform.position, Enemy.Target.transform.position) > Enemy.DeAggroRadius){
             Enemy.NavmeshAgent.destination = _lastKnownTargetPosition;
-            if(Vector3.Distance(Enemy.transform.position, _lastKnownTargetPosition) < 0.5f){
+            if(Vector3.Distance(Enemy.transform.position, _lastKnownTargetPosition) < 0.1f){
                 Enemy.ChangeState(Enemy.Idle);
             }
         }else{
-            //5f is where the enemy stop moving towards the target
-            if(Vector3.Distance(Enemy.transform.position, Enemy.Target.transform.position) < 5f){
+            if(wait > 0){
+                wait -= Time.deltaTime;
+            }else{
+                if(shotRoutine == null){
+                    shotRoutine = Shoot();
+                    Enemy.StartCoroutine(shotRoutine);
+                }
+            }
+
+            //Para o enemy quando estiver atirando
+            if(isShooting){
                 Enemy.NavmeshAgent.destination = Enemy.transform.position;
             }
-            //Update in each frame the lastknown position to the current position of the target
-            _lastKnownTargetPosition = targetPoint;
+
+            // Se a distancia for de 1/3 do aggro range o enemy pára na sua posição atual
+            if(Vector3.Distance(Enemy.transform.position, Enemy.Target.transform.position) <= Enemy.AggroRadius / 3){
+                Enemy.NavmeshAgent.destination = Enemy.transform.position;
+                Enemy.ChangeAnimation(Enemy.SHOOT);
+            }else{
+                if(!isShooting){
+                    Enemy.ChangeAnimation(Enemy.RUN);
+                }
+            }
+            _lastKnownTargetPosition = Enemy.Target.transform.position;
         }
     }
      
-    public override void Exit(){
-        Enemy.StopCoroutine(_shootRoutine);
-    }
+    public override void Exit(){ }
 
-    private IEnumerator ShootRoutine(){
-        //Time before start shooting
-        yield return new WaitForSeconds(Enemy.Gun.CoolDown);
-        
-        //Count of bullet Burst
-        for(int i = 0; i < Enemy.Gun.BulletBurst ; i++){
-            while(Vector3.Distance(Enemy.transform.position, Enemy.Target.transform.position) < Enemy.DeAggroRadius){
-                isShooting = true;
-
-                Enemy.HandleShot();
-                Enemy.ChangeAnimation(Enemy.SHOOT);
-
-                yield return new WaitForSeconds(Enemy.Gun.Firerate);
-                i++;
-
-                if(i == Enemy.Gun.BulletBurst ){
-                    isShooting = false;
-                    yield return new WaitForSeconds(Enemy.Gun.CoolDown);
-                    i = 0;
-                }
-
-                yield return null;
-            }
-            // if(Enemy.Anim.CurrentAnimation != Enemy.IDLE){
-            //     Enemy.ChangeAnimation(Enemy.IDLE);
-            // }
+    private IEnumerator Shoot(){
+        Enemy.NavmeshAgent.destination = Enemy.transform.position;
+        isShooting = true;
+        for(int i = 0; i < Enemy.Gun.BulletBurst; i++){
+            Enemy.HandleShot();
+            Enemy.ChangeAnimation(Enemy.SHOOT);
+            yield return new WaitForSeconds(Enemy.Gun.Firerate);
         }
+        shotRoutine = null;
+        isShooting = false;
+        wait = Enemy.Gun.CoolDown;
+        yield return null;
     }
 }

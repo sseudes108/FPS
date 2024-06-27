@@ -2,10 +2,9 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Testing : MonoBehaviour{
-
     private Label stateDebug;
     private Label groundedDebug;
-
+    
     private void Start() {
         stateDebug = GameManager.Instance.UIManager.Root.Q<Label>("DebugState");
         groundedDebug = GameManager.Instance.UIManager.Root.Q<Label>("DebugGrounded");

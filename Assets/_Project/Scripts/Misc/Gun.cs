@@ -1,8 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class Gun : MonoBehaviour{
-
     [SerializeField] private Transform _firePoint;
     [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private float _firerate;

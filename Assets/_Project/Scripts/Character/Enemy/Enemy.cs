@@ -15,6 +15,7 @@ public class Enemy : Character {
 
     //The _aggroRadius is the distance at which the enemy starts chasing the player.
     [SerializeField] private float _aggroRadius;
+    public float AggroRadius => _aggroRadius;
     //The _deAggroRadius is the distance at which the enemy stops chasing the player.
     [SerializeField] private float _deAggroRadius;
     public float DeAggroRadius => _deAggroRadius;

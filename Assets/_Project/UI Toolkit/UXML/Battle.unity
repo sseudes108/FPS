@@ -418,8 +418,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 948483775}
   - {fileID: 896617640}
+  - {fileID: 948483775}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &147739914
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _firePoint: {fileID: 948483775}
   _bulletPrefab: {fileID: 6963129615117718901, guid: 7e2efa1ab180ad34c85f083f0eb8b162, type: 3}
-  _firerate: 0.3
+  _firerate: 0.75
   _coolDown: 1
   _bulletBurst: 3
 --- !u!195 &147739921
