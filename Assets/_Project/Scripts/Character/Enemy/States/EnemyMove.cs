@@ -21,12 +21,16 @@ public class EnemyMove : MoveState {
 
         if(isShooting){
             Enemy.NavmeshAgent.destination = Enemy.transform.position;
+        }else{
+            if(Enemy.Anim.CurrentAnimation != Enemy.RUN){
+                Enemy.ChangeAnimation(Enemy.RUN);
+            }
         }
 
         //If the player is out of aggro range move enemy to the lastknown position
         if(Vector3.Distance(Enemy.transform.position, Enemy.Target.transform.position) > Enemy.DeAggroRadius){
             Enemy.NavmeshAgent.destination = _lastKnownTargetPosition;
-            if(Vector3.Distance(Enemy.transform.position, _lastKnownTargetPosition) < 1f){
+            if(Vector3.Distance(Enemy.transform.position, _lastKnownTargetPosition) < 0.5f){
                 Enemy.ChangeState(Enemy.Idle);
             }
         }else{
@@ -53,13 +57,11 @@ public class EnemyMove : MoveState {
                 isShooting = true;
 
                 Enemy.HandleShot();
-                if(Enemy.Anim.CurrentAnimation != Enemy.SHOOT){
-                    Enemy.ChangeAnimation(Enemy.SHOOT);
-                }
+                Enemy.ChangeAnimation(Enemy.SHOOT);
 
                 yield return new WaitForSeconds(Enemy.Gun.Firerate);
-
                 i++;
+
                 if(i == Enemy.Gun.BulletBurst ){
                     isShooting = false;
                     yield return new WaitForSeconds(Enemy.Gun.CoolDown);
@@ -68,9 +70,9 @@ public class EnemyMove : MoveState {
 
                 yield return null;
             }
-            if(Enemy.Anim.CurrentAnimation != Enemy.IDLE){
-                Enemy.ChangeAnimation(Enemy.IDLE);
-            }
+            // if(Enemy.Anim.CurrentAnimation != Enemy.IDLE){
+            //     Enemy.ChangeAnimation(Enemy.IDLE);
+            // }
         }
     }
 }

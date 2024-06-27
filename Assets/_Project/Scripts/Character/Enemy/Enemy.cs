@@ -56,8 +56,6 @@ public class Enemy : Character {
         if(targetInRange > 0 && target[0] != null){
             if(Target == null){
                 Target = target[0].GetComponent<Player>();
-                Debug.Log($"Target {Target}");
-                Debug.Log($"target[0].GetComponent<Player>(); {target[0].GetComponent<Player>().name}");
             }
             return true;
         }else{
