@@ -6,8 +6,7 @@ public class Movement : MonoBehaviour {
     private float _runSpeed;
     private bool _canMove = true;
 
-    private CharacterController _controller;
-    private Rigidbody _rigidbody;
+    public CharacterController Controller {get; private set;}
     private Vector3 _direction;
 
     private readonly float _gravityModifier = 0.1f;
@@ -19,8 +18,7 @@ public class Movement : MonoBehaviour {
     private float _verticalVelocity = 0f;
 
     private void Awake() {
-        _controller = GetComponent<CharacterController>();
-        _rigidbody = GetComponent<Rigidbody>();
+        Controller = GetComponent<CharacterController>();
     }
 
     private void Start(){
@@ -29,16 +27,13 @@ public class Movement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        //Rigidbody move the bullets
-        if (_controller != null){
+        if (Controller.enabled){
             if (_canMove){
-                MoveCharacter();
+                Move();
             }
             if(_isJumping){
                 ApplyJumpForce();
             }
-        }else if (_rigidbody != null){
-            MoveRigidbody();
         }
     }
    
@@ -62,10 +57,10 @@ public class Movement : MonoBehaviour {
             }
         }
 
-        _controller.Move(_direction * Time.deltaTime);
+        Controller.Move(_direction * Time.deltaTime);
     }
 
-    private void MoveCharacter(){
+    private void Move(){
         if (_isJumping){
             _verticalVelocity = _jumpForce * _jumpForceMultiplier;
         }else{
@@ -73,15 +68,8 @@ public class Movement : MonoBehaviour {
         }
 
         _direction.y = _verticalVelocity;
-        _controller.Move(_moveSpeed * Time.deltaTime * _direction);
+        Controller.Move(_moveSpeed * Time.deltaTime * _direction);
     }
 
     public void SetCharacterDirection(Vector3 direction){ _direction = direction; }
-
-    private void MoveRigidbody() {
-        Vector3 movement = _moveSpeed * Time.deltaTime * _direction;
-        _rigidbody.MovePosition(_rigidbody.position + movement);
-    }
-
-    public void SetRigidbodyDirection(Vector3 direction) { _direction = direction.normalized; }
 }

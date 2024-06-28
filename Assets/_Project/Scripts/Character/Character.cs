@@ -8,8 +8,7 @@ public abstract class Character : MonoBehaviour {
     public JumpState Jump => StateMachine.JumpState;
     public MoveState Move => StateMachine.MoveState;
 
-    protected Gun _gun;
-    public Gun Gun => _gun;
+    [HideInInspector] public Gun Gun;
 
     public virtual void Awake() {
         Anim = GetComponent<AnimationController>();

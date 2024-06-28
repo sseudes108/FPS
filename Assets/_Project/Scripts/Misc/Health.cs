@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour{
-    public static Action<int> OnDamageTaken;
+    public static Action<int> OnHealthChange;
     public static Action OnPlayerDied;
 
     [SerializeField] private int _maxHealth;
@@ -19,13 +19,17 @@ public class Health : MonoBehaviour{
 
     public void HealDamage(int value){
         _currentHealth += value;
+        if(_currentHealth > _maxHealth){
+            _currentHealth = _maxHealth;
+        }
+        OnHealthChange?.Invoke(_currentHealth);
     }
 
     public void TakeDamage(int value){
         _currentHealth -= value;
 
         if(_character is Player){
-            OnDamageTaken?.Invoke(value);
+            OnHealthChange?.Invoke(_currentHealth);
         }
         
         if( _currentHealth <= 0 ){

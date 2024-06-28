@@ -9,12 +9,12 @@ public class Bullet : MonoBehaviour{
     private Material _bulletMaterial;
     private TrailRenderer _trailRenderer;
     private Renderer _renderer;
-    private Movement _movement;
+    private BulletMovement _movement;
     private Gun _gun;
     private Character _character;
 
     private void Awake() {
-        _movement = GetComponent<Movement>();
+        _movement = GetComponent<BulletMovement>();
         _renderer = GetComponent<Renderer>();
         _trailRenderer  = GetComponent<TrailRenderer>();
     }
@@ -28,15 +28,27 @@ public class Bullet : MonoBehaviour{
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(_character is Player && other.CompareTag("Enemy")){
-            HandleImpact(other);
-            return;
-        }else if (_character is Enemy && other.CompareTag("Player")){
-            HandleImpact(other);
-            return;
-        }else{
-            HandleImpact(other);
-            return;
+        var objectTag = other.tag;
+
+        switch (objectTag){
+            case "Enemy":
+                if(_character is Player){
+                    HandleImpact(other);
+                }
+            break;
+            
+            case "Player":
+                if(_character is Enemy){
+                    HandleImpact(other);
+                }
+            break;
+
+            case "NoHit":
+            break;
+
+            default:
+                HandleImpact(other);
+            break;
         }
     }
 
@@ -81,7 +93,7 @@ public class Bullet : MonoBehaviour{
     private void SetDirection(Transform firePoint){
         transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
         Vector3 direction = firePoint.forward;
-        _movement.SetRigidbodyDirection(direction);
+        _movement.SetDirection(direction);
         _trailRenderer.enabled = true;
     }
 }

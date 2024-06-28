@@ -3,14 +3,14 @@ using UnityEngine.UIElements;
 
 public class UI_HealthBar : MonoBehaviour {
     private VisualElement _HBforeground;
-    private int _lentgh = 50;
+    private int _lentgh = 100;
 
     private void OnEnable() {
-        Health.OnDamageTaken += Health_OnDamageTaken;
+        Health.OnHealthChange += Health_OnHealthChange;
     }
 
     private void OnDisable() {
-        Health.OnDamageTaken -= Health_OnDamageTaken;
+        Health.OnHealthChange -= Health_OnHealthChange;
     }
 
     private void Start() {
@@ -18,9 +18,9 @@ public class UI_HealthBar : MonoBehaviour {
         UpdateHealthBar();
     }
 
-    private void Health_OnDamageTaken(int value){
-        _lentgh -= value;
-        if(_lentgh <= 0){
+    private void Health_OnHealthChange(int currentHP){
+        _lentgh = currentHP;
+        if (_lentgh <= 0){
             _lentgh = 0;
         }
         UpdateHealthBar();

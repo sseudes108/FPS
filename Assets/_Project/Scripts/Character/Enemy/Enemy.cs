@@ -10,7 +10,7 @@ public class Enemy : Character {
     public Vector3 InitialPosition {get; private set;}
 
     public EnemyPatrol PatrolState;
-    public Player Target; //{get; private set;}
+    public Player Target;
 
 
     //The _aggroRadius is the distance at which the enemy starts chasing the player.
@@ -20,20 +20,20 @@ public class Enemy : Character {
     [SerializeField] private float _deAggroRadius;
     public float DeAggroRadius => _deAggroRadius;
 
+    public override void Awake(){
+        base.Awake();
+        Gun = GetComponent<Gun>();
+        NavmeshAgent = GetComponent<NavMeshAgent>();
+    }
+
     public override void Start(){
         base.Start();
         InitialPosition = transform.position;
     }
 
-    public override void Awake(){
-        base.Awake();
-        _gun = GetComponent<Gun>();
-        NavmeshAgent = GetComponent<NavMeshAgent>();
-    }
-
     public override void HandleShot(){
-        _gun.GetFirePoint().LookAt(Target.transform.position);
-        _gun.Shoot();
+        Gun.GetFirePoint().LookAt(Target.transform.position);
+        Gun.Shoot();
     }
 
     public void HandlePlayerDetection(){

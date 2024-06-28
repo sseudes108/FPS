@@ -40,11 +40,10 @@ public class SpawnManager : MonoBehaviour {
             int key = PlayerPrefs.GetInt(playerPrefKey);
             foreach(var cp in _checkPoints){
                 if(key == cp.CheckPointID){
-                    Debug.Log(key);
                     OnCheckPoint?.Invoke(cp.transform.position);
+                    break;
                 }
             }
         }
     }
-    
 }
