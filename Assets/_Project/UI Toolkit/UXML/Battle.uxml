@@ -1,16 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/Battle.uss?fileID=7433441132597879392&amp;guid=2586f824c6f165541a1359ccf825a312&amp;type=3#Battle" />
-    <ui:VisualElement name="Container" style="flex-grow: 1;">
-        <ui:VisualElement name="Top" style="flex-grow: 1; flex-basis: 33%;">
-            <ui:VisualElement name="HealthBar" style="flex-grow: 0; width: 816px; height: 100px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Health_UI.png?fileID=2800000&amp;guid=7904537c57bb5e54bacbd27efe6525ac&amp;type=3#Health_UI&quot;); margin-bottom: 0; margin-top: 54px; margin-left: 54px;">
+    <ui:VisualElement name="Container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:VisualElement name="Top" style="flex-grow: 1; flex-basis: 33%; background-color: rgba(0, 0, 0, 0);">
+            <ui:VisualElement name="HealthBar" style="flex-grow: 0; width: 816px; height: 100px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Health_UI.png?fileID=2800000&amp;guid=7904537c57bb5e54bacbd27efe6525ac&amp;type=3#Health_UI&quot;); margin-bottom: 0; margin-top: 54px; margin-left: 54px; background-color: rgba(0, 0, 0, 0);">
                 <ui:VisualElement name="HBback" style="flex-grow: 1; background-color: rgb(58, 37, 8); opacity: 1; margin-left: 42px; margin-right: 131px; margin-bottom: 15px; margin-top: 2px;">
                     <ui:VisualElement name="HBFore" style="flex-grow: 1; background-color: rgb(255, 158, 21); transform-origin: left bottom; width: 1%;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="Center" style="flex-grow: 1; flex-basis: 33%; align-self: center; align-content: center; justify-content: space-around; align-items: flex-end;">
+        <ui:VisualElement name="Center" style="flex-grow: 1; flex-basis: 33%; align-self: center; align-content: center; justify-content: space-around; align-items: flex-end; margin-top: 54px;">
             <ui:VisualElement name="CrossHair" style="background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=4bf23652db6150b4c973cefc9551055e&amp;type=3#60&quot;); flex-grow: 0; width: 100px; height: 100px; align-self: center; justify-content: space-between; align-items: auto; flex-shrink: 0; align-content: center;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%;" />
+        <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%; align-content: auto; align-self: flex-end; align-items: flex-start; justify-content: flex-end; margin-bottom: 54px; margin-right: 54px;">
+            <ui:VisualElement style="flex-grow: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Ammo_UI.png?fileID=2800000&amp;guid=10f1b8679e9d6d54796bbe50b27c9731&amp;type=3#Ammo_UI&quot;); width: 816px; height: 100px; flex-shrink: 0;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

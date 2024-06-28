@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour{
-
     public static Action<int> OnDamageTaken;
+    public static Action OnPlayerDied;
 
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
@@ -17,6 +17,10 @@ public class Health : MonoBehaviour{
         _currentHealth = _maxHealth;
     }
 
+    public void HealDamage(int value){
+        _currentHealth += value;
+    }
+
     public void TakeDamage(int value){
         _currentHealth -= value;
 
@@ -26,16 +30,11 @@ public class Health : MonoBehaviour{
         
         if( _currentHealth <= 0 ){
             if(_character is Player){
-                _character.gameObject.SetActive(false);
-                // Time.timeScale = 0;
+                OnPlayerDied?.Invoke();
             }else{
                 Die();
             }
         }
-    }
-
-    public void HealDamage(int value){
-        _currentHealth += value;
     }
 
     public void Die(){

@@ -3,9 +3,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour{
     public static GameManager Instance { get; private set;}
     public UIManager UIManager;
+    public RespawnManager RespawnManager;
     
     //**Apagar**//
     public Testing Testing;
+
     //**Apagar**//
 
     private void Awake() {
@@ -18,7 +20,7 @@ public class GameManager : MonoBehaviour{
     }
 
     private void SetInstance(){
-        if(Instance!=null){
+        if(Instance != null){
             Debug.LogError("More Than One Instance of Game Manager");
             Destroy(Instance);
         }
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour{
 
     private void SetManagers(){
         UIManager = GetComponentInChildren<UIManager>();
+        RespawnManager = GetComponentInChildren<RespawnManager>();
         Testing = GetComponent<Testing>();
-    }
-    
+    }    
 }

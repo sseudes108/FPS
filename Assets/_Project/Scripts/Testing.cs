@@ -10,6 +10,12 @@ public class Testing : MonoBehaviour{
         groundedDebug = GameManager.Instance.UIManager.Root.Q<Label>("DebugGrounded");
     }
 
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.R)) {
+            StartCoroutine(GameManager.Instance.RespawnManager.PlayerDeadRoutine());
+        }
+    }
+
     public void UpdateDebugStateLabel(string currentState){
         stateDebug.text = $"State: {currentState}";
     }
