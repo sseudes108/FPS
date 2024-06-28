@@ -23,16 +23,18 @@ public class Enemy : Character {
     public override void Start(){
         base.Start();
         InitialPosition = transform.position;
+        Debug.Log(_gun);
     }
 
     public override void Awake(){
         base.Awake();
+        _gun = GetComponent<Gun>();
         NavmeshAgent = GetComponent<NavMeshAgent>();
     }
 
     public override void HandleShot(){
-        Gun.GetFirePoint().LookAt(Target.transform.position);
-        Gun.Shoot();
+        _gun.GetFirePoint().LookAt(Target.transform.position);
+        _gun.Shoot();
     }
 
     public void HandlePlayerDetection(){

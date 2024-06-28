@@ -1,20 +1,24 @@
-using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Gun : MonoBehaviour{
-    [SerializeField] private Transform _firePoint;
-    [SerializeField] private Bullet _bulletPrefab;
-    [SerializeField] private float _firerate;
-    [SerializeField] private float _coolDown;
-    [SerializeField] private float _bulletBurst;
+public abstract class Gun : MonoBehaviour{
+    [SerializeField] protected float _recoilForce;
+    [SerializeField] protected Transform _firePoint;
+    [SerializeField] protected Bullet _bulletPrefab;
+    [SerializeField] protected float _firerate;
+    [SerializeField] protected float _coolDown;
+    [SerializeField] protected float _bulletBurst;
     public float Firerate => _firerate;
     public float CoolDown => _coolDown;
     public float BulletBurst => _bulletBurst;
+    public float RecoilForce => _recoilForce;
 
-    private ObjectPool<Bullet> _bulletPool;
+    [SerializeField] protected Material _bulletMaterial;
+    [SerializeField] protected int _damageValue;
 
-    private Character _character;
+    protected ObjectPool<Bullet> _bulletPool;
+    protected Character _character;
+
 
     private void Awake() {
         CreateBulletPool();
@@ -26,8 +30,8 @@ public class Gun : MonoBehaviour{
     }
 
     public void Shoot(){
-        Bullet newBullet = _bulletPool.Get();
-        newBullet.Init(this, _character, _firePoint);
+        var newBullet = _bulletPool.Get();
+        newBullet.Init(this, _bulletMaterial, _damageValue, _character, _firePoint);
     }
 
     private void CreateBulletPool(){

@@ -1,8 +1,12 @@
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour{
+
+    public static Action<int> OnDamageTaken;
+
     [SerializeField] private int _maxHealth;
-    private int _currentHealth;
+    [SerializeField] private int _currentHealth;
     private Character _character;
 
     private void Awake() {
@@ -15,9 +19,14 @@ public class Health : MonoBehaviour{
 
     public void TakeDamage(int value){
         _currentHealth -= value;
+
+        if(_character is Player){
+            OnDamageTaken?.Invoke(value);
+        }
+        
         if( _currentHealth <= 0 ){
             if(_character is Player){
-                // _character.gameObject.SetActive(false);
+                _character.gameObject.SetActive(false);
                 // Time.timeScale = 0;
             }else{
                 Die();

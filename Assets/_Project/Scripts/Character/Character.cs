@@ -8,10 +8,10 @@ public abstract class Character : MonoBehaviour {
     public JumpState Jump => StateMachine.JumpState;
     public MoveState Move => StateMachine.MoveState;
 
-    public Gun Gun {get; private set;}
+    protected Gun _gun;
+    public Gun Gun => _gun;
 
     public virtual void Awake() {
-        Gun = GetComponent<Gun>();
         Anim = GetComponent<AnimationController>();
         StateMachine = GetComponent<StateMachine>();
         SetStates();
@@ -29,9 +29,9 @@ public abstract class Character : MonoBehaviour {
 
     public void ChangeState(AbstractState newState){
         StateMachine.ChangeState(newState);
-        if(this is Player){
-            GameManager.Instance.Testing.UpdateDebugStateLabel(newState.ToString());
-        }
+        // if(this is Player){
+        //     GameManager.Instance.Testing.UpdateDebugStateLabel(newState.ToString());
+        // }
     }
 
     public virtual void HandleMovement(){}

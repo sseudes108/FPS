@@ -1,14 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/Battle.uss?fileID=7433441132597879392&amp;guid=2586f824c6f165541a1359ccf825a312&amp;type=3#Battle" />
-    <ui:VisualElement name="Battle" style="flex-grow: 1; align-content: auto; align-self: auto; justify-content: space-around; align-items: flex-end;">
-        <ui:VisualElement name="CrossHair" style="flex-grow: 0; width: 50px; height: 50px; flex-shrink: 0; align-self: center; background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=4bf23652db6150b4c973cefc9551055e&amp;type=3#60&quot;); -unity-background-image-tint-color: rgb(255, 255, 255);" />
-    </ui:VisualElement>
-    <ui:VisualElement name="Debug" style="flex-grow: 1; position: absolute; width: 552px; height: 187px; background-color: rgb(185, 185, 185);">
-        <ui:VisualElement name="State" style="flex-grow: 1; height: 50%;">
-            <ui:Label text="State: Idle" name="DebugState" style="flex-grow: 1; flex-shrink: 1; font-size: 54px; -unity-text-align: upper-left; -unity-font-style: bold; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:VisualElement name="Top" style="flex-grow: 1; flex-basis: 33%;">
+            <ui:VisualElement name="HealthBar" style="flex-grow: 0; width: 816px; height: 100px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Health_UI.png?fileID=2800000&amp;guid=7904537c57bb5e54bacbd27efe6525ac&amp;type=3#Health_UI&quot;); margin-bottom: 0; margin-top: 54px; margin-left: 54px;">
+                <ui:VisualElement name="HBback" style="flex-grow: 1; background-color: rgb(58, 37, 8); opacity: 1; margin-left: 42px; margin-right: 131px; margin-bottom: 15px; margin-top: 2px;">
+                    <ui:VisualElement name="HBFore" style="flex-grow: 1; background-color: rgb(255, 158, 21); transform-origin: left bottom; width: 1%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="Grounded" style="flex-grow: 1; height: 50%;">
-            <ui:Label text="Grounded: False" name="DebugGrounded" style="flex-grow: 1; flex-shrink: 1; font-size: 54px; -unity-text-align: upper-left; -unity-font-style: bold; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
+        <ui:VisualElement name="Center" style="flex-grow: 1; flex-basis: 33%; align-self: center; align-content: center; justify-content: space-around; align-items: flex-end;">
+            <ui:VisualElement name="CrossHair" style="background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=4bf23652db6150b4c973cefc9551055e&amp;type=3#60&quot;); flex-grow: 0; width: 100px; height: 100px; align-self: center; justify-content: space-between; align-items: auto; flex-shrink: 0; align-content: center;" />
         </ui:VisualElement>
+        <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%;" />
     </ui:VisualElement>
 </ui:UXML>

@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class Player : Character {
@@ -16,11 +17,15 @@ public class Player : Character {
 
     public Movement Movement {get; private set;}
 
+    public CinemachineImpulseSource _impulseSource;
+
     public override void Awake() {
         base.Awake();
+        _gun = GetComponentInChildren<Gun>();
         Movement = GetComponent<Movement>();
         Camera = GetComponent<PlayerCamera>();
         PlayerInput = GetComponent<PlayerInput>();
+        _impulseSource = GetComponent<CinemachineImpulseSource>();
     }
     
     private void Update() {
@@ -65,23 +70,28 @@ public class Player : Character {
             }
 
             if(Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit)){
-                Gun.GetFirePoint().LookAt(hit.point);
+                _gun.GetFirePoint().LookAt(hit.point);
             }else{
-                Gun.GetFirePoint().LookAt(_firstPersonCameraTransform.transform.position + (_firstPersonCameraTransform.forward * 30f));
+                _gun.GetFirePoint().LookAt(_firstPersonCameraTransform.transform.position + (_firstPersonCameraTransform.forward * 30f));
             }
 
-            Gun.Shoot();
+            _gun.Shoot();
+            ShakeCamera();
         }
+    }
+
+    private void ShakeCamera(){
+        _impulseSource.GenerateImpulseWithForce(_gun.RecoilForce);
     }
 
     public bool IsGrounded(){
         Collider[] grounded = Physics.OverlapBox(checkGroundBox.position,checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));
 
         if(grounded.Length > 0){
-            GameManager.Instance.Testing.UpdateDebugGroundedLabel("true");
+            // GameManager.Instance.Testing.UpdateDebugGroundedLabel("true");
             return true;
         }else{
-            GameManager.Instance.Testing.UpdateDebugGroundedLabel("false");
+            // GameManager.Instance.Testing.UpdateDebugGroundedLabel("false");
             return false;
         }
     }
