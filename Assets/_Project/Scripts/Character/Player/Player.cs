@@ -19,6 +19,14 @@ public class Player : Character {
 
     public CinemachineImpulseSource _impulseSource;
 
+    private void OnEnable() {
+        SpawnManager.OnCheckPoint += CheckPoint_UpdatePosition;
+    }
+
+    private void OnDisable() {
+        SpawnManager.OnCheckPoint -= CheckPoint_UpdatePosition;
+    }
+
     public override void Awake() {
         base.Awake();
         _gun = GetComponentInChildren<Gun>();
@@ -80,18 +88,19 @@ public class Player : Character {
         }
     }
 
+    private void CheckPoint_UpdatePosition(Vector3 lastCheckPointPosition){
+
+    }
+
     private void ShakeCamera(){
         _impulseSource.GenerateImpulseWithForce(_gun.RecoilForce);
     }
 
     public bool IsGrounded(){
         Collider[] grounded = Physics.OverlapBox(checkGroundBox.position,checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));
-
         if(grounded.Length > 0){
-            // GameManager.Instance.Testing.UpdateDebugGroundedLabel("true");
             return true;
         }else{
-            // GameManager.Instance.Testing.UpdateDebugGroundedLabel("false");
             return false;
         }
     }

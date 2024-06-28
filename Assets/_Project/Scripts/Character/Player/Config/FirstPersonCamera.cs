@@ -8,8 +8,4 @@ public class FirstPersonCamera : MonoBehaviour{
     private void LateUpdate() {
         transform.SetPositionAndRotation(_target.position, _target.rotation);
     }
-
-    private void Gun_OnShoot_ShakeCamera(){
-
-    }
 }

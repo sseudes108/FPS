@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour{
     public static GameManager Instance { get; private set;}
-    public UIManager UIManager;
-    public RespawnManager RespawnManager;
+    public UIManager UIManager { get; private set;}
+    public SpawnManager RespawnManager { get; private set;}
     
     //**Apagar**//
     public Testing Testing;
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour{
 
     private void SetManagers(){
         UIManager = GetComponentInChildren<UIManager>();
-        RespawnManager = GetComponentInChildren<RespawnManager>();
+        RespawnManager = GetComponentInChildren<SpawnManager>();
         Testing = GetComponent<Testing>();
     }    
 }

@@ -20,6 +20,9 @@ public class UI_HealthBar : MonoBehaviour {
 
     private void Health_OnDamageTaken(int value){
         _lentgh -= value;
+        if(_lentgh <= 0){
+            _lentgh = 0;
+        }
         UpdateHealthBar();
     }
 

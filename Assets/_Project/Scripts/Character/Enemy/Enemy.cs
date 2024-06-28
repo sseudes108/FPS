@@ -23,7 +23,6 @@ public class Enemy : Character {
     public override void Start(){
         base.Start();
         InitialPosition = transform.position;
-        Debug.Log(_gun);
     }
 
     public override void Awake(){

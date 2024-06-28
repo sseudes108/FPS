@@ -13,9 +13,8 @@ public class UIManager : MonoBehaviour {
     private void OnEnable() {
         UIDocument = GetComponent<UIDocument>();
         Root = UIDocument.rootVisualElement;
-
     }
-    
+
     private void Awake() {
         SetComponents();
     }
