@@ -11,8 +11,12 @@
         <ui:VisualElement name="Center" style="flex-grow: 1; flex-basis: 33%; align-self: center; align-content: center; justify-content: space-around; align-items: flex-end; margin-top: 54px;">
             <ui:VisualElement name="CrossHair" style="background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=4bf23652db6150b4c973cefc9551055e&amp;type=3#60&quot;); flex-grow: 0; width: 100px; height: 100px; align-self: center; justify-content: space-between; align-items: auto; flex-shrink: 0; align-content: center;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%; align-content: auto; align-self: flex-end; align-items: flex-start; justify-content: flex-end; margin-bottom: 54px; margin-right: 54px;">
-            <ui:VisualElement style="flex-grow: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Ammo_UI.png?fileID=2800000&amp;guid=10f1b8679e9d6d54796bbe50b27c9731&amp;type=3#Ammo_UI&quot;); width: 816px; height: 100px; flex-shrink: 0;" />
+        <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%; align-content: auto; align-self: flex-start; align-items: flex-start; justify-content: flex-end; margin-bottom: 54px; margin-right: 0; margin-left: 54px;">
+            <ui:VisualElement name="AmmoInfo" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Ammo_UI.png?fileID=2800000&amp;guid=10f1b8679e9d6d54796bbe50b27c9731&amp;type=3#Ammo_UI&quot;); width: 816px; height: 100px; flex-shrink: 0; flex-direction: row;">
+                <ui:Label text="Ammo: " name="Ammo" style="font-size: 72px; -unity-text-outline-width: 4px; color: rgb(0, 188, 191); -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold; -unity-text-align: upper-center; padding-left: 22px;" />
+                <ui:Label text="33/33" name="AmmoLabel" style="width: 329px; min-width: auto; align-self: center; justify-content: flex-start; align-items: auto; align-content: center; white-space: pre; -unity-text-align: upper-center; font-size: 72px; -unity-text-outline-width: 4px; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(0, 188, 191); -unity-font-style: bold;" />
+                <ui:Label text="216" name="AmmoMaxLabel" style="-unity-text-align: lower-center; font-size: 30px; color: rgb(0, 0, 0); -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); padding-bottom: 14px; -unity-font-style: bold;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

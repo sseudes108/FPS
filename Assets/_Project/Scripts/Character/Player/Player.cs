@@ -1,5 +1,3 @@
-using System.Collections;
-using Unity.Cinemachine;
 using UnityEngine;
 
 public class Player : Character {
@@ -11,15 +9,13 @@ public class Player : Character {
     public FrameInput Input => PlayerInput.FrameInput;
 
     public PlayerCamera Camera {get; private set;}
-    private Transform _firstPersonCameraTransform;
 
     [SerializeField] private Transform checkGroundBox;
     [SerializeField] private Vector3 checkGroundBoxSize;
 
     public Movement Movement {get; private set;}
-    private CinemachineImpulseSource _impulseSource;
-
     private PlayerGun _playerGun;
+
 
     private void OnEnable() {
         SpawnManager.OnCheckPoint += CheckPoint_UpdatePosition;
@@ -31,25 +27,19 @@ public class Player : Character {
 
     public override void Awake() {
         base.Awake();
-        UpdateCurrentGun();
+        _playerGun = GetComponent<PlayerGun>();
         Movement = GetComponent<Movement>();
         Camera = GetComponent<PlayerCamera>();
         PlayerInput = GetComponent<PlayerInput>();
-        _impulseSource = GetComponent<CinemachineImpulseSource>();
-    }
-
-    public override void Start() {
-        base.Start();
     }
     
     private void Update() {
         HandleRotation();
-        HandleShot();
-    }
+        HandleShoot();
 
-    private void UpdateCurrentGun(){
-        _playerGun = GetComponent<PlayerGun>();
-        Gun = _playerGun.GetActiveGun();
+        if(UnityEngine.Input.GetKeyDown(KeyCode.F)){
+            _playerGun.ReloadGun();
+        }
     }
 
     public override void SetStates(){
@@ -81,36 +71,13 @@ public class Player : Character {
         }
     }
 
-    public override void HandleShot(){
-        if (Input.Shoot){
-            if (_firstPersonCameraTransform == null){
-                _firstPersonCameraTransform = Camera.GetCameraTransform();
-            }
-
-            int layerMask = ~LayerMask.GetMask("NoHitLayer"); // Cria uma máscara para todas as camadas exceto a "NoHitLayer"
-
-            if (Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit, Mathf.Infinity, layerMask)){
-                Gun.GetFirePoint().LookAt(hit.point);
-            }else{
-                Gun.GetFirePoint().LookAt(_firstPersonCameraTransform.position + (_firstPersonCameraTransform.forward * 30f));
-            }
-
-            Gun.Shoot();
-            ShakeCamera();
-        }
+    private void HandleShoot(){
+        _playerGun.HandleShoot();
     }
-
-    // private void HandleChangeGun(){
-
-    // }
 
     private void CheckPoint_UpdatePosition(Vector3 lastCheckPointPosition){
         transform.parent.transform.position = lastCheckPointPosition;
         Movement.Controller.enabled = true; //The Character Controller Component prevent the change in position when enabled
-    }
-
-    private void ShakeCamera(){
-        _impulseSource.GenerateImpulseWithForce(Gun.RecoilForce);
     }
 
     public bool IsGrounded(){

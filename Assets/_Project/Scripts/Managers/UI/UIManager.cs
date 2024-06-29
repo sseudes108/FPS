@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour {
     public VisualElement Root {get; private set;}
 
     public UI_HealthBar HealthBar;
+    public UI_AmmoBar AmmoBar;
     public UI_CrossHair CrossHair;
     
     private void OnEnable() {
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour {
     private void SetComponents(){
         CrossHair = GetComponent<UI_CrossHair>();
         HealthBar = GetComponent<UI_HealthBar>();
+        AmmoBar = GetComponent<UI_AmmoBar>();
     }
 
 }

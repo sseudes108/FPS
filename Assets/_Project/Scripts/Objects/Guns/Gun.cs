@@ -6,12 +6,14 @@ public abstract class Gun : MonoBehaviour{
     [SerializeField] protected Transform _firePoint;
     [SerializeField] protected Bullet _bulletPrefab;
     [SerializeField] protected float _firerate;
-    [SerializeField] protected float _coolDown;
-    [SerializeField] protected float _bulletBurst;
+    // [SerializeField] protected float _bulletBurst;
+    [SerializeField] private bool _canAutoFire;
+    [SerializeField] private int _magazine;
     public float Firerate => _firerate;
-    public float CoolDown => _coolDown;
-    public float BulletBurst => _bulletBurst;
+    // public float BulletBurst => _bulletBurst;
     public float RecoilForce => _recoilForce;
+    public bool CanAutoFire => _canAutoFire;
+    public int Magazine => _magazine;
 
     [SerializeField] protected Material _bulletMaterial;
     [SerializeField] protected int _damageValue;

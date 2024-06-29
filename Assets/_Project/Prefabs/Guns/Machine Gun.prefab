@@ -46,14 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2975f09068331f245ae5536cc2cbbc31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoilForce: 3
+  _recoilForce: 2
   _firePoint: {fileID: 5248057017014801982}
   _bulletPrefab: {fileID: 6963129615117718901, guid: 7e2efa1ab180ad34c85f083f0eb8b162, type: 3}
   _firerate: 0.1
-  _coolDown: 2
   _bulletBurst: 30
+  _canAutoFire: 1
+  _magazine: 33
   _bulletMaterial: {fileID: 2100000, guid: a35438381c13a3a43947e9149c255aec, type: 2}
-  _damageValue: 20
+  _damageValue: 10
 --- !u!1 &724557701148046591
 GameObject:
   m_ObjectHideFlags: 0

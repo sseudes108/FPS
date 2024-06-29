@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour{
     private InputSystem_Actions _inputActions;
-    private InputAction _move,_aim,_look,_shoot,_jump,_run,_crouch;
+    private InputAction _move,_aim,_look,_shoot,_jump,_run,_crouch,_previous,_next;
     public FrameInput FrameInput{get; private set;}
 
     private void OnEnable() {
@@ -15,6 +15,8 @@ public class PlayerInput : MonoBehaviour{
         _jump = _inputActions.Player.Jump;
         _crouch = _inputActions.Player.Crouch;
         _run = _inputActions.Player.Sprint;
+        _previous = _inputActions.Player.Previous;
+        _next = _inputActions.Player.Next;
     }
 
     private void OnDisable() { _inputActions.Disable(); }
@@ -25,10 +27,12 @@ public class PlayerInput : MonoBehaviour{
             Move = _move.ReadValue<Vector2>(),
             Aim = _aim.IsInProgress(),
             Look = _look.ReadValue<Vector2>(),
-            Shoot = _shoot.WasPressedThisFrame(),
+            Shoot = _shoot.IsPressed(),
             Jump = _jump.WasPressedThisFrame(),
             Crouch = _crouch.IsInProgress(),
             Run = _run.IsInProgress(),
+            Previous = _previous.WasPressedThisFrame(),
+            Next = _next.WasPressedThisFrame(),
         };
     }
 }
@@ -42,4 +46,6 @@ public struct FrameInput {
     public bool Jump;
     public bool Crouch;
     public bool Run;
+    public bool Previous;
+    public bool Next;
 }

@@ -58,16 +58,17 @@ public class EnemyMove : MoveState {
     public override void Exit(){ }
 
     private IEnumerator Shoot(){
+        //6 Shoots ins a row
         Enemy.NavmeshAgent.destination = Enemy.transform.position;
         isShooting = true;
-        for(int i = 0; i < Enemy.Gun.BulletBurst; i++){
+        for(int i = 0; i < 6; i++){
             Enemy.HandleShot();
             Enemy.ChangeAnimation(Enemy.SHOOT);
             yield return new WaitForSeconds(Enemy.Gun.Firerate);
         }
         shotRoutine = null;
         isShooting = false;
-        wait = Enemy.Gun.CoolDown;
+        wait = 1f;
         yield return null;
     }
 }
