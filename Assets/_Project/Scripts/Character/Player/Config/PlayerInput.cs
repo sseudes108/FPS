@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour{
             Shoot = _shoot.IsPressed(),
             Jump = _jump.WasPressedThisFrame(),
             Crouch = _crouch.IsInProgress(),
-            Run = _run.IsInProgress(),
+            Run = _run.IsPressed(),
             Previous = _previous.WasPressedThisFrame(),
             Next = _next.WasPressedThisFrame(),
         };

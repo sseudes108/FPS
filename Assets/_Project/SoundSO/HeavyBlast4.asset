@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ab65916f39db74a86164df6a178a1c, type: 3}
+  m_Name: HeavyBlast4
+  m_EditorClassIdentifier: 
+  AudioType: 0
+  AudioClip: {fileID: 8300000, guid: 03fa229ec04b66b45a61f43db05d3bc2, type: 3}
+  Loop: 0
+  RandomizePitch: 0
+  RandomPitchModifier: 0.1
+  Volume: 1.5
+  Pitch: 1.5

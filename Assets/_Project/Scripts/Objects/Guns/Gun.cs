@@ -2,18 +2,31 @@ using UnityEngine;
 using UnityEngine.Pool;
 
 public abstract class Gun : MonoBehaviour{
+
+    public enum WeaponTypes{
+        Pistol = 0,
+        Rifle = 1,
+        MachineGun = 2,
+        RocketLauncher = 3
+    }
+
+    [SerializeField] protected float _zoomAmount;
+    [SerializeField] protected WeaponTypes _weaponType;
     [SerializeField] protected float _recoilForce;
     [SerializeField] protected Transform _firePoint;
     [SerializeField] protected Bullet _bulletPrefab;
     [SerializeField] protected float _firerate;
-    // [SerializeField] protected float _bulletBurst;
     [SerializeField] private bool _canAutoFire;
     [SerializeField] private int _magazine;
+    [SerializeField] private SoundSO _shootSound;
+
+    public float ZoomAmount => _zoomAmount;
     public float Firerate => _firerate;
-    // public float BulletBurst => _bulletBurst;
     public float RecoilForce => _recoilForce;
     public bool CanAutoFire => _canAutoFire;
     public int Magazine => _magazine;
+    public SoundSO ShootSound => _shootSound;
+    public WeaponTypes WeaponType => _weaponType;
 
     [SerializeField] protected Material _bulletMaterial;
     [SerializeField] protected int _damageValue;

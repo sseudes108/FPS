@@ -1,7 +1,16 @@
+using System;
+using System.Collections;
+using UnityEngine;
+
 public class PlayerMove : MoveState{
+    public static Action OnStep;
     public bool _needReset = false;
+    private IEnumerator _stepRoutine;
+
     public override void Enter(){
         Player.ChangeAnimation(Player.WALK);
+        _stepRoutine = HandleSteps();
+        Player.StartCoroutine(_stepRoutine);
     }
 
     public override void LogicUpdate(){
@@ -18,6 +27,8 @@ public class PlayerMove : MoveState{
 
     public override void Exit(){
         Player.ChangeAnimation(Player.IDLE);
+        Player.StopCoroutine(_stepRoutine);
+        _stepRoutine = null;
     }
 
     private void HandleRun(){
@@ -34,7 +45,19 @@ public class PlayerMove : MoveState{
         }
     }
 
-    public override string ToString(){
-        return "Move";
+    private IEnumerator HandleSteps(){
+        do{
+            float _stepTime;
+
+            if(Player.Anim.CurrentAnimation == Player.RUN){
+                _stepTime = 0.3f;
+            }else{
+                _stepTime = 0.5f;
+            }
+
+            yield return new WaitForSeconds(_stepTime);
+            OnStep?.Invoke();
+            yield return null;
+        }while(_stepRoutine != null);
     }
 }

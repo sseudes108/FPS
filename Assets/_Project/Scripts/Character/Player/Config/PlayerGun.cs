@@ -5,29 +5,56 @@ using UnityEngine;
 
 public class PlayerGun : MonoBehaviour {
     public static Action<int, int, int> OnAmmoCountChange;
+    public static Action<SoundSO> OnShootFired;
+    public static Action<PlayerGun, int> OnWeaponChange;
 
-    [SerializeField] private Gun _activeGun;
+    private Gun _activeGun;
     private bool _canShoot;
     private IEnumerator _shotRoutine;
 
     private Player _player;
     private CinemachineImpulseSource _impulseSource;
     private Transform _firstPersonCameraTransform;
+    private FirstPersonCamera _firstPersonCamera;
     
     private int _maxAmmo;
     private int _ammoLeftInMag;
+    private Recoil _recoil;
+    private bool _resetZoom;
 
     private void Awake() {
         _player = GetComponent<Player>();
+        _recoil = transform.Find("Model/CameraRecoil/").GetComponent<Recoil>();
         _impulseSource = GetComponent<CinemachineImpulseSource>();
+        _firstPersonCamera = _player.Camera.GetCameraTransform().GetComponent<FirstPersonCamera>();
     }
 
     public void Start() {
-        SwitchGun();
+        OnWeaponChange?.Invoke(this, 0);
         ReloadGun();
     }
+    
+    public void HandleAim(){
+        if(_player.Input.Aim){
+            _resetZoom = true;
+            _firstPersonCamera.ZoomIn(_activeGun.ZoomAmount);
+        }else if(_resetZoom){
+            _resetZoom = false;
+            _firstPersonCamera.ZoomOut();
+        }
+    }
 
-    public void SwitchGun(){
+    public void HandleSwitchGun(){
+        if(_player.Input.Previous){
+            OnWeaponChange?.Invoke(this, -1);
+        }else if(_player.Input.Next){
+            OnWeaponChange?.Invoke(this, +1);
+        }
+    }
+
+    public void ChangeActiveGun(Gun activeGun){
+        _activeGun = activeGun;
+        _ammoLeftInMag = _activeGun.Magazine;
         _maxAmmo = _activeGun.Magazine * 3;
     }
 
@@ -42,12 +69,13 @@ public class PlayerGun : MonoBehaviour {
                 }else{
                     if(!_canShoot){
                         return;
+                    }else{
+                        InstantiateProjectile();;
+                        _canShoot = false;
                     }
-                    InstantiateProjectile();
-                    _canShoot = false;
                 }
             }else{
-                Debug.LogWarning("No Ammo Left");
+                Debug.Log($"No Ammo In Mag");
             }
         }else{
             _canShoot = true;
@@ -59,16 +87,13 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private IEnumerator ShootRoutine(){
-        if(_activeGun.CanAutoFire){
-            float firerate = _activeGun.Firerate;
-            for(int i = 0; i < _ammoLeftInMag; i++){
-                InstantiateProjectile();
-                yield return new WaitForSeconds(firerate);
-            }
-            _shotRoutine = null;
-        }else{
+        float firerate = _activeGun.Firerate;
+        for(int i = 0; i < _ammoLeftInMag; i++){
             InstantiateProjectile();
+            yield return new WaitForSeconds(firerate);
         }
+        _shotRoutine = null;
+        _canShoot = false;
     }
 
     private void InstantiateProjectile(){
@@ -84,8 +109,16 @@ public class PlayerGun : MonoBehaviour {
             _activeGun.GetFirePoint().LookAt(_firstPersonCameraTransform.position + (_firstPersonCameraTransform.forward * 30f));
         }
 
-        _activeGun.Shoot();
         _ammoLeftInMag--;
+        ShootFired(hit.point);
+    }
+
+    private void ShootFired(Vector3 hitPoint){
+        OnShootFired?.Invoke(_activeGun.ShootSound);
+        
+        _activeGun.Shoot();
+        _recoil.RecoilFire();
+
         UpdateAmmoCount();
         ShakeCamera();
     }

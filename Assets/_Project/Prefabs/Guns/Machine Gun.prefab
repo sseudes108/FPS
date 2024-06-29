@@ -50,9 +50,9 @@ MonoBehaviour:
   _firePoint: {fileID: 5248057017014801982}
   _bulletPrefab: {fileID: 6963129615117718901, guid: 7e2efa1ab180ad34c85f083f0eb8b162, type: 3}
   _firerate: 0.1
-  _bulletBurst: 30
   _canAutoFire: 1
   _magazine: 33
+  _shootSound: {fileID: 11400000, guid: d74b07dfc4d2d804898bbd4d41300559, type: 2}
   _bulletMaterial: {fileID: 2100000, guid: a35438381c13a3a43947e9149c255aec, type: 2}
   _damageValue: 10
 --- !u!1 &724557701148046591

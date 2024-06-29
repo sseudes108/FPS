@@ -65,7 +65,7 @@ public class Bullet : MonoBehaviour{
     }
 
     private void HandleImpact(Collider other){
-        OnBulletImpact?.Invoke(this, _bulletMaterial);
+        // OnBulletImpact?.Invoke(this, _bulletMaterial);
         if(other.TryGetComponent(out Health health)){
             health.TakeDamage(CalculateDamage());
         }

@@ -8,12 +8,13 @@ public class Player : Character {
     public PlayerInput PlayerInput {get; private set;}
     public FrameInput Input => PlayerInput.FrameInput;
 
-    public PlayerCamera Camera {get; private set;}
 
     [SerializeField] private Transform checkGroundBox;
     [SerializeField] private Vector3 checkGroundBoxSize;
 
+
     public Movement Movement {get; private set;}
+    public PlayerCamera Camera {get; private set;}
     private PlayerGun _playerGun;
 
 
@@ -23,6 +24,13 @@ public class Player : Character {
 
     private void OnDisable() {
         SpawnManager.OnCheckPoint -= CheckPoint_UpdatePosition;
+    }
+
+    public override void Start(){
+        base.Start();
+        if(!Movement.Controller.enabled){
+            Movement.Controller.enabled = true;
+        }
     }
 
     public override void Awake() {
@@ -35,11 +43,7 @@ public class Player : Character {
     
     private void Update() {
         HandleRotation();
-        HandleShoot();
-
-        if(UnityEngine.Input.GetKeyDown(KeyCode.F)){
-            _playerGun.ReloadGun();
-        }
+        HandlePlayerGun();      
     }
 
     public override void SetStates(){
@@ -71,8 +75,10 @@ public class Player : Character {
         }
     }
 
-    private void HandleShoot(){
+    private void HandlePlayerGun(){
+        _playerGun.HandleAim();
         _playerGun.HandleShoot();
+        _playerGun.HandleSwitchGun();
     }
 
     private void CheckPoint_UpdatePosition(Vector3 lastCheckPointPosition){
