@@ -1,9 +1,8 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Testing : MonoBehaviour{
-    // private void Update() {
-    //     if(Input.GetKeyDown(KeyCode.R)) {
-    //         StartCoroutine(GameManager.Instance.RespawnManager.PlayerDeadRoutine());
-    //     }
-    // }
+    public void EventChecker(MonoBehaviour caller, string method){
+        Debug.Log($"{caller.name} - {method}");
+    }
 }

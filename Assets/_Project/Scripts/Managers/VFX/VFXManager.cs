@@ -9,17 +9,19 @@ public class VFXManager : MonoBehaviour{
 
     private void OnEnable() {
         Bullet.OnBulletImpact += BulletImpactEffect;
+        PlayerGun.OnShootHit += PlayerGun_OnShootHit;
     }
 
     private void OnDisable() {
         Bullet.OnBulletImpact -= BulletImpactEffect;
+        PlayerGun.OnShootHit -= PlayerGun_OnShootHit;
     }
 
     public void Awake(){
         _bulletImpactVFXPool = CreateEffectPool(_bulletImpact);
     }
 
-    public void SetHitPoint(Vector3 hitPoint){
+    public void PlayerGun_OnShootHit(Vector3 hitPoint){
         _impactPoint = hitPoint;
     }
 

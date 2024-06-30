@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerWeapons : MonoBehaviour {
-    [SerializeField] public List<Gun> Weapons = new();
-    public MachineGun MachineGun {get; private set;}
-    public Pistol Pistol {get; private set;}
+    [SerializeField] private List<Gun> _weapons = new();
     public int _activeWeaponIndex;
 
     private void OnEnable() {
@@ -17,27 +15,26 @@ public class PlayerWeapons : MonoBehaviour {
     private void PlayerGun_OnWeaponChange(PlayerGun playerGun, int key){
         if(key == 1){
             var nextIndex = _activeWeaponIndex++;
-            if(nextIndex >= Weapons.Count -1){
+            if(nextIndex >= _weapons.Count -1){
                 _activeWeaponIndex = 0;
             }
         }else if(key == -1){
             var nextIndex = _activeWeaponIndex--;
             if(nextIndex <= 0){
-                _activeWeaponIndex = Weapons.Count -1;
+                _activeWeaponIndex = _weapons.Count -1;
             }
         }else{
-            int random = Random.Range(0, Weapons.Count);
-            _activeWeaponIndex = random;
+            _activeWeaponIndex = 0;
         }
-
+        
         ChangeWeapon(playerGun, _activeWeaponIndex);
     }
 
     private void ChangeWeapon(PlayerGun playerGun, int index){
-        foreach(var gun in Weapons){
+        foreach(var gun in _weapons){
             gun.gameObject.SetActive(false);
         }
-        Weapons[index].gameObject.SetActive(true);
-        playerGun.ChangeActiveGun(Weapons[index]);
+        _weapons[index].gameObject.SetActive(true);
+        playerGun.ChangeActiveGun(_weapons[index]);
     }
 }

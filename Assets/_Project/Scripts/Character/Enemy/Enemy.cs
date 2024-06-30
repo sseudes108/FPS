@@ -32,7 +32,7 @@ public class Enemy : Character {
     }
 
     public override void HandleShot(){
-        Gun.GetFirePoint().LookAt(Target.transform.position);
+        Gun.FirePoint.LookAt(Target.transform.position);
         Gun.Shoot();
     }
 

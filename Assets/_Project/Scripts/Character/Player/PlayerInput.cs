@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour{
     private InputSystem_Actions _inputActions;
-    private InputAction _move,_aim,_look,_shoot,_jump,_run,_crouch,_previous,_next;
+    private InputAction _move,_aim,_look,_shoot,_jump,_run,_crouch,_previous,_next,_reload;
     public FrameInput FrameInput{get; private set;}
+    private bool _allowInputs;
 
     private void OnEnable() {
         _inputActions.Enable();
@@ -17,12 +18,13 @@ public class PlayerInput : MonoBehaviour{
         _run = _inputActions.Player.Sprint;
         _previous = _inputActions.Player.Previous;
         _next = _inputActions.Player.Next;
+        _reload = _inputActions.Player.Reload;
     }
 
     private void OnDisable() { _inputActions.Disable(); }
     private void Awake() { _inputActions = new(); }
-
     private void Update() {
+        if(!_allowInputs){return;}                              //If its false no FrameInput is created;
         FrameInput = new FrameInput{
             Move = _move.ReadValue<Vector2>(),
             Aim = _aim.IsInProgress(),
@@ -33,7 +35,12 @@ public class PlayerInput : MonoBehaviour{
             Run = _run.IsPressed(),
             Previous = _previous.WasPressedThisFrame(),
             Next = _next.WasPressedThisFrame(),
+            Reload = _reload.WasPressedThisFrame(),
         };
+    }
+
+    public void AllowInputs(bool allow){
+        _allowInputs = allow;
     }
 }
 
@@ -48,4 +55,5 @@ public struct FrameInput {
     public bool Run;
     public bool Previous;
     public bool Next;
+    public bool Reload;
 }
