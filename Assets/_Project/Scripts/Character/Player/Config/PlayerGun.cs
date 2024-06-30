@@ -70,12 +70,12 @@ public class PlayerGun : MonoBehaviour {
                     if(!_canShoot){
                         return;
                     }else{
-                        InstantiateProjectile();;
+                        TakeShot();;
                         _canShoot = false;
                     }
                 }
             }else{
-                Debug.Log($"No Ammo In Mag");
+                
             }
         }else{
             _canShoot = true;
@@ -89,14 +89,14 @@ public class PlayerGun : MonoBehaviour {
     private IEnumerator ShootRoutine(){
         float firerate = _activeGun.Firerate;
         for(int i = 0; i < _ammoLeftInMag; i++){
-            InstantiateProjectile();
+            TakeShot();
             yield return new WaitForSeconds(firerate);
         }
         _shotRoutine = null;
         _canShoot = false;
     }
 
-    private void InstantiateProjectile(){
+    private void TakeShot(){
         if (_firstPersonCameraTransform == null){
             _firstPersonCameraTransform = _player.Camera.GetCameraTransform();
         }
@@ -105,15 +105,16 @@ public class PlayerGun : MonoBehaviour {
 
         if (Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit, Mathf.Infinity, layerMask)){
             _activeGun.GetFirePoint().LookAt(hit.point);
+            GameManager.Instance.VFXManager.SetHitPoint(hit.point);
         }else{
             _activeGun.GetFirePoint().LookAt(_firstPersonCameraTransform.position + (_firstPersonCameraTransform.forward * 30f));
         }
 
         _ammoLeftInMag--;
-        ShootFired(hit.point);
+        ShootFired();
     }
 
-    private void ShootFired(Vector3 hitPoint){
+    private void ShootFired(){
         OnShootFired?.Invoke(_activeGun.ShootSound);
         
         _activeGun.Shoot();

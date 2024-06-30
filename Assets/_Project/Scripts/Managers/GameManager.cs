@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour{
     [SerializeField] public UIManager UIManager;
     [SerializeField] public SpawnManager RespawnManager;
     [SerializeField] public AudioManager AudioManager;
+    [SerializeField] public VFXManager VFXManager;
     
     private void Awake() {
         SetInstance();
@@ -27,5 +28,6 @@ public class GameManager : MonoBehaviour{
         UIManager = GetComponentInChildren<UIManager>();
         RespawnManager = GetComponentInChildren<SpawnManager>();
         AudioManager = GetComponentInChildren<AudioManager>();
+        VFXManager = GetComponentInChildren<VFXManager>();
     }    
 }

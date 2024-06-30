@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 3193657286937483519}
   - component: {fileID: 2776320417797658014}
   - component: {fileID: 5098214686749827070}
-  - component: {fileID: 6963129615117718901}
-  - component: {fileID: -8732033877004096477}
+  - component: {fileID: 3429045405079578221}
+  - component: {fileID: 6569670346294763010}
   m_Layer: 6
   m_Name: Bullet
   m_TagString: Untagged
@@ -255,7 +255,7 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!114 &6963129615117718901
+--- !u!114 &3429045405079578221
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,10 +264,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2708803273028060257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a214f032e138044e80ac17adb003209, type: 3}
+  m_Script: {fileID: 11500000, guid: 513b288685e0524409e6f14ea98b769c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8732033877004096477
+--- !u!114 &6569670346294763010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2708803273028060257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb705f7424a65746b448cc279fed31a, type: 3}
+  m_Script: {fileID: 11500000, guid: 81b4b65f7b264ff4182f205309476538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 100

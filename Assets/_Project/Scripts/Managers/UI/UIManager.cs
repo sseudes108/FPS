@@ -1,5 +1,3 @@
-using System.Collections;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.UIElements;
 

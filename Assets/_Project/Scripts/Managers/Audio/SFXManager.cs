@@ -10,7 +10,7 @@ public class SFXManager : MonoBehaviour {
 
     private void OnDisable() {
         PlayerGun.OnShootFired -= PlayerGun_OnShootFired;
-         PlayerMove.OnStep -= PlayerMove_OnStep;
+        PlayerMove.OnStep -= PlayerMove_OnStep;
     }
 
     private void PlayerGun_OnShootFired(SoundSO shootSound){
