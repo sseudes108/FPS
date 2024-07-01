@@ -9,9 +9,21 @@ public class PlayerWeapons : MonoBehaviour {
 
     private void OnEnable() {
         PlayerGun.OnWeaponChange += PlayerGun_OnWeaponChange;
+        Player.OnWeaponPickUp += Player_OnWeaponPickUp;
     }
     private void OnDisable() {
         PlayerGun.OnWeaponChange -= PlayerGun_OnWeaponChange;
+        Player.OnWeaponPickUp -= Player_OnWeaponPickUp;
+    }
+
+    private void Player_OnWeaponPickUp(Gun pickedGun){
+        foreach(var weapon in _weapons){
+            if(pickedGun.WeaponType == weapon.WeaponType){
+                pickedGun.PickUpGun();
+                weapon.SetAvailable();
+            }
+        }
+        CheckGuns();
     }
 
     public void Start(){
@@ -20,6 +32,7 @@ public class PlayerWeapons : MonoBehaviour {
     }
 
     private void CheckGuns(){
+        _availableGuns.Clear();
         foreach (Gun gun in _weapons){
             if(gun.IsAvailable){
                 _availableGuns.Add(gun);
@@ -62,7 +75,7 @@ public class PlayerWeapons : MonoBehaviour {
                 _activeWeaponIndex = _availableGuns.Count -1;
             }
         }else{
-            _activeWeaponIndex = 1;
+            _activeWeaponIndex = 0;
         }
         
         ChangeWeapon(playerGun, _activeWeaponIndex);

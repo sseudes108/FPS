@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 
 public class Player : Character {
+    public static Action<Gun> OnWeaponPickUp;
+
     //Public Acess
     public readonly int IDLE = Animator.StringToHash("Player_Idle");
     public readonly int WALK = Animator.StringToHash("Player_Walk");
@@ -19,17 +22,33 @@ public class Player : Character {
     public PlayerCamera Camera {get; private set;}
     private PlayerGun _playerGun;
 
+    private bool _canInteract;
+    private MonoBehaviour _interactItem;
+
 #region UnityMethods
     private void OnEnable() {
         SpawnManager.OnCheckPoint += CheckPoint_UpdatePosition;
         GameManager.OnGameStart += GameManager_OnGameStart;
         GameManager.OnGamePaused += GameManager_OnGamePause;
+        Gun.OnPlayerCloseForPickUp += Gun_OnPlayerCloseForPickUp;
+        Gun.OnPlayerMoveOutRange += Gun_OnPlayerMoveOutRange;
     }
-
     private void OnDisable() {
         SpawnManager.OnCheckPoint -= CheckPoint_UpdatePosition;
         GameManager.OnGameStart -= GameManager_OnGameStart;
         GameManager.OnGamePaused -= GameManager_OnGamePause;
+        Gun.OnPlayerCloseForPickUp -= Gun_OnPlayerCloseForPickUp;
+        Gun.OnPlayerMoveOutRange -= Gun_OnPlayerMoveOutRange;
+    }
+
+    private void Gun_OnPlayerCloseForPickUp(Gun gun){
+        _canInteract = true;
+        _interactItem = gun;
+    }
+
+    private void Gun_OnPlayerMoveOutRange(bool interact){
+        _canInteract = interact;
+        _interactItem = null;
     }
 
     public override void Awake() {
@@ -44,11 +63,19 @@ public class Player : Character {
         HandleRotation();
         HandleGun();
         HandlePause();
+        HandleInteraction();
     }
 
 #endregion
 
 #region Custom Methods
+
+    private void HandleInteraction(){
+        if(!_canInteract){return;}
+        if(!Input.Interact){return;}
+        OnWeaponPickUp?.Invoke(_interactItem as Gun);
+    }
+
     public override void SetStates(){
         StateMachine.SetStates(new StatesData{
             Idle = new PlayerIdle(),

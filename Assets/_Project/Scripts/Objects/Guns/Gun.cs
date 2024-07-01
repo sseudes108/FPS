@@ -1,10 +1,8 @@
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public abstract class Gun : MonoBehaviour{
-
     public enum WeaponTypes{
         Pistol = 0,
         Rifle = 1,
@@ -13,6 +11,7 @@ public abstract class Gun : MonoBehaviour{
     }
 
     public static Action<Gun> OnPlayerCloseForPickUp;
+    public static Action<bool> OnPlayerMoveOutRange;
     
     protected ObjectPool<Bullet> _bulletPool;
     protected Character _character;
@@ -47,6 +46,8 @@ public abstract class Gun : MonoBehaviour{
     [Header("Sounds")]
     [SerializeField] private SoundSO _shootSound;
     [SerializeField] private SoundSO _reloadSound;
+
+    private bool _playerInRange = true;
 
 
     //Public referencies
@@ -131,7 +132,7 @@ public abstract class Gun : MonoBehaviour{
         }
     }
 
-    public void DetectPlayer(){
+    private void DetectPlayer(){
         if(IsAvailable){
             return;
         }
@@ -140,8 +141,23 @@ public abstract class Gun : MonoBehaviour{
         var playerInRange = Physics.OverlapSphereNonAlloc(transform.position, 1.5f, player, LayerMask.GetMask("Player"));
 
         if(playerInRange > 0 && player[0] != null){
+            _playerInRange = true;
             OnPlayerCloseForPickUp?.Invoke(this);
+        }else{
+            if(!_playerInRange){return;}
+            _playerInRange = false;
+            OnPlayerMoveOutRange?.Invoke(false);
         }
+    }
+
+    public void PickUpGun(){
+        gameObject.SetActive(false);
+        Destroy(gameObject, 5f);
+        OnPlayerMoveOutRange?.Invoke(false);
+    }
+
+    public void SetAvailable(){
+        _isAvailable = true;
     }
 
 #endregion
