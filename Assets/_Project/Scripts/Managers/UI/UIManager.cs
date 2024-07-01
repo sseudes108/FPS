@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour {
         SetRoot();
     }
 
-    private void SetRoot(){
+    private void SetRoot(){ //Root needs to be reset after each change of visual tree
         Root = UIDocument.rootVisualElement;
     }
 }

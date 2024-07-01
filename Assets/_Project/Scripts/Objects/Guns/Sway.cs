@@ -1,10 +1,17 @@
+using System;
 using UnityEngine;
 
 public class Sway : MonoBehaviour{
-    public float intensity;
-    public float smooth;
-
+    [SerializeField] private float intensity;
+    [SerializeField] private float smooth;
     private Quaternion _originRotation;
+    private Gun _gun;
+    private float _defaultIntensity;
+    
+    private void Awake(){
+        _gun = GetComponent<Gun>();
+        _defaultIntensity = intensity;
+    }
 
     private void Start() {
         _originRotation = transform.localRotation;
@@ -15,8 +22,14 @@ public class Sway : MonoBehaviour{
     }
 
     private void UpdatSway(){
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        float mouseX = GameManager.Instance.RotationInput.x;
+        float mouseY = GameManager.Instance.RotationInput.y;
+
+        if(_gun.IsAiming){
+            intensity /= 3;
+        }else{
+            intensity = _defaultIntensity;
+        }
 
         var adjustmentX = Quaternion.AngleAxis(-1 * intensity * mouseX, Vector3.up);
         var adjustmentY = Quaternion.AngleAxis(intensity * mouseY, Vector3.right);

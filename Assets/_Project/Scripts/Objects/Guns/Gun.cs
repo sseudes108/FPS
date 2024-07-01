@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -23,6 +24,7 @@ public abstract class Gun : MonoBehaviour{
     [SerializeField] private bool _canAutoFire;
     [SerializeField] protected int _damageValue;
     [SerializeField] protected float _recoilForce;
+    [SerializeField] private int _ammoLeftInMag;
 
     [Header("Bullet")]
     [SerializeField] protected Material _bulletMaterial;
@@ -52,6 +54,8 @@ public abstract class Gun : MonoBehaviour{
     public WeaponTypes WeaponType => _weaponType;
     public Transform FirePoint => _firePoint;
     public float AimSpeed => _aimSpeed;
+    public bool IsAiming => _isAiming;
+    public int AmmoLeftInMag => _ammoLeftInMag;
 
 
 #region UnityMethods
@@ -65,15 +69,14 @@ public abstract class Gun : MonoBehaviour{
         _firePoint = transform.Find("Model/FirePoint");
     }
 
-    private void Update() {
-        Aim();
-    }
+    private void Update() { Aim(); }
 
 #endregion
 
 #region Custom Methods
 
     public void Shoot(){
+        _ammoLeftInMag--;
         var newBullet = _bulletPool.Get();
         newBullet.Init(this, _bulletMaterial, _damageValue, _character, _firePoint);
     }
@@ -88,6 +91,10 @@ public abstract class Gun : MonoBehaviour{
 
     public void SetIsAiming(bool isAiming){
         _isAiming = isAiming;
+    }
+
+    public void ReloadMagazine(int amount){
+        _ammoLeftInMag += amount;
     }
     
     private void CreateBulletPool(){

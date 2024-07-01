@@ -4,27 +4,32 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerGun : MonoBehaviour {
+
+    //Events
     public static Action<int, int, int> OnAmmoCountChange;
     public static Action<PlayerGun, int> OnWeaponChange;
     public static Action<SoundSO> OnShootFired;
     public static Action<SoundSO> OnGunReload;
     public static Action<Vector3> OnShootHit;
 
+    //Components
     [SerializeField] private Gun _activeGun;
-    [SerializeField] private Transform _activeGunTransform;
-    private bool _canShoot;
-    private IEnumerator _shotRoutine;
-
+    private PlayerWeapons _weapons;
     private Player _player;
-    private CinemachineImpulseSource _impulseSource;
+    private Recoil _recoil;
+
+    //Camera and Recoil
     private Transform _firstPersonCameraTransform;
     [SerializeField] private FirstPersonCamera _firstPersonCamera;
-    
-    private int _maxAmmo;
-    private int _ammoLeftInMag;
-    private Recoil _recoil;
+    private CinemachineImpulseSource _impulseSource;
     private bool _resetZoom;
-    public bool _resetAimPosition;
+
+    //Shoot
+    private IEnumerator _shotRoutine;
+    // [SerializeField] private int _ammoLeftInMag;
+    private bool _canShoot;
+
+    
 
 #region UnityMethods
 
@@ -41,6 +46,7 @@ public class PlayerGun : MonoBehaviour {
         _player = GetComponent<Player>();
         _recoil = transform.Find("Model/CameraRecoil/").GetComponent<Recoil>();
         _impulseSource = GetComponent<CinemachineImpulseSource>();
+        _weapons = GetComponent<PlayerWeapons>();
     }
 
     public void Start() {
@@ -69,34 +75,29 @@ public class PlayerGun : MonoBehaviour {
 
     #region Ammo
     public void PickUpAmmo(int amount){
-        _maxAmmo += amount;
-        if(_maxAmmo >= _activeGun.Magazine * 3){
-            _maxAmmo = _activeGun.Magazine * 3;
-        }
+
     }
     
     private void UpdateAmmoCount(){
-        if(_maxAmmo <= 0){
-            _maxAmmo = 0;
-        }
-
-        OnAmmoCountChange?.Invoke(_ammoLeftInMag, _activeGun.Magazine, _maxAmmo);
+        OnAmmoCountChange?.Invoke(_activeGun.AmmoLeftInMag, _activeGun.Magazine, _weapons.GetCurrentGunAmmoInventory());
     }
 
     public void HandleGunReload(){
-        if(!_player.Input.Reload){return;}                          //If the reload button was not pressed, return;
-        if(_ammoLeftInMag ==_activeGun.Magazine){return;}           //If was pressed but the mag is full, return
+        if(!_player.Input.Reload){return;}
+        if(_activeGun.AmmoLeftInMag ==_activeGun.Magazine){return;}
 
-        var amountFilled = _activeGun.Magazine - _ammoLeftInMag;
+        var bulletsLeftInTotal = _weapons.GetCurrentGunAmmoInventory();
+        if(bulletsLeftInTotal == 0){ return;} // if has no bullet left to reload
 
-        if(amountFilled > _maxAmmo){
-            amountFilled = _maxAmmo;
-        }else{
-            _maxAmmo -= amountFilled;
+        var amountToFill = _activeGun.Magazine - _activeGun.AmmoLeftInMag;;
+
+        if(amountToFill > bulletsLeftInTotal){
+            amountToFill = bulletsLeftInTotal;
         }
-        _ammoLeftInMag += amountFilled;
 
-        OnGunReload?.Invoke(_activeGun.ReloadSound);
+        _weapons.UpdateActiveGunInventory(amountToFill);
+        _activeGun.ReloadMagazine(amountToFill);
+        
         UpdateAmmoCount();
     }
     #endregion
@@ -104,7 +105,7 @@ public class PlayerGun : MonoBehaviour {
     #region Shoot
     public void HandleShoot(){
         if(_player.Input.Shoot){
-            if(_ammoLeftInMag > 0){
+            if(_activeGun.AmmoLeftInMag > 0){
                 if(_activeGun.CanAutoFire){
                     if(_shotRoutine == null){
                         _shotRoutine = AutomaticFireRoutine();
@@ -132,7 +133,7 @@ public class PlayerGun : MonoBehaviour {
 
     private IEnumerator AutomaticFireRoutine(){
         float firerate = _activeGun.Firerate;
-        for(int i = 0; i < _ammoLeftInMag; i++){
+        for(int i = 0; i < _activeGun.AmmoLeftInMag; i++){
             ShootProjectile();
             yield return new WaitForSeconds(firerate);
         }
@@ -154,7 +155,6 @@ public class PlayerGun : MonoBehaviour {
             _activeGun.FirePoint.LookAt(_firstPersonCameraTransform.position + (_firstPersonCameraTransform.forward * 30f));
         }
 
-        _ammoLeftInMag--;
         ShootFired();
     }
 
@@ -177,13 +177,11 @@ public class PlayerGun : MonoBehaviour {
         }else if(_player.Input.Next){
             OnWeaponChange?.Invoke(this, +1);
         }
+        UpdateAmmoCount();
     }
 
     public void ChangeActiveGun(Gun activeGun){
         _activeGun = activeGun;
-        _activeGunTransform = _activeGun.GetComponent<Transform>();
-        _ammoLeftInMag = _activeGun.Magazine;
-        _maxAmmo = _activeGun.Magazine * 3;
     }
     #endregion
 

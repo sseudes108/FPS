@@ -5,9 +5,23 @@ public class PlayerCamera : MonoBehaviour {
     [SerializeField] private FirstPersonCamera _firstPersonCamera;
 
     [Range(1,10)]
-    [SerializeField] private int _sensitivity;
+    [SerializeField] private float _sensitivity;
     public float Sensitivity => _sensitivity;
     private float _rotationValue = 0f;
+
+    private void OnEnable() {
+        UI_PauseMenu.OnSensivityChange += OnPauseMenu_OnSensivityChange;
+        GameManager.OnGamePaused += GameManager_OnGamePaused;
+    }
+
+    private void OnDisable() {
+        UI_PauseMenu.OnSensivityChange -= OnPauseMenu_OnSensivityChange;
+        GameManager.OnGamePaused += GameManager_OnGamePaused;
+    }
+
+    private void Start() {
+        GameManager.Instance.SetCurrentSensitivity(_sensitivity);
+    }
 
     public void CameraRotation(float mouseInput){
         _rotationValue -= mouseInput;
@@ -17,5 +31,13 @@ public class PlayerCamera : MonoBehaviour {
 
     public Transform GetCameraTransform(){
         return _firstPersonCamera.transform;
+    }
+
+    private void OnPauseMenu_OnSensivityChange(float value){
+        _sensitivity = value;
+    }
+
+    private void GameManager_OnGamePaused(bool paused){
+        GameManager.Instance.SetCurrentSensitivity(_sensitivity);
     }
 }

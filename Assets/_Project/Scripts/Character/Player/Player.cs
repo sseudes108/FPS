@@ -86,6 +86,8 @@ public class Player : Character {
         float mouseY = lookInput.y * Camera.Sensitivity * Time.deltaTime;
         transform.Rotate(Vector3.up * mouseX);
         Camera.CameraRotation(mouseY);
+
+        GameManager.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
     }
 
     public override void HandleJump(){

@@ -4,17 +4,28 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour{
-    public static GameManager Instance; // { get; private set;}
+
+    public static GameManager Instance { get; private set;}
+
+    //Events
     public static Action OnGameStart;
     public static Action OnGameEnd;
     public static Action<bool> OnGamePaused;
 
-    public UIManager UIManager; // { get; private set;}
-    public SpawnManager SpawnManager; // { get; private set;}
-    public AudioManager AudioManager; // { get; private set;}
-    public VFXManager VFXManager; // { get; private set;}
-    public PauseManager PauseManager; // { get; private set;}
+    //Global variables
+    private Vector2 _rotationInput;
+    public Vector2 RotationInput => _rotationInput;
+    private float _sensitivity;
+    public float CurrentSensitivity => _sensitivity;
 
+    //Managers
+    public UIManager UIManager { get; private set;}
+    public SpawnManager SpawnManager { get; private set;}
+    public AudioManager AudioManager { get; private set;}
+    public VFXManager VFXManager { get; private set;}
+    public PauseManager PauseManager { get; private set;}
+
+    //Debug
     public Testing Testing;
 
 #region UnityMethods
@@ -37,8 +48,14 @@ public class GameManager : MonoBehaviour{
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
+
         OnGameStart?.Invoke();
     }
+
+    public void UpdateRotationInput(float mouseX, float mouseY){
+        _rotationInput = new Vector2(mouseX, mouseY);
+    }
+
 #endregion
 
 #region Custom Methods
@@ -48,6 +65,10 @@ public class GameManager : MonoBehaviour{
             Destroy(Instance);
         }
         Instance = this;
+    }
+
+    public void SetCurrentSensitivity(float sensitivity){
+        _sensitivity = sensitivity;
     }
 #endregion
 

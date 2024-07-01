@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerWeapons : MonoBehaviour {
     [SerializeField] private List<Gun> _weapons = new();
+    [SerializeField] private List<int> _ammoInventory;
     public int _activeWeaponIndex;
 
     private void OnEnable() {
@@ -10,6 +12,26 @@ public class PlayerWeapons : MonoBehaviour {
     }
     private void OnDisable() {
         PlayerGun.OnWeaponChange -= PlayerGun_OnWeaponChange;
+    }
+
+    public void Start(){
+        UpdateFullAmmoInventory();
+    }
+
+    public void UpdateActiveGunInventory(int bulletsUsed){
+        _ammoInventory[_activeWeaponIndex] -= bulletsUsed;
+    }
+
+    private void UpdateFullAmmoInventory(){
+        foreach(var gun in _weapons){
+            var totalBullets = gun.Magazine * 3;
+            gun.ReloadMagazine(totalBullets / 3);
+            _ammoInventory.Add(totalBullets);
+        }
+    }
+
+    public int GetCurrentGunAmmoInventory(){
+        return _ammoInventory[_activeWeaponIndex];
     }
 
     private void PlayerGun_OnWeaponChange(PlayerGun playerGun, int key){

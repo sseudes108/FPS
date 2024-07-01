@@ -6,8 +6,9 @@ public class UI_Locus : MonoBehaviour {
     [SerializeField] private Texture2D _crosshairTexture;
     [SerializeField] private Color _crosshairColor;
 
-    [SerializeField] private Label _currentAmmo;
-    [SerializeField] private Label _maxAmmo;
+    private Label _currentAmmo;
+    private Label _maxAmmo;
+    private Label _fps;    
 
     private void OnEnable() {
         PlayerGun.OnAmmoCountChange += PlayerGun_OnAmmoCountChange;
@@ -22,6 +23,16 @@ public class UI_Locus : MonoBehaviour {
     private void Start() {
         SetElements();
         CrossHairStyleConfig();
+    }
+
+    void Update() {
+        // Calcule o frame rate
+        float frameRate = 1.0f / Time.deltaTime;
+
+        // Atualize o Label com o frame rate atual
+        if (_fps != null){
+            _fps.text = $"FPS: {Mathf.RoundToInt(frameRate)}";
+        }
     }
 
     
@@ -45,5 +56,6 @@ public class UI_Locus : MonoBehaviour {
         _crossHair = GameManager.Instance.UIManager.Root.Q("Cross");
         _currentAmmo = GameManager.Instance.UIManager.Root.Q<Label>("CurrentAmmoLabel");
         _maxAmmo = GameManager.Instance.UIManager.Root.Q<Label>("MaxAmmoLabel");
+        _fps = GameManager.Instance.UIManager.Root.Q<Label>("FPS");
     }
 }
