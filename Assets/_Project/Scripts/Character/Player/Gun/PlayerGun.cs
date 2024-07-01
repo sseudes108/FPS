@@ -26,10 +26,9 @@ public class PlayerGun : MonoBehaviour {
 
     //Shoot
     private IEnumerator _shotRoutine;
-    // [SerializeField] private int _ammoLeftInMag;
     private bool _canShoot;
-
-    
+    private bool _isReloading = false;
+   
 
 #region UnityMethods
 
@@ -75,16 +74,26 @@ public class PlayerGun : MonoBehaviour {
 
     #region Ammo
     public void PickUpAmmo(int amount){
-        _weapons.AddBulletsActiveGun(amount);
+        _weapons.AddBulletsToInventory(amount);
     }
     
     private void UpdateAmmoCount(){
         OnAmmoCountChange?.Invoke(_activeGun.AmmoLeftInMag, _activeGun.Magazine, _weapons.GetCurrentGunAmmoInventory());
     }
 
+    private IEnumerator ReloadRoutine(int amountToFill){
+        yield return new WaitForSeconds(_activeGun.ReloadTime);
+        _weapons.RemoveBulletsFromInventory(amountToFill);
+        _activeGun.ReloadMagazine(amountToFill);
+        UpdateAmmoCount();
+        _isReloading = false;
+        yield return null;
+    }
+
     public void HandleGunReload(){
         if(!_player.Input.Reload){return;}
         if(_activeGun.AmmoLeftInMag ==_activeGun.Magazine){return;}
+        _isReloading = true;
 
         var bulletsLeftInTotal = _weapons.GetCurrentGunAmmoInventory();
         if(bulletsLeftInTotal == 0){ return;} // if has no bullet left to reload
@@ -95,15 +104,14 @@ public class PlayerGun : MonoBehaviour {
             amountToFill = bulletsLeftInTotal;
         }
 
-        _weapons.RemoveBulletsActiveGun(amountToFill);
-        _activeGun.ReloadMagazine(amountToFill);
-        
-        UpdateAmmoCount();
+        OnGunReload?.Invoke(_activeGun.ReloadSound);
+        StartCoroutine(ReloadRoutine(amountToFill));
     }
     #endregion
     
     #region Shoot
     public void HandleShoot(){
+        if(_isReloading){return;}
         if(_player.Input.Shoot){
             if(_activeGun.AmmoLeftInMag > 0){
                 if(_activeGun.CanAutoFire){

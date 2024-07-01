@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour{
-    // [Range(0, 2)]
-    // [SerializeField] private float _masterVolume = 1f;
     [SerializeField] private AudioMixerGroup _musicMixerGroup, _SFXMixerGroup;
 
     public void SoundToPlay(SoundSO soundSO) {

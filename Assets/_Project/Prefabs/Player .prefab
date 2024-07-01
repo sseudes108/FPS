@@ -343,9 +343,9 @@ GameObject:
   - component: {fileID: 4652206640485300856}
   - component: {fileID: 2653316709008058184}
   - component: {fileID: 1338169451243310870}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 'Player '
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -550,9 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _activeGun: {fileID: 0}
-  _activeGunTransform: {fileID: 0}
   _firstPersonCamera: {fileID: 3510359502698183467}
-  _resetAimPosition: 0
 --- !u!114 &1338169451243310870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,7 +568,9 @@ MonoBehaviour:
   - {fileID: 277043713500938904}
   - {fileID: 8147525339980920395}
   - {fileID: 2543709591324147641}
+  _ammoInventory: 
   _activeWeaponIndex: 0
+  _availableGuns: []
 --- !u!1 &6894132639904567668
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +661,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4610799903718403093}
     m_Modifications:
+    - target: {fileID: 992087177949861811, guid: ee5b9fc47cf1536408d6311492b270f5, type: 3}
+      propertyPath: _reloadTime
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2347253672935115857, guid: ee5b9fc47cf1536408d6311492b270f5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.4
@@ -774,6 +778,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4759210423994066429, guid: 64643d827917fa3429b30da40a27c368, type: 3}
+      propertyPath: _reloadTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5571084518302286516, guid: 64643d827917fa3429b30da40a27c368, type: 3}
       propertyPath: m_Name
       value: Rocket Launcher
@@ -851,6 +859,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9028894169511589083, guid: c12e227b513512c4cbabae98d9f6bfe7, type: 3}
+      propertyPath: _reloadTime
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -923,6 +935,14 @@ PrefabInstance:
     - target: {fileID: 7425256060141973308, guid: e9b48ad870aa2f5438a5a4e64ed94d8b, type: 3}
       propertyPath: m_Name
       value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821296855358208879, guid: e9b48ad870aa2f5438a5a4e64ed94d8b, type: 3}
+      propertyPath: _reloadTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821296855358208879, guid: e9b48ad870aa2f5438a5a4e64ed94d8b, type: 3}
+      propertyPath: _isAvailable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

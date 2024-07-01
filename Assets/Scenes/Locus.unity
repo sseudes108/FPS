@@ -687,18 +687,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponType: 1
-  _magazine: 6
+  _magazine: 0
   _isAvailable: 0
-  _firerate: 1.8
+  _reloadTime: 0
+  _firerate: 0
   _canAutoFire: 0
-  _damageValue: 30
-  _recoilForce: 4
+  _damageValue: 0
+  _recoilForce: 0
   _ammoLeftInMag: 0
-  _bulletMaterial: {fileID: 2100000, guid: 9952c5ba44bf84e4d81255cf22ed42e5, type: 2}
-  _bulletPrefab: {fileID: 3429045405079578221, guid: 86de78c728f4e2447a3ac1902dc65d9b, type: 3}
-  _zoomAmount: 20
+  _bulletMaterial: {fileID: 0}
+  _bulletPrefab: {fileID: 0}
+  _zoomAmount: 0
   _aimSpeed: 0
-  _shootSound: {fileID: 11400000, guid: dc54c468d9d2487429a8f5bb975c290e, type: 2}
+  _shootSound: {fileID: 0}
   _reloadSound: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
@@ -3618,18 +3619,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponType: 3
-  _magazine: 2
+  _magazine: 0
   _isAvailable: 0
-  _firerate: 1
+  _reloadTime: 0
+  _firerate: 0
   _canAutoFire: 0
-  _damageValue: 90
-  _recoilForce: 10
+  _damageValue: 0
+  _recoilForce: 0
   _ammoLeftInMag: 0
-  _bulletMaterial: {fileID: 2100000, guid: 37b6c62573a40aa46a0649d00df22db2, type: 2}
-  _bulletPrefab: {fileID: 3429045405079578221, guid: 86de78c728f4e2447a3ac1902dc65d9b, type: 3}
-  _zoomAmount: 50
+  _bulletMaterial: {fileID: 0}
+  _bulletPrefab: {fileID: 0}
+  _zoomAmount: 0
   _aimSpeed: 0
-  _shootSound: {fileID: 11400000, guid: dc54c468d9d2487429a8f5bb975c290e, type: 2}
+  _shootSound: {fileID: 0}
   _reloadSound: {fileID: 0}
 --- !u!1001 &1448537154
 PrefabInstance:
@@ -3760,18 +3762,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponType: 0
-  _magazine: 12
+  _magazine: 0
   _isAvailable: 0
-  _firerate: 0.1
+  _reloadTime: 0
+  _firerate: 0
   _canAutoFire: 0
-  _damageValue: 20
-  _recoilForce: 1
+  _damageValue: 0
+  _recoilForce: 0
   _ammoLeftInMag: 0
-  _bulletMaterial: {fileID: 2100000, guid: ca4bf5396f720fe4e84727a694a9fd36, type: 2}
-  _bulletPrefab: {fileID: 3429045405079578221, guid: 86de78c728f4e2447a3ac1902dc65d9b, type: 3}
-  _zoomAmount: 50
+  _bulletMaterial: {fileID: 0}
+  _bulletPrefab: {fileID: 0}
+  _zoomAmount: 0
   _aimSpeed: 0
-  _shootSound: {fileID: 11400000, guid: dc54c468d9d2487429a8f5bb975c290e, type: 2}
+  _shootSound: {fileID: 0}
   _reloadSound: {fileID: 0}
 --- !u!1 &1522214148
 GameObject:
@@ -4056,18 +4059,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponType: 2
-  _magazine: 33
+  _magazine: 0
   _isAvailable: 0
-  _firerate: 0.2
-  _canAutoFire: 1
-  _damageValue: 10
-  _recoilForce: 2
+  _reloadTime: 0
+  _firerate: 0
+  _canAutoFire: 0
+  _damageValue: 0
+  _recoilForce: 0
   _ammoLeftInMag: 0
-  _bulletMaterial: {fileID: 2100000, guid: a51716d1e62c5144daf4c6cc52b5242c, type: 2}
-  _bulletPrefab: {fileID: 3429045405079578221, guid: 86de78c728f4e2447a3ac1902dc65d9b, type: 3}
-  _zoomAmount: 40
+  _bulletMaterial: {fileID: 0}
+  _bulletPrefab: {fileID: 0}
+  _zoomAmount: 0
   _aimSpeed: 0
-  _shootSound: {fileID: 11400000, guid: 7b20b5466578d5543a9f03579a7d5909, type: 2}
+  _shootSound: {fileID: 0}
   _reloadSound: {fileID: 0}
 --- !u!1 &1706662547
 GameObject:
@@ -8379,25 +8383,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 277043713500938904, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
-      propertyPath: _isAvailable
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 601611861475972811, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
       propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1338169451243310870, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
-      propertyPath: _weapons.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1338169451243310870, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
-      propertyPath: '_weapons.Array.data[4]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2559651824661238634, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
-      propertyPath: _isAvailable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5125280028125358036, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8442,14 +8430,6 @@ PrefabInstance:
     - target: {fileID: 5842709519210232155, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
       propertyPath: m_Name
       value: 'Player '
-      objectReference: {fileID: 0}
-    - target: {fileID: 5842709519210232155, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5842709519210232155, guid: 728d42220cdde5944a79d0c44b5d9ad7, type: 3}
-      propertyPath: m_TagString
-      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

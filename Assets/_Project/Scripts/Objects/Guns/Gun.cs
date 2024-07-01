@@ -17,9 +17,10 @@ public abstract class Gun : MonoBehaviour{
     protected Character _character;
     
     [Header("Settings")]
-    [SerializeField] protected WeaponTypes _weaponType;
+    [SerializeField] private WeaponTypes _weaponType;
     [SerializeField] private int _magazine;
     [SerializeField] private bool _isAvailable;
+    [SerializeField] private float _reloadTime;
 
 
     [Header("Fire")]
@@ -27,7 +28,7 @@ public abstract class Gun : MonoBehaviour{
     [SerializeField] private bool _canAutoFire;
     [SerializeField] protected int _damageValue;
     [SerializeField] protected float _recoilForce;
-    [SerializeField] private int _ammoLeftInMag;
+    public int _ammoLeftInMag;
     protected Transform _firePoint;
 
     [Header("Bullet")]
@@ -42,6 +43,7 @@ public abstract class Gun : MonoBehaviour{
     private Transform _aim;
     private Transform _model;
     private bool _isAiming;
+
 
     [Header("Sounds")]
     [SerializeField] private SoundSO _shootSound;
@@ -64,6 +66,7 @@ public abstract class Gun : MonoBehaviour{
     public bool IsAiming => _isAiming;
     public int AmmoLeftInMag => _ammoLeftInMag;
     public bool IsAvailable => _isAvailable;
+    public float ReloadTime => _reloadTime;
 
 
 #region UnityMethods
@@ -75,6 +78,10 @@ public abstract class Gun : MonoBehaviour{
         _aim = transform.Find("States/Aim");
         _model = transform.Find("Model");
         _firePoint = transform.Find("Model/FirePoint");
+    }
+
+    private void Start() {
+        ReloadMagazine(Magazine);
     }
 
     private void Update() { 
@@ -107,6 +114,9 @@ public abstract class Gun : MonoBehaviour{
 
     public void ReloadMagazine(int amount){
         _ammoLeftInMag += amount;
+        if(_ammoLeftInMag > _magazine){
+            _ammoLeftInMag = _magazine;
+        }
     }
     
     private void CreateBulletPool(){

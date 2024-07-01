@@ -1,20 +1,84 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerWeapons : MonoBehaviour {
     [SerializeField] private List<Gun> _weapons = new();
-    [SerializeField] private List<int> _ammoInventory;
-    public int _activeWeaponIndex;
-    [SerializeField] private List<Gun> _availableGuns;
+    private Dictionary<string, int> _ammoAmountDict = new();
+    private List<Gun> _availableGuns = new();
+
+    private int _activeWeaponIndex;
+    private string _activeGunName;
+
+
+#region UnityMethods
 
     private void OnEnable() {
         PlayerGun.OnWeaponChange += PlayerGun_OnWeaponChange;
         Player.OnWeaponPickUp += Player_OnWeaponPickUp;
     }
+    
     private void OnDisable() {
         PlayerGun.OnWeaponChange -= PlayerGun_OnWeaponChange;
         Player.OnWeaponPickUp -= Player_OnWeaponPickUp;
     }
+    public void Start(){
+        CheckGuns();
+        UpdateFullAmmoInventory();
+    }
+
+#endregion
+
+#region Custom Methods
+
+    #region Ammo Inventory
+    private void UpdateFullAmmoInventory(){
+        foreach(var gun in _availableGuns){
+            if(!_ammoAmountDict.ContainsKey(gun.name)){ //If the actual gun does not exist in the dict, so the ammo count still the same already saved
+                var totalBullets = gun.Magazine * 3;
+                _ammoAmountDict.Add(gun.name, totalBullets);
+            }
+        }
+    }
+
+    public int GetCurrentGunAmmoInventory(){
+        return _ammoAmountDict[_activeGunName]; //Used in the UI to show the actual ammo amount of the active gun
+    }
+
+    public void RemoveBulletsFromInventory(int bulletsUsed){
+        _ammoAmountDict[_activeGunName] -= bulletsUsed;
+    }
+
+    public void AddBulletsToInventory(int bulletsGained){
+        _ammoAmountDict[_activeGunName] += bulletsGained;
+        if(_ammoAmountDict[_activeGunName] > _weapons[_activeWeaponIndex].Magazine * 3){
+            _ammoAmountDict[_activeGunName] = _weapons[_activeWeaponIndex].Magazine * 3;
+        }
+    }
+    #endregion
+
+    #region Gun
+    private void CheckGuns(){
+        _availableGuns.Clear();
+        foreach (Gun gun in _weapons){
+            if(gun.IsAvailable){
+                _availableGuns.Add(gun);
+            }
+        }
+    }
+    private void ChangeWeapon(PlayerGun playerGun, int index){
+        foreach(var gun in _weapons){
+            gun.gameObject.SetActive(false);
+        }
+        _availableGuns[index].gameObject.SetActive(true);
+        _activeGunName = _availableGuns[_activeWeaponIndex].name;
+        playerGun.ChangeActiveGun(_availableGuns[index]);
+    }
+    #endregion
+
+#endregion
+
+#region Events
 
     private void Player_OnWeaponPickUp(Gun pickedGun){
         foreach(var weapon in _weapons){
@@ -24,43 +88,7 @@ public class PlayerWeapons : MonoBehaviour {
             }
         }
         CheckGuns();
-    }
-
-    public void Start(){
-        CheckGuns();
         UpdateFullAmmoInventory();
-    }
-
-    private void CheckGuns(){
-        _availableGuns.Clear();
-        foreach (Gun gun in _weapons){
-            if(gun.IsAvailable){
-                _availableGuns.Add(gun);
-            }
-        }
-    }
-
-    public void RemoveBulletsActiveGun(int bulletsUsed){
-        _ammoInventory[_activeWeaponIndex] -= bulletsUsed;
-    }
-
-    public void AddBulletsActiveGun(int bulletsGained){
-        _ammoInventory[_activeWeaponIndex] += bulletsGained;
-        if(_ammoInventory[_activeWeaponIndex] > _weapons[_activeWeaponIndex].Magazine * 3){
-            _ammoInventory[_activeWeaponIndex] = _weapons[_activeWeaponIndex].Magazine * 3;
-        }
-    }
-    
-    private void UpdateFullAmmoInventory(){
-        foreach(var gun in _weapons){
-            var totalBullets = gun.Magazine * 3;
-            gun.ReloadMagazine(totalBullets / 3);
-            _ammoInventory.Add(totalBullets);
-        }
-    }
-
-    public int GetCurrentGunAmmoInventory(){
-        return _ammoInventory[_activeWeaponIndex];
     }
 
     private void PlayerGun_OnWeaponChange(PlayerGun playerGun, int key){
@@ -81,11 +109,6 @@ public class PlayerWeapons : MonoBehaviour {
         ChangeWeapon(playerGun, _activeWeaponIndex);
     }
 
-    private void ChangeWeapon(PlayerGun playerGun, int index){
-        foreach(var gun in _weapons){
-            gun.gameObject.SetActive(false);
-        }
-        _availableGuns[index].gameObject.SetActive(true);
-        playerGun.ChangeActiveGun(_availableGuns[index]);
-    }
+#endregion
+ 
 }
