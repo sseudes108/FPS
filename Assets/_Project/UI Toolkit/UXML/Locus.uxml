@@ -10,12 +10,19 @@
             <engine:VisualElement name="Middle" style="flex-grow: 0; flex-shrink: 0; flex-basis: 33%; flex-direction: column; align-content: center; align-self: center; justify-content: center; align-items: auto;">
                 <engine:VisualElement name="Cross" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 100px; height: 100px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=cb51610f1993edb408560331ee47acc4&amp;type=3#60&quot;);" />
             </engine:VisualElement>
-            <engine:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%; flex-shrink: 0; justify-content: center; opacity: 1;">
-                <engine:VisualElement name="Ammo" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: flex-start; width: 30%; align-self: auto; align-content: flex-start; margin-left: 108px; margin-top: 0; rotate: -9deg;">
+            <engine:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%; flex-shrink: 0; justify-content: center; opacity: 1; flex-direction: row;">
+                <engine:VisualElement name="LeftAmmo" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: flex-start; width: 30%; align-self: auto; align-content: flex-start; margin-left: 108px; margin-top: 0; rotate: -9deg;">
                     <engine:Label text="Ammo: " name="AmmoLabel" style="font-size: 72px; -unity-text-align: upper-left; color: rgb(170, 182, 202); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 3px; -unity-font-style: bold;" />
                     <engine:Label text="33/33" name="CurrentAmmoLabel" style="font-size: 72px; color: rgb(170, 182, 202); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold;" />
                     <engine:Label text="216" name="MaxAmmoLabel" style="font-size: 27px; align-content: flex-end; -unity-font-style: bold-and-italic;" />
                 </engine:VisualElement>
+                <engine:VisualElement name="CenterEvents" style="flex-grow: 1; width: 40%;">
+                    <engine:VisualElement name="EventMessage" style="flex-grow: 1;">
+                        <engine:Label text="Machine Gun" name="ItemName" style="-unity-text-align: upper-center; font-size: 42px; -unity-font-style: bold;" />
+                        <engine:Label text="Press F to Pick Up" name="ItemMessage" style="-unity-text-align: upper-center; -unity-font-style: bold; font-size: 27px;" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <engine:VisualElement name="Right" style="flex-grow: 1; width: 30%;" />
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement name="Overlay" style="flex-grow: 1; opacity: 0;" />

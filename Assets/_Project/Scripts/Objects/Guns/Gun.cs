@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -11,20 +12,24 @@ public abstract class Gun : MonoBehaviour{
         RocketLauncher = 3
     }
 
+    public static Action<Gun> OnPlayerCloseForPickUp;
+    
     protected ObjectPool<Bullet> _bulletPool;
     protected Character _character;
     
     [Header("Settings")]
     [SerializeField] protected WeaponTypes _weaponType;
     [SerializeField] private int _magazine;
+    [SerializeField] private bool _isAvailable;
+
 
     [Header("Fire")]
-    protected Transform _firePoint;
     [SerializeField] protected float _firerate;
     [SerializeField] private bool _canAutoFire;
     [SerializeField] protected int _damageValue;
     [SerializeField] protected float _recoilForce;
     [SerializeField] private int _ammoLeftInMag;
+    protected Transform _firePoint;
 
     [Header("Bullet")]
     [SerializeField] protected Material _bulletMaterial;
@@ -43,6 +48,7 @@ public abstract class Gun : MonoBehaviour{
     [SerializeField] private SoundSO _shootSound;
     [SerializeField] private SoundSO _reloadSound;
 
+
     //Public referencies
     public float ZoomAmount => _zoomAmount;
     public float Firerate => _firerate;
@@ -56,6 +62,7 @@ public abstract class Gun : MonoBehaviour{
     public float AimSpeed => _aimSpeed;
     public bool IsAiming => _isAiming;
     public int AmmoLeftInMag => _ammoLeftInMag;
+    public bool IsAvailable => _isAvailable;
 
 
 #region UnityMethods
@@ -69,7 +76,10 @@ public abstract class Gun : MonoBehaviour{
         _firePoint = transform.Find("Model/FirePoint");
     }
 
-    private void Update() { Aim(); }
+    private void Update() { 
+        Aim();
+        DetectPlayer();
+    }
 
 #endregion
 
@@ -82,6 +92,7 @@ public abstract class Gun : MonoBehaviour{
     }
 
     public void Aim(){
+        if(!_isAvailable){return;};
         if(_isAiming){
             _model.position = Vector3.Lerp(_model.position, _aim.position, AimSpeed * Time.deltaTime);
         }else{
@@ -111,6 +122,26 @@ public abstract class Gun : MonoBehaviour{
 
     public void ReleaseFromPool(Bullet bullet){
         _bulletPool.Release(bullet);
+    }
+
+    private void OnDrawGizmos() {
+        if(!IsAvailable){
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(transform.position, 1.5f);
+        }
+    }
+
+    public void DetectPlayer(){
+        if(IsAvailable){
+            return;
+        }
+
+        Collider[] player = new Collider[1];
+        var playerInRange = Physics.OverlapSphereNonAlloc(transform.position, 1.5f, player, LayerMask.GetMask("Player"));
+
+        if(playerInRange > 0 && player[0] != null){
+            OnPlayerCloseForPickUp?.Invoke(this);
+        }
     }
 
 #endregion

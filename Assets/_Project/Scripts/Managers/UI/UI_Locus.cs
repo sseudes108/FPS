@@ -35,7 +35,6 @@ public class UI_Locus : MonoBehaviour {
         }
     }
 
-    
     private void GameManager_OnGamePaused(bool paused){ //Reset The elements after the change in style asset from pause menu
         if(!paused){
             SetElements();

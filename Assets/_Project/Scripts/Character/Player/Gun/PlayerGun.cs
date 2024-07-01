@@ -75,7 +75,7 @@ public class PlayerGun : MonoBehaviour {
 
     #region Ammo
     public void PickUpAmmo(int amount){
-
+        _weapons.AddBulletsActiveGun(amount);
     }
     
     private void UpdateAmmoCount(){
@@ -95,7 +95,7 @@ public class PlayerGun : MonoBehaviour {
             amountToFill = bulletsLeftInTotal;
         }
 
-        _weapons.UpdateActiveGunInventory(amountToFill);
+        _weapons.RemoveBulletsActiveGun(amountToFill);
         _activeGun.ReloadMagazine(amountToFill);
         
         UpdateAmmoCount();
@@ -146,7 +146,7 @@ public class PlayerGun : MonoBehaviour {
             _firstPersonCameraTransform = _player.Camera.GetCameraTransform();
         }
 
-        int layerMask = ~LayerMask.GetMask("NoHitLayer"); // Cria uma máscara para todas as camadas exceto a "NoHitLayer"
+        int layerMask = ~LayerMask.GetMask("NoHit"); // Cria uma máscara para todas as camadas exceto a "NoHitLayer"
 
         if (Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit, Mathf.Infinity, layerMask)){
             _activeGun.FirePoint.LookAt(hit.point);
