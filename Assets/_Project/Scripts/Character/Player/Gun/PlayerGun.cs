@@ -197,6 +197,7 @@ public class PlayerGun : MonoBehaviour {
 
     public void ChangeActiveGun(Gun activeGun){
         _activeGun = activeGun;
+        activeGun.ActiveGun();
     }
     #endregion
 

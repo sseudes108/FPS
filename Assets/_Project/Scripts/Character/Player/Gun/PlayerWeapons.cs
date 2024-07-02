@@ -70,6 +70,7 @@ public class PlayerWeapons : MonoBehaviour {
     private void ChangeWeapon(PlayerGun playerGun, int index){
         foreach(var gun in _weapons){
             gun.SetIsAiming(false);
+            gun.DeactiveGun();
             gun.gameObject.SetActive(false);
         }
         _availableGuns[index].gameObject.SetActive(true);

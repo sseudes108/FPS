@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour{
 
     public static GameManager Instance { get; private set;}
-
     //Events
     public static Action OnGameStart;
     public static Action OnGameEnd;
@@ -24,6 +23,7 @@ public class GameManager : MonoBehaviour{
     public AudioManager AudioManager { get; private set;}
     public VFXManager VFXManager { get; private set;}
     public PauseManager PauseManager { get; private set;}
+    public ObjectPoolManager ObjectPoolManager { get; private set;}
 
     //Debug
     public Testing Testing;
@@ -70,16 +70,19 @@ public class GameManager : MonoBehaviour{
     public void SetCurrentSensitivity(float sensitivity){
         _sensitivity = sensitivity;
     }
-#endregion
 
-#region Events
     private void SetManagers(){
         UIManager = GetComponentInChildren<UIManager>();
         SpawnManager = GetComponentInChildren<SpawnManager>();
         AudioManager = GetComponentInChildren<AudioManager>();
         VFXManager = GetComponentInChildren<VFXManager>();
         PauseManager = GetComponentInChildren<PauseManager>();
+        ObjectPoolManager = GetComponentInChildren<ObjectPoolManager>();
     }
+
+#endregion
+
+#region Events
 
     private void GameManager_OnGamePaused(bool paused){
         if(paused){
@@ -98,6 +101,7 @@ public class GameManager : MonoBehaviour{
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         yield return null;
     }
+    
 #endregion
 
 }

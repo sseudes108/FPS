@@ -16,7 +16,7 @@ public class GunSO : ScriptableObject {
 
     [Header("Bullet")]
     public Material BulletMaterial;
-    public Bullet BulletPrefab;
+    // public Bullet BulletPrefab;
 
     [Header("Aim")]
     public float ZoomAmount;

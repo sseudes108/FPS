@@ -18,7 +18,7 @@ public class Gun : MonoBehaviour{
 
     private int _ammoLeftInMag;
     public int AmmoLeftInMag => _ammoLeftInMag;
-    protected Transform _firePoint;
+    [SerializeField] protected Transform _firePoint;
     public Transform FirePoint => _firePoint;
     protected Transform _muzzleFlash;
     private Transform _hip;
@@ -27,11 +27,11 @@ public class Gun : MonoBehaviour{
     private bool _isAiming;
     public bool IsAiming => _isAiming;
     private bool _playerInRange = true;
+    private bool _isActive = false;
 
 #region UnityMethods
 
     private void Awake() {    
-        CreateBulletPool();
         _character = GetComponent<Character>();
         _hip = transform.Find("States/Hip");
         _aim = transform.Find("States/Aim");
@@ -41,8 +41,8 @@ public class Gun : MonoBehaviour{
     }
 
     private void Start() {
+        _bulletPool = GameManager.Instance.ObjectPoolManager.BulletPool;
         ReloadMagazine(_gunData.Magazine);
-        // ReloadMagazine(Magazine);
     }
 
     private void Update() { 
@@ -52,6 +52,14 @@ public class Gun : MonoBehaviour{
 #endregion
 
 #region Custom Methods
+    #region Shoot
+
+    public void Shoot(){
+        _ammoLeftInMag--;
+        StartCoroutine(MuzzleFlashRoutine());
+        var newBullet = _bulletPool.Get();
+        newBullet.Init(this,_gunData.BulletMaterial, _gunData.DamageValue, _character, _firePoint);
+    }
 
     private IEnumerator MuzzleFlashRoutine(){
         _muzzleFlash.gameObject.SetActive(true);
@@ -59,67 +67,13 @@ public class Gun : MonoBehaviour{
         _muzzleFlash.gameObject.SetActive(false);
     }
 
-    public void Shoot(){
-        _ammoLeftInMag--;
-        StartCoroutine(MuzzleFlashRoutine());
-        var newBullet = _bulletPool.Get();
-        newBullet.Init(this, _gunData.BulletMaterial, _gunData.DamageValue, _character, _firePoint);
-        // newBullet.Init(this, _bulletMaterial, _damageValue, _character, _firePoint);
-    }
-
-    public void Aim(){
-        // if(!_gunData.IsAvailable){return;};
-        // if(_gunData.IsAiming){
-        //     _gunData.Model.position = Vector3.Lerp(_gunData.Model.position, _gunData.Aim.position, _gunData.AimSpeed * Time.deltaTime);
-        // }else{
-        //     _gunData.Model.position = Vector3.Lerp(_gunData.Model.position, _gunData.Hip.position, _gunData.AimSpeed * Time.deltaTime);
-        // }
-        if(!_isAvailable){return;};
-        if(_isAiming){
-            _model.position = Vector3.Lerp(_model.position, _aim.position, _gunData.AimSpeed * Time.deltaTime);
-        }else{
-            _model.position = Vector3.Lerp(_model.position, _hip.position, _gunData.AimSpeed * Time.deltaTime);
-        }
-    }
-
-    public void SetIsAiming(bool isAiming){
-        _isAiming = isAiming;
-    }
-
-    public void ReloadMagazine(int amount){
-        _ammoLeftInMag += amount;
-        if(_ammoLeftInMag > _gunData.Magazine){
-            _ammoLeftInMag = _gunData.Magazine;
-        }
-    }
-    
-    private void CreateBulletPool(){
-        _bulletPool = new ObjectPool<Bullet>(()=>{
-            return Instantiate(_gunData.BulletPrefab);
-            // return Instantiate(_bulletPrefab);
-        }, newBullet =>{
-            newBullet.gameObject.SetActive(true);
-        }, newBullet =>{
-            newBullet.gameObject.SetActive(false);
-        }, newBullet =>{
-            Destroy(newBullet);
-        }, false, 50, 70);
-    }
-
-    public void ReleaseFromPool(Bullet bullet){
+    public void ReleaseBulletFromPool(Bullet bullet){
         _bulletPool.Release(bullet);
     }
 
-    // private void OnDrawGizmos() {
-    //     if(!_gunData.IsAvailable){
-    //         Gizmos.color = Color.yellow;
-    //         Gizmos.DrawSphere(transform.position, 1.5f);
-    //     }
-    //     // if(!IsAvailable){
-    //     //     Gizmos.color = Color.yellow;
-    //     //     Gizmos.DrawSphere(transform.position, 1.5f);
-    //     // }
-    // }
+    #endregion
+    
+    #region Interaction
 
     private void DetectPlayer(){
         if(_isAvailable){
@@ -145,13 +99,39 @@ public class Gun : MonoBehaviour{
         OnPlayerMoveOutRange?.Invoke(false);
     }
 
-    public void SetAvailable(){
-        _isAvailable = true;
+    #endregion
+
+    #region Aim
+
+    public void Aim(){
+        if(!_isAvailable || !_isActive){return;};
+        if(_isAiming){
+            _model.position = Vector3.Lerp(_model.position, _aim.position, _gunData.AimSpeed * Time.deltaTime);
+        }else{
+            _model.position = Vector3.Lerp(_model.position, _hip.position, _gunData.AimSpeed * Time.deltaTime);
+        }
     }
 
-#endregion
+    public void SetIsAiming(bool isAiming){
+        _isAiming = isAiming;
+    }
 
-#region Events
+    #endregion
+    
+    #region Settings
+
+    public void ReloadMagazine(int amount){
+        _ammoLeftInMag += amount;
+        if(_ammoLeftInMag > _gunData.Magazine){
+            _ammoLeftInMag = _gunData.Magazine;
+        }
+    }
+
+    public void SetAvailable(){_isAvailable = true;}
+    public void ActiveGun(){_isActive = true;}
+    public void DeactiveGun(){ _isActive = false;}
+
+    #endregion
 
 #endregion
 }

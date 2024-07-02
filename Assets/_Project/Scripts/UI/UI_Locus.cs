@@ -13,8 +13,6 @@ public class UI_Locus : MonoBehaviour {
 
     private Label _currentAmmo;
     private Label _maxAmmo;
-    // private Label _fps;    
-    // private Label _sensitivity;
 
     private void OnEnable() {
         PlayerGun.OnAmmoCountChange += PlayerGun_OnAmmoCountChange;
@@ -33,14 +31,6 @@ public class UI_Locus : MonoBehaviour {
         CrossHairStyleConfig();
     }
 
-    // void Update() {
-    //     float frameRate = 1.0f / Time.deltaTime;
-
-    //     if (_fps != null){
-    //         _fps.text = $"FPS: {Mathf.RoundToInt(frameRate)}";
-    //     }   
-    // }
-
     private void GameManager_OnGamePaused(bool paused){ //Reset The elements after the change in style asset from pause menu
         if(!paused){
             SetElements();
@@ -54,9 +44,6 @@ public class UI_Locus : MonoBehaviour {
                 _crossHair.style.backgroundImage = updatedCrossHair;
             }
             
-            // if (_sensitivity != null){
-            //     _sensitivity.text = $"Sensitivity: {GameManager.Instance.CurrentSensitivity}";
-            // }
         }
     }
 
@@ -74,9 +61,6 @@ public class UI_Locus : MonoBehaviour {
         _crossHair = GameManager.Instance.UIManager.Root.Q("Cross");
         _currentAmmo = GameManager.Instance.UIManager.Root.Q<Label>("CurrentAmmoLabel");
         _maxAmmo = GameManager.Instance.UIManager.Root.Q<Label>("MaxAmmoLabel");
-
-        // _fps = GameManager.Instance.UIManager.Root.Q<Label>("FPS");
-        // _sensitivity = GameManager.Instance.UIManager.Root.Q<Label>("Sensitivity");
     }
 
     private void UI_PauseMenu_OnCrossChange(Background newCross){

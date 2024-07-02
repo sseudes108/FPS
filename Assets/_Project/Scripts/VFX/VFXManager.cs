@@ -9,12 +9,12 @@ public class VFXManager : MonoBehaviour{
 
     private void OnEnable() {
         Bullet.OnBulletImpact += Bullet_OnBulletImpact;
-        PlayerGun.OnShootHit += PlayerGun_OnShootHit;
+        // PlayerGun.OnShootHit += PlayerGun_OnShootHit;
     }
 
     private void OnDisable() {
         Bullet.OnBulletImpact -= Bullet_OnBulletImpact;
-        PlayerGun.OnShootHit -= PlayerGun_OnShootHit;
+        // PlayerGun.OnShootHit -= PlayerGun_OnShootHit;
     }
 
     public void Awake(){
@@ -28,7 +28,8 @@ public class VFXManager : MonoBehaviour{
     private void Bullet_OnBulletImpact(Bullet bullet, Material material){
         var bulletImpact = _bulletImpactVFXPool.Get();
 
-        bulletImpact.transform.SetPositionAndRotation(_impactPoint, Quaternion.identity);
+        // bulletImpact.transform.SetPositionAndRotation(_impactPoint, Quaternion.identity);
+        bulletImpact.transform.SetPositionAndRotation(bullet.transform.position, Quaternion.identity);
 
         bulletImpact.Play(material);
         StartCoroutine(EffectRoutine(_bulletImpactVFXPool, bulletImpact));

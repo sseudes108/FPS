@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour{
     public static Action<Bullet, Material> OnBulletImpact;
-    
     private int _damageValue;
     private Material _bulletMaterial;
     private TrailRenderer _trailRenderer;
@@ -13,16 +12,25 @@ public class Bullet : MonoBehaviour{
     private Gun _gun;
     private Character _character;
 
+    [SerializeField] private float _moveSpeed;
+    private Rigidbody _rigidbody;
+    private Vector3 _direction;
+
     private void Awake() {
-        _movement = GetComponent<BulletMovement>();
+        _rigidbody = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
         _trailRenderer  = GetComponent<TrailRenderer>();
     }
 
+    private void FixedUpdate() {
+        Vector3 movement = _moveSpeed * Time.deltaTime * _direction;
+        _rigidbody.MovePosition(_rigidbody.position + movement);
+    }
+
     public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint) {
+        SetDirection(firePoint);
         SetGunAndCharacter(gun, character);
         SetMaterial(material);
-        SetDirection(firePoint);
         _damageValue = damageValue;
         StartCoroutine(ReleaseBulletRoutine());
     }
@@ -54,14 +62,14 @@ public class Bullet : MonoBehaviour{
 
     private IEnumerator ReleaseBulletRoutine(){
         //Time to release bullet case dont hit anything
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
         DisableBullet();
         yield return null;
     }
 
     private void DisableBullet(){
         _trailRenderer.enabled = false;
-        _gun.ReleaseFromPool(this);
+        _gun.ReleaseBulletFromPool(this);
     }
 
     private void HandleImpact(Collider other){
@@ -91,9 +99,12 @@ public class Bullet : MonoBehaviour{
     }
 
     private void SetDirection(Transform firePoint){
+        Debug.Log($"Start SetDirection - firePoint position {firePoint.position}, transform.position {transform.position}");
         transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
-        Vector3 direction = firePoint.forward;
-        _movement.SetDirection(direction);
+        _direction = firePoint.forward;
         _trailRenderer.enabled = true;
+        Debug.Log($"End SetDirection - firePoint position {firePoint.position}, transform.position {transform.position}");
+        // Vector3 direction = firePoint.forward;
+        // _movement.SetDirection(direction);
     }
 }

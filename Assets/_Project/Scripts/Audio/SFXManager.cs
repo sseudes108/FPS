@@ -19,7 +19,6 @@ public class SFXManager : MonoBehaviour {
     }
 
     private void PlayerGun_OnHandleGun(SoundSO handlingSound){
-        Debug.Log("PlayerGun_OnHandleGun");
         GameManager.Instance.AudioManager.SoundToPlay(handlingSound);
     }
 
