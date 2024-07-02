@@ -8,8 +8,10 @@ public class PlayerGun : MonoBehaviour {
     //Events
     public static Action<int, int, int> OnAmmoCountChange;
     public static Action<PlayerGun, int> OnWeaponChange;
+    // public static Action<PlayerGun, int, SoundSO> OnWeaponChange;
     public static Action<SoundSO> OnShootFired;
     public static Action<SoundSO> OnGunReload;
+    public static Action<SoundSO> OnHandleGun;
     public static Action<Vector3> OnShootHit;
 
     //Components
@@ -62,7 +64,7 @@ public class PlayerGun : MonoBehaviour {
         if(_player.Input.Aim){
             _resetZoom = true;
             _activeGun.SetIsAiming(true);
-            _firstPersonCamera.ZoomIn(_activeGun.ZoomAmount);
+            _firstPersonCamera.ZoomIn(_activeGun.GunData.ZoomAmount);
         }else if(_resetZoom){
             _activeGun.SetIsAiming(false);
             _resetZoom = false;
@@ -78,11 +80,13 @@ public class PlayerGun : MonoBehaviour {
     }
     
     private void UpdateAmmoCount(){
-        OnAmmoCountChange?.Invoke(_activeGun.AmmoLeftInMag, _activeGun.Magazine, _weapons.GetCurrentGunAmmoInventory());
+        if(_activeGun != null){
+            OnAmmoCountChange?.Invoke(_activeGun.AmmoLeftInMag, _activeGun.GunData.Magazine, _weapons.GetCurrentGunAmmoInventory());
+        }
     }
 
     private IEnumerator ReloadRoutine(int amountToFill){
-        yield return new WaitForSeconds(_activeGun.ReloadTime);
+        yield return new WaitForSeconds(_activeGun.GunData.ReloadTime);
         _weapons.RemoveBulletsFromInventory(amountToFill);
         _activeGun.ReloadMagazine(amountToFill);
         UpdateAmmoCount();
@@ -92,20 +96,20 @@ public class PlayerGun : MonoBehaviour {
 
     public void HandleGunReload(){
         if(!_player.Input.Reload){return;}
-        if(_activeGun.AmmoLeftInMag ==_activeGun.Magazine){return;}
+        if(_activeGun.AmmoLeftInMag ==_activeGun.GunData.Magazine){return;}
 
         var bulletsLeftInTotal = _weapons.GetCurrentGunAmmoInventory();
         if(bulletsLeftInTotal == 0){ return;} // if has no bullet left to reload
         
         _isReloading = true;
 
-        var amountToFill = _activeGun.Magazine - _activeGun.AmmoLeftInMag;;
+        var amountToFill = _activeGun.GunData.Magazine - _activeGun.AmmoLeftInMag;;
 
         if(amountToFill > bulletsLeftInTotal){
             amountToFill = bulletsLeftInTotal;
         }
 
-        OnGunReload?.Invoke(_activeGun.ReloadSound);
+        OnGunReload?.Invoke(_activeGun.GunData.ReloadSound);
         StartCoroutine(ReloadRoutine(amountToFill));
     }
     #endregion
@@ -115,7 +119,7 @@ public class PlayerGun : MonoBehaviour {
         if(_isReloading){return;}
         if(_player.Input.Shoot){
             if(_activeGun.AmmoLeftInMag > 0){
-                if(_activeGun.CanAutoFire){
+                if(_activeGun.GunData.CanAutoFire){
                     if(_shotRoutine == null){
                         _shotRoutine = AutomaticFireRoutine();
                         StartCoroutine(_shotRoutine);
@@ -141,7 +145,7 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private IEnumerator AutomaticFireRoutine(){
-        float firerate = _activeGun.Firerate;
+        float firerate = _activeGun.GunData.Firerate;
         for(int i = 0; i < _activeGun.AmmoLeftInMag; i++){
             ShootProjectile();
             yield return new WaitForSeconds(firerate);
@@ -168,13 +172,13 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void ShootFired(){
-        OnShootFired?.Invoke(_activeGun.ShootSound);
+        OnShootFired?.Invoke(_activeGun.GunData.ShootSound);
         
         _activeGun.Shoot();
         _recoil.RecoilFire();
 
         UpdateAmmoCount();
-        _impulseSource.GenerateImpulseWithForce(_activeGun.RecoilForce);
+        _impulseSource.GenerateImpulseWithForce(_activeGun.GunData.RecoilForce);
     }
 
     #endregion
@@ -183,8 +187,10 @@ public class PlayerGun : MonoBehaviour {
     public void HandleSwitchGun(){
         if(_player.Input.Previous){
             OnWeaponChange?.Invoke(this, -1);
+            OnHandleGun?.Invoke(_activeGun.GunData.HandlingSound);
         }else if(_player.Input.Next){
             OnWeaponChange?.Invoke(this, +1);
+            OnHandleGun?.Invoke(_activeGun.GunData.HandlingSound);
         }
         UpdateAmmoCount();
     }

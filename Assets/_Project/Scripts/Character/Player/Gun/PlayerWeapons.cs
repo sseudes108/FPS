@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class PlayerWeapons : MonoBehaviour {
         PlayerGun.OnWeaponChange -= PlayerGun_OnWeaponChange;
         Player.OnWeaponPickUp -= Player_OnWeaponPickUp;
     }
+
     public void Start(){
         CheckGuns();
         UpdateFullAmmoInventory();
@@ -34,7 +36,7 @@ public class PlayerWeapons : MonoBehaviour {
     private void UpdateFullAmmoInventory(){
         foreach(var gun in _availableGuns){
             if(!_ammoAmountDict.ContainsKey(gun.name)){ //If the actual gun does not exist in the dict, so the ammo count still the same already saved
-                var totalBullets = gun.Magazine * 3;
+                var totalBullets = gun.GunData.Magazine * 3;
                 _ammoAmountDict.Add(gun.name, totalBullets);
             }
         }
@@ -50,8 +52,8 @@ public class PlayerWeapons : MonoBehaviour {
 
     public void AddBulletsToInventory(int bulletsGained){
         _ammoAmountDict[_activeGunName] += bulletsGained;
-        if(_ammoAmountDict[_activeGunName] > _weapons[_activeWeaponIndex].Magazine * 3){
-            _ammoAmountDict[_activeGunName] = _weapons[_activeWeaponIndex].Magazine * 3;
+        if(_ammoAmountDict[_activeGunName] > _weapons[_activeWeaponIndex].GunData.Magazine * 3){
+            _ammoAmountDict[_activeGunName] = _weapons[_activeWeaponIndex].GunData.Magazine * 3;
         }
     }
     #endregion
@@ -82,7 +84,7 @@ public class PlayerWeapons : MonoBehaviour {
 
     private void Player_OnWeaponPickUp(Gun pickedGun){
         foreach(var weapon in _weapons){
-            if(pickedGun.WeaponType == weapon.WeaponType){
+            if(pickedGun.GunData.WeaponType == weapon.GunData.WeaponType){
                 pickedGun.PickUpGun();
                 weapon.SetAvailable();
             }
@@ -92,6 +94,12 @@ public class PlayerWeapons : MonoBehaviour {
     }
 
     private void PlayerGun_OnWeaponChange(PlayerGun playerGun, int key){
+        StartCoroutine(ChangeWeaponRoutine(playerGun, key)); //Coroutine used to be asure that the available guns list has been updated
+        
+    }
+
+    private IEnumerator ChangeWeaponRoutine(PlayerGun playerGun, int key){
+        yield return null;
         if(key == -1){//previous
             _activeWeaponIndex--;
 

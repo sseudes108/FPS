@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SoundSO", menuName = "SoundSO", order = 0)]
+[CreateAssetMenu(fileName = "SoundSO", menuName = "FPS/SoundSO", order = 0)]
 public class SoundSO : ScriptableObject {
     public enum AudioTypes{
         SFX = 1,

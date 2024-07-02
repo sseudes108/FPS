@@ -64,7 +64,7 @@ public class EnemyMove : MoveState {
         for(int i = 0; i < 6; i++){
             Enemy.HandleShot();
             Enemy.ChangeAnimation(Enemy.SHOOT);
-            yield return new WaitForSeconds(Enemy.Gun.Firerate);
+            yield return new WaitForSeconds(Enemy.Gun.GunData.Firerate);
         }
         shotRoutine = null;
         isShooting = false;

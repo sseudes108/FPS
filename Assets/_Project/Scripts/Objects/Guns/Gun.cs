@@ -3,77 +3,34 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public abstract class Gun : MonoBehaviour{
-    public enum WeaponTypes{
-        Pistol = 0,
-        Rifle = 1,
-        MachineGun = 2,
-        RocketLauncher = 3
-    }
-
+public class Gun : MonoBehaviour{
     public static Action<Gun> OnPlayerCloseForPickUp;
     public static Action<bool> OnPlayerMoveOutRange;
     
     protected ObjectPool<Bullet> _bulletPool;
     protected Character _character;
+
+    [SerializeField] protected GunSO _gunData;
+    public GunSO GunData => _gunData;
     
-    [Header("Settings")]
-    [SerializeField] private WeaponTypes _weaponType;
-    [SerializeField] private int _magazine;
     [SerializeField] private bool _isAvailable;
-    [SerializeField] private float _reloadTime;
+    public bool IsAvailable => _isAvailable;
 
-
-    [Header("Fire")]
-    [SerializeField] protected float _firerate;
-    [SerializeField] private bool _canAutoFire;
-    [SerializeField] protected int _damageValue;
-    [SerializeField] protected float _recoilForce;
-    public int _ammoLeftInMag;
+    private int _ammoLeftInMag;
+    public int AmmoLeftInMag => _ammoLeftInMag;
     protected Transform _firePoint;
+    public Transform FirePoint => _firePoint;
     protected Transform _muzzleFlash;
-
-    [Header("Bullet")]
-    [SerializeField] protected Material _bulletMaterial;
-    [SerializeField] protected Bullet _bulletPrefab;
-        
-
-    [Header("Aim")]
-    [SerializeField] protected float _zoomAmount;
-    [SerializeField] private float _aimSpeed;
     private Transform _hip;
     private Transform _aim;
     private Transform _model;
     private bool _isAiming;
-
-
-    [Header("Sounds")]
-    [SerializeField] private SoundSO _shootSound;
-    [SerializeField] private SoundSO _reloadSound;
-
-    private bool _playerInRange = true;
-
-
-    //Public referencies
-    public float ZoomAmount => _zoomAmount;
-    public float Firerate => _firerate;
-    public float RecoilForce => _recoilForce;
-    public bool CanAutoFire => _canAutoFire;
-    public int Magazine => _magazine;
-    public SoundSO ShootSound => _shootSound;
-    public SoundSO ReloadSound => _reloadSound;
-    public WeaponTypes WeaponType => _weaponType;
-    public Transform FirePoint => _firePoint;
-    public float AimSpeed => _aimSpeed;
     public bool IsAiming => _isAiming;
-    public int AmmoLeftInMag => _ammoLeftInMag;
-    public bool IsAvailable => _isAvailable;
-    public float ReloadTime => _reloadTime;
-
+    private bool _playerInRange = true;
 
 #region UnityMethods
 
-    private void Awake() {
+    private void Awake() {    
         CreateBulletPool();
         _character = GetComponent<Character>();
         _hip = transform.Find("States/Hip");
@@ -84,7 +41,8 @@ public abstract class Gun : MonoBehaviour{
     }
 
     private void Start() {
-        ReloadMagazine(Magazine);
+        ReloadMagazine(_gunData.Magazine);
+        // ReloadMagazine(Magazine);
     }
 
     private void Update() { 
@@ -105,15 +63,22 @@ public abstract class Gun : MonoBehaviour{
         _ammoLeftInMag--;
         StartCoroutine(MuzzleFlashRoutine());
         var newBullet = _bulletPool.Get();
-        newBullet.Init(this, _bulletMaterial, _damageValue, _character, _firePoint);
+        newBullet.Init(this, _gunData.BulletMaterial, _gunData.DamageValue, _character, _firePoint);
+        // newBullet.Init(this, _bulletMaterial, _damageValue, _character, _firePoint);
     }
 
     public void Aim(){
+        // if(!_gunData.IsAvailable){return;};
+        // if(_gunData.IsAiming){
+        //     _gunData.Model.position = Vector3.Lerp(_gunData.Model.position, _gunData.Aim.position, _gunData.AimSpeed * Time.deltaTime);
+        // }else{
+        //     _gunData.Model.position = Vector3.Lerp(_gunData.Model.position, _gunData.Hip.position, _gunData.AimSpeed * Time.deltaTime);
+        // }
         if(!_isAvailable){return;};
         if(_isAiming){
-            _model.position = Vector3.Lerp(_model.position, _aim.position, AimSpeed * Time.deltaTime);
+            _model.position = Vector3.Lerp(_model.position, _aim.position, _gunData.AimSpeed * Time.deltaTime);
         }else{
-            _model.position = Vector3.Lerp(_model.position, _hip.position, AimSpeed * Time.deltaTime);
+            _model.position = Vector3.Lerp(_model.position, _hip.position, _gunData.AimSpeed * Time.deltaTime);
         }
     }
 
@@ -123,14 +88,15 @@ public abstract class Gun : MonoBehaviour{
 
     public void ReloadMagazine(int amount){
         _ammoLeftInMag += amount;
-        if(_ammoLeftInMag > _magazine){
-            _ammoLeftInMag = _magazine;
+        if(_ammoLeftInMag > _gunData.Magazine){
+            _ammoLeftInMag = _gunData.Magazine;
         }
     }
     
     private void CreateBulletPool(){
         _bulletPool = new ObjectPool<Bullet>(()=>{
-            return Instantiate(_bulletPrefab);
+            return Instantiate(_gunData.BulletPrefab);
+            // return Instantiate(_bulletPrefab);
         }, newBullet =>{
             newBullet.gameObject.SetActive(true);
         }, newBullet =>{
@@ -144,15 +110,19 @@ public abstract class Gun : MonoBehaviour{
         _bulletPool.Release(bullet);
     }
 
-    private void OnDrawGizmos() {
-        if(!IsAvailable){
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(transform.position, 1.5f);
-        }
-    }
+    // private void OnDrawGizmos() {
+    //     if(!_gunData.IsAvailable){
+    //         Gizmos.color = Color.yellow;
+    //         Gizmos.DrawSphere(transform.position, 1.5f);
+    //     }
+    //     // if(!IsAvailable){
+    //     //     Gizmos.color = Color.yellow;
+    //     //     Gizmos.DrawSphere(transform.position, 1.5f);
+    //     // }
+    // }
 
     private void DetectPlayer(){
-        if(IsAvailable){
+        if(_isAvailable){
             return;
         }
 

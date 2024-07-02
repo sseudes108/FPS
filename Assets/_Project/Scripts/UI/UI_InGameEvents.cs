@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Categorization;
-using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class UI_InGameEvents : MonoBehaviour {
@@ -27,7 +24,6 @@ public class UI_InGameEvents : MonoBehaviour {
         SetElements();
     }
 
-
     private void SetElements(){
         _itemName = GameManager.Instance.UIManager.Root.Q<Label>("ItemName");
         _itemMessage = GameManager.Instance.UIManager.Root.Q<Label>("ItemMessage");
@@ -47,6 +43,7 @@ public class UI_InGameEvents : MonoBehaviour {
             yield return null;
         }
     }
+
     private IEnumerator LerpValue(VisualElement element, float start, float end, float duration) {
         float elapsedTime = 0f;
         while (elapsedTime < duration){
