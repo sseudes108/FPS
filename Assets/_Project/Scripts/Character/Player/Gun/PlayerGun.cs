@@ -93,10 +93,11 @@ public class PlayerGun : MonoBehaviour {
     public void HandleGunReload(){
         if(!_player.Input.Reload){return;}
         if(_activeGun.AmmoLeftInMag ==_activeGun.Magazine){return;}
-        _isReloading = true;
 
         var bulletsLeftInTotal = _weapons.GetCurrentGunAmmoInventory();
         if(bulletsLeftInTotal == 0){ return;} // if has no bullet left to reload
+        
+        _isReloading = true;
 
         var amountToFill = _activeGun.Magazine - _activeGun.AmmoLeftInMag;;
 

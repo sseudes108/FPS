@@ -10,7 +10,6 @@ public class PlayerWeapons : MonoBehaviour {
     private int _activeWeaponIndex;
     private string _activeGunName;
 
-
 #region UnityMethods
 
     private void OnEnable() {
@@ -68,6 +67,7 @@ public class PlayerWeapons : MonoBehaviour {
     }
     private void ChangeWeapon(PlayerGun playerGun, int index){
         foreach(var gun in _weapons){
+            gun.SetIsAiming(false);
             gun.gameObject.SetActive(false);
         }
         _availableGuns[index].gameObject.SetActive(true);
@@ -92,20 +92,26 @@ public class PlayerWeapons : MonoBehaviour {
     }
 
     private void PlayerGun_OnWeaponChange(PlayerGun playerGun, int key){
-        if(key == 1){
-            var nextIndex = _activeWeaponIndex++;
-            if(nextIndex >= _availableGuns.Count -1){
-                _activeWeaponIndex = 0;
+        if(key == -1){//previous
+            _activeWeaponIndex--;
+
+            if(_activeWeaponIndex < 0){//if the index is less than 0
+                _activeWeaponIndex = _availableGuns.Count - 1; //go to end of the available guns list
+            }            
+        }else if(key == 1){//next
+            _activeWeaponIndex++;
+
+            if(_activeWeaponIndex > _availableGuns.Count - 1){//if the index is greater than the available list count -1 (2 guns -1 = [0, 1] indexes)
+                _activeWeaponIndex = 0;//go to start of the available guns list
             }
-        }else if(key == -1){
-            var nextIndex = _activeWeaponIndex--;
-            if(nextIndex <= 0){
-                _activeWeaponIndex = _availableGuns.Count -1;
-            }
-        }else{
+        }else{//when start game
             _activeWeaponIndex = 0;
         }
-        
+
+        if(_activeGunName == _availableGuns[_activeWeaponIndex].name){//In the start the pistol is index 0, but when other gun is picked becames 1, so the first change without this correction change index 0 for index 1 both are the pistol, so no visible change.
+            _activeWeaponIndex = 0;
+        }
+
         ChangeWeapon(playerGun, _activeWeaponIndex);
     }
 

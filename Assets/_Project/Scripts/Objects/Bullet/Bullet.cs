@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour{
 
     private void OnTriggerEnter(Collider other) {
         var objectTag = other.tag;
-
+        
         switch (objectTag){
             case "Enemy":
                 if(_character is Player){

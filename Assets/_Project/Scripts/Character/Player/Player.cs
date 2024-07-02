@@ -142,9 +142,10 @@ public class Player : Character {
     public void GameManager_OnGameStart(){
         StartCoroutine(GameStartAdjustments());
     }
+    
     private IEnumerator GameStartAdjustments(){
         PlayerInput.AllowInputs(false);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         PlayerInput.AllowInputs(true);
         if(!Movement.Controller.enabled){
             Movement.Controller.enabled = true;

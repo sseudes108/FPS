@@ -19,8 +19,8 @@
                 </engine:VisualElement>
                 <engine:VisualElement name="CenterEvents" style="flex-grow: 1; width: 40%;">
                     <engine:VisualElement name="EventMessage" style="flex-grow: 1; opacity: 0;">
-                        <engine:Label text="Machine Gun" name="ItemName" style="-unity-text-align: upper-center; font-size: 66px; -unity-font-style: bold;" />
-                        <engine:Label text="Press F to Pick Up" name="ItemMessage" style="-unity-text-align: upper-center; -unity-font-style: bold; font-size: 33px; opacity: 1;" />
+                        <engine:Label text="Machine Gun" name="ItemName" style="-unity-text-align: upper-center; font-size: 66px; -unity-font-style: bold; -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(195, 195, 195);" />
+                        <engine:Label text="Press F to Pick Up" name="ItemMessage" style="-unity-text-align: upper-center; -unity-font-style: bold; font-size: 33px; opacity: 1; -unity-text-outline-color: rgb(195, 195, 195); -unity-text-outline-width: 2px;" />
                     </engine:VisualElement>
                 </engine:VisualElement>
                 <engine:VisualElement name="Right" style="flex-grow: 1; width: 30%;" />

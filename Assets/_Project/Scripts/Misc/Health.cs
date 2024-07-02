@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour{
     public static Action<int> OnHealthChange;
+    public static Action OnPlayerDamaged;
     public static Action OnPlayerDied;
 
     [SerializeField] private int _maxHealth;
@@ -30,6 +31,7 @@ public class Health : MonoBehaviour{
 
         if(_character is Player){
             OnHealthChange?.Invoke(_currentHealth);
+            OnPlayerDamaged?.Invoke();
         }
         
         if( _currentHealth <= 0 ){

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -30,6 +31,7 @@ public abstract class Gun : MonoBehaviour{
     [SerializeField] protected float _recoilForce;
     public int _ammoLeftInMag;
     protected Transform _firePoint;
+    protected Transform _muzzleFlash;
 
     [Header("Bullet")]
     [SerializeField] protected Material _bulletMaterial;
@@ -78,6 +80,7 @@ public abstract class Gun : MonoBehaviour{
         _aim = transform.Find("States/Aim");
         _model = transform.Find("Model");
         _firePoint = transform.Find("Model/FirePoint");
+        _muzzleFlash = transform.Find("Model/FirePoint/MuzzleFlash");
     }
 
     private void Start() {
@@ -88,13 +91,19 @@ public abstract class Gun : MonoBehaviour{
         Aim();
         DetectPlayer();
     }
-
 #endregion
 
 #region Custom Methods
 
+    private IEnumerator MuzzleFlashRoutine(){
+        _muzzleFlash.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.05f);
+        _muzzleFlash.gameObject.SetActive(false);
+    }
+
     public void Shoot(){
         _ammoLeftInMag--;
+        StartCoroutine(MuzzleFlashRoutine());
         var newBullet = _bulletPool.Get();
         newBullet.Init(this, _bulletMaterial, _damageValue, _character, _firePoint);
     }
