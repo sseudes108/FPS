@@ -3,14 +3,17 @@
     <engine:VisualElement name="Container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); opacity: 1;">
         <engine:VisualElement name="Canvas" style="flex-grow: 1; opacity: 1;">
             <engine:VisualElement name="Top" style="flex-grow: 0; flex-shrink: 0; flex-basis: 33%;" />
-            <engine:VisualElement name="Middle" style="flex-grow: 0; flex-shrink: 0; flex-basis: 33%; flex-direction: column; align-content: center; align-self: center; justify-content: center; align-items: auto;">
+            <engine:VisualElement name="Middle" style="flex-grow: 0; flex-shrink: 0; flex-basis: 33%; flex-direction: row; align-content: center; align-self: center; justify-content: space-around; align-items: center;">
                 <engine:VisualElement name="Cross" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 100px; height: 100px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=cb51610f1993edb408560331ee47acc4&amp;type=3#60&quot;);" />
             </engine:VisualElement>
             <engine:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%; flex-shrink: 0; justify-content: center; opacity: 1; flex-direction: row;">
                 <engine:VisualElement name="LeftAmmo" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: flex-start; width: 30%; align-self: auto; align-content: flex-start; margin-left: 108px; margin-top: 0; rotate: -9deg;">
-                    <engine:Label text="Ammo: " name="AmmoLabel" style="font-size: 72px; -unity-text-align: upper-left; color: rgb(170, 182, 202); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 3px; -unity-font-style: bold;" />
-                    <engine:Label text="33/33" name="CurrentAmmoLabel" style="font-size: 72px; color: rgb(170, 182, 202); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold;" />
-                    <engine:Label text="216" name="MaxAmmoLabel" style="font-size: 27px; align-content: flex-end; -unity-font-style: bold-and-italic;" />
+                    <engine:VisualElement name="amm" style="position: absolute; height: 102px; width: 714px; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Ammo_UI.png?fileID=2800000&amp;guid=77258000df43be04189228c6f8c43d96&amp;type=3#Ammo_UI&quot;); top: 220px;" />
+                    <engine:VisualElement name="Labels" style="flex-grow: 1; flex-direction: row;">
+                        <engine:Label text="Ammo: " name="AmmoLabel" style="font-size: 72px; -unity-text-align: upper-left; color: rgb(170, 182, 202); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 3px; -unity-font-style: bold;" />
+                        <engine:Label text="33/33" name="CurrentAmmoLabel" style="font-size: 72px; color: rgb(170, 182, 202); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold;" />
+                        <engine:Label text="216" name="MaxAmmoLabel" style="font-size: 27px; align-content: flex-end; -unity-font-style: bold-and-italic;" />
+                    </engine:VisualElement>
                 </engine:VisualElement>
                 <engine:VisualElement name="CenterEvents" style="flex-grow: 1; width: 40%;">
                     <engine:VisualElement name="EventMessage" style="flex-grow: 1; opacity: 0;">
@@ -21,6 +24,10 @@
                 <engine:VisualElement name="Right" style="flex-grow: 1; width: 30%;" />
             </engine:VisualElement>
         </engine:VisualElement>
-        <engine:VisualElement name="Overlay" style="flex-grow: 1; opacity: 0;" />
+        <engine:VisualElement name="Overlay" style="flex-grow: 1; opacity: 0; align-self: center; align-content: center; justify-content: space-around;">
+            <engine:VisualElement name="YouDied" style="flex-grow: 0; width: 80%; height: 30%; flex-shrink: 0; align-self: center; align-content: center; justify-content: space-around; align-items: auto; background-color: rgb(0, 0, 0); opacity: 0;">
+                <engine:Label text="You Died!" style="align-self: center; font-size: 216px; -unity-font-style: bold; color: rgb(125, 16, 16);" />
+            </engine:VisualElement>
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

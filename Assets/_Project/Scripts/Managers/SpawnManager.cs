@@ -29,7 +29,7 @@ public class SpawnManager : MonoBehaviour {
     }
 
     public IEnumerator PlayerDeadRoutine(){
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         yield return null;
     }

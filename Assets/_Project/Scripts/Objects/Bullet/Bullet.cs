@@ -27,13 +27,28 @@ public class Bullet : MonoBehaviour{
         _rigidbody.MovePosition(_rigidbody.position + movement);
     }
 
-    public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint) {
+    public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint){
+        StartCoroutine(INITRoutine(gun, material, damageValue, character, firePoint));
+    }
+
+    public IEnumerator INITRoutine(Gun gun, Material material, int damageValue, Character character, Transform firePoint){// Gambiarra - bug fix '-' . Sometimes (40%) the bullets take a diferente position, based on somthing that i dont know.
         SetDirection(firePoint);
+        yield return null;
+        SetDirection(firePoint);
+        yield return null;    
         SetGunAndCharacter(gun, character);
         SetMaterial(material);
         _damageValue = damageValue;
         StartCoroutine(ReleaseBulletRoutine());
     }
+
+    // public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint) {
+    //     SetDirection(firePoint);
+    //     SetGunAndCharacter(gun, character);
+    //     SetMaterial(material);
+    //     _damageValue = damageValue;
+    //     StartCoroutine(ReleaseBulletRoutine());
+    // }
 
     private void OnTriggerEnter(Collider other) {
         var objectTag = other.tag;

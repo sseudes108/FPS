@@ -32,6 +32,7 @@ public class Player : Character {
         GameManager.OnGamePaused += GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp += Gun_OnPlayerCloseForPickUp;
         Gun.OnPlayerMoveOutRange += Gun_OnPlayerMoveOutRange;
+        Health.OnPlayerDied += Health_OnPlayerDied;
     }
     private void OnDisable() {
         SpawnManager.OnCheckPoint -= CheckPoint_UpdatePosition;
@@ -39,6 +40,11 @@ public class Player : Character {
         GameManager.OnGamePaused -= GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp -= Gun_OnPlayerCloseForPickUp;
         Gun.OnPlayerMoveOutRange -= Gun_OnPlayerMoveOutRange;
+        Health.OnPlayerDied -= Health_OnPlayerDied;
+    }
+
+    private void Health_OnPlayerDied(){
+        PlayerInput.AllowInputs(false);
     }
 
     private void Gun_OnPlayerCloseForPickUp(Gun gun){
