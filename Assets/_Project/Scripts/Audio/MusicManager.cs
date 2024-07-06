@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour {
-    [SerializeField] private List<SoundSO> _musics = new();
-
     private bool playMusic;
 
     private void OnEnable() {
@@ -26,9 +23,9 @@ public class MusicManager : MonoBehaviour {
 
     public IEnumerator MusicPlayRoutine(){
         do{
-            var randomIndex = Random.Range(0, _musics.Count);
-            PlayMusic(_musics[randomIndex]);
-            yield return new WaitForSeconds(_musics[randomIndex].AudioClip.length); //Add efect do low the volume near the end and up from the start
+            var randomIndex = Random.Range(0, GameManager.Instance.AudioManager.Database.InGameMusics.Count);
+            PlayMusic(GameManager.Instance.AudioManager.Database.InGameMusics[randomIndex]);
+            yield return new WaitForSeconds(GameManager.Instance.AudioManager.Database.InGameMusics[randomIndex].AudioClip.length); //Add efect do low the volume near the end and up from the start
             yield return null;
         }while(playMusic);
     }

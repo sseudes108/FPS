@@ -1,11 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioDatabase : MonoBehaviour {
-    
-    [Header("SFX")]
-    public SoundSO RifleShoot;
+    [Header("Menus")]
+    public List<SoundSO> MainMenuMusics;
 
-
-    [Header("Music")]
-    public SoundSO Locus;
+    [Header("In Game")]
+    public List<SoundSO> InGameMusics;
 }

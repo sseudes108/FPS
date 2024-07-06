@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour{
     private Material _bulletMaterial;
     private TrailRenderer _trailRenderer;
     private Renderer _renderer;
-    private BulletMovement _movement;
     private Gun _gun;
     private Character _character;
 
@@ -32,23 +31,16 @@ public class Bullet : MonoBehaviour{
     }
 
     public IEnumerator INITRoutine(Gun gun, Material material, int damageValue, Character character, Transform firePoint){// Gambiarra - bug fix '-' . Sometimes (40%) the bullets take a diferente position, based on somthing that i dont know.
-        SetDirection(firePoint);
-        yield return null;
-        SetDirection(firePoint);
-        yield return null;    
+        for(int i = 0; i < 5; i++){
+            SetDirection(firePoint);
+            yield return null;
+        }
+
         SetGunAndCharacter(gun, character);
         SetMaterial(material);
         _damageValue = damageValue;
         StartCoroutine(ReleaseBulletRoutine());
     }
-
-    // public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint) {
-    //     SetDirection(firePoint);
-    //     SetGunAndCharacter(gun, character);
-    //     SetMaterial(material);
-    //     _damageValue = damageValue;
-    //     StartCoroutine(ReleaseBulletRoutine());
-    // }
 
     private void OnTriggerEnter(Collider other) {
         var objectTag = other.tag;
@@ -114,12 +106,8 @@ public class Bullet : MonoBehaviour{
     }
 
     private void SetDirection(Transform firePoint){
-        Debug.Log($"Start SetDirection - firePoint position {firePoint.position}, transform.position {transform.position}");
         transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
         _direction = firePoint.forward;
         _trailRenderer.enabled = true;
-        Debug.Log($"End SetDirection - firePoint position {firePoint.position}, transform.position {transform.position}");
-        // Vector3 direction = firePoint.forward;
-        // _movement.SetDirection(direction);
     }
 }
