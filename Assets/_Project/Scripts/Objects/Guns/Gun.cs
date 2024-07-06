@@ -3,9 +3,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
+[RequireComponent(typeof(Sway))]
 public class Gun : MonoBehaviour{
     public static Action<Gun> OnPlayerCloseForPickUp;
     public static Action<bool> OnPlayerMoveOutRange;
+    public static Action<Transform> OnShoot;
     
     protected ObjectPool<Bullet> _bulletPool;
     protected Character _character;
@@ -16,11 +18,13 @@ public class Gun : MonoBehaviour{
     [SerializeField] private bool _isAvailable;
     public bool IsAvailable => _isAvailable;
 
-    private int _ammoLeftInMag;
+
+    // *** SET PRIVATE *** ///
+    public int _ammoLeftInMag;
     public int AmmoLeftInMag => _ammoLeftInMag;
     [SerializeField] protected Transform _firePoint;
     public Transform FirePoint => _firePoint;
-    protected Transform _muzzleFlash;
+    private Transform _muzzleFlash;
     private Transform _hip;
     private Transform _aim;
     private Transform _model;
@@ -55,9 +59,15 @@ public class Gun : MonoBehaviour{
     #region Shoot
 
     public void Shoot(){
+        StartCoroutine(ShootRoutine());
+    }
+
+    public IEnumerator ShootRoutine(){
         _ammoLeftInMag--;
         StartCoroutine(MuzzleFlashRoutine());
+        OnShoot?.Invoke(_firePoint);
         var newBullet = _bulletPool.Get();
+        yield return null;
         newBullet.Init(this,_gunData.BulletMaterial, _gunData.DamageValue, _character, _firePoint);
     }
 

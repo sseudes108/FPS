@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b494bbc9656cd34897ff63bee4a04f2, type: 3}
-  m_Name: Assault Rifle
+  m_Name: Assault Rifle 2
   m_EditorClassIdentifier: 
   WeaponType: 2
   Magazine: 33
-  ReloadTime: 0.3
+  ReloadTime: 0.5
   Firerate: 0.1
   CanAutoFire: 1
-  DamageValue: 9
-  RecoilForce: 1.5
-  BulletMaterial: {fileID: 2100000, guid: 37b6c62573a40aa46a0649d00df22db2, type: 2}
-  ZoomAmount: 20
-  AimSpeed: 12
+  DamageValue: 12
+  RecoilForce: 2
+  BulletMaterial: {fileID: 2100000, guid: a51716d1e62c5144daf4c6cc52b5242c, type: 2}
+  ZoomAmount: 30
+  AimSpeed: 9
   ShootSound: {fileID: 11400000, guid: 31ee40eb2909d9c48afed60203908b12, type: 2}
   ReloadSound: {fileID: 11400000, guid: 31b1b9e5718d7444ca6eebc691f1a841, type: 2}
   HandlingSound: {fileID: 11400000, guid: e20c906931c13b443be5cc0d871a87ab, type: 2}

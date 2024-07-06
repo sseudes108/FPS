@@ -27,15 +27,7 @@ public class Bullet : MonoBehaviour{
     }
 
     public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint){
-        StartCoroutine(INITRoutine(gun, material, damageValue, character, firePoint));
-    }
-
-    public IEnumerator INITRoutine(Gun gun, Material material, int damageValue, Character character, Transform firePoint){// Gambiarra - bug fix '-' . Sometimes (40%) the bullets take a diferente position, based on somthing that i dont know.
-        for(int i = 0; i < 5; i++){
-            SetDirection(firePoint);
-            yield return null;
-        }
-
+        SetDirection(firePoint);
         SetGunAndCharacter(gun, character);
         SetMaterial(material);
         _damageValue = damageValue;
@@ -76,7 +68,9 @@ public class Bullet : MonoBehaviour{
 
     private void DisableBullet(){
         _trailRenderer.enabled = false;
-        _gun.ReleaseBulletFromPool(this);
+        if(_gun != false){
+            _gun.ReleaseBulletFromPool(this);
+        }
     }
 
     private void HandleImpact(Collider other){

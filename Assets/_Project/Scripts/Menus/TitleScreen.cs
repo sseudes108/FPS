@@ -73,10 +73,10 @@ public class TitleScreen : MonoBehaviour{
         StartCoroutine(FadeRoutine(_overLay, 0f, 1f, 4f));
         yield return new WaitForSeconds(4f);
         yield return null;
-        
+
         SceneManager.LoadScene("Locus");
     }
-    
+        
     private IEnumerator FadeRoutine(VisualElement element, float start, float end, float duration){
         float elapsedTime = 0;
         do{
