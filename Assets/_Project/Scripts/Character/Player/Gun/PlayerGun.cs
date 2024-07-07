@@ -205,7 +205,7 @@ public class PlayerGun : MonoBehaviour {
 
 #region Events
 
-    private void GameManager_OnGamePaused(bool paused){
+    private void GameManager_OnGamePaused(GameData data, bool paused){
         StartCoroutine(UpdateAmmoRoutine());
     }
     private IEnumerator UpdateAmmoRoutine(){

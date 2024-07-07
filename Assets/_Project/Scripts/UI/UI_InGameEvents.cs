@@ -87,7 +87,7 @@ public class UI_InGameEvents : MonoBehaviour {
         }
     }
 
-    private void GameManager_OnGamePaused(bool paused){
+    private void GameManager_OnGamePaused(GameData data, bool paused){
         SetElements();
     }
 }

@@ -31,7 +31,10 @@ public class Bullet : MonoBehaviour{
         SetGunAndCharacter(gun, character);
         SetMaterial(material);
         _damageValue = damageValue;
-        StartCoroutine(ReleaseBulletRoutine());
+
+        if(enabled){
+            StartCoroutine(ReleaseBulletRoutine());
+        } 
     }
 
     private void OnTriggerEnter(Collider other) {

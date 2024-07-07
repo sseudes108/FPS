@@ -18,7 +18,7 @@ public class PauseManager : MonoBehaviour {
         _isPaused = false;
     }
 
-    private void GameManager_OnGamePaused(bool paused){
+    private void GameManager_OnGamePaused(GameData data, bool paused){
         _isPaused = paused;
         
         if(_isPaused){

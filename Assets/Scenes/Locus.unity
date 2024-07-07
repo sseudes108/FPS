@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 30363106}
   - component: {fileID: 30363105}
   - component: {fileID: 30363104}
+  - component: {fileID: 30363108}
   m_Layer: 0
   m_Name: CheckPoint
   m_TagString: Untagged
@@ -236,12 +237,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 4.333333, z: 1}
+  m_Center: {x: 0, y: 1.6666666, z: 0}
 --- !u!23 &30363105
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -304,12 +305,25 @@ Transform:
   m_GameObject: {fileID: 30363103}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: -22, y: 0, z: -22.95}
   m_LocalScale: {x: 4, y: 0.3, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &30363108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30363103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e8d07eb3bb1a2c4cb980edccf7127cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checkPointID: 0
 --- !u!1 &62578604
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,6 +479,7 @@ Transform:
   - {fileID: 2064611898}
   - {fileID: 690547366}
   - {fileID: 267144463}
+  - {fileID: 2039321155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &169776626
@@ -899,7 +914,7 @@ GameObject:
   - component: {fileID: 267144463}
   - component: {fileID: 267144464}
   m_Layer: 0
-  m_Name: Object Pool Manager
+  m_Name: 'Object Pool '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2586,7 +2601,7 @@ GameObject:
   - component: {fileID: 568983467}
   - component: {fileID: 568983468}
   m_Layer: 0
-  m_Name: Visual Efx Manager
+  m_Name: Visual Efx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2869,6 +2884,128 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639908932}
   m_Mesh: {fileID: -6008656525898266285, guid: a6cfc1ac3493e904d9ccf7663559c6b8, type: 3}
+--- !u!1 &645078031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 645078035}
+  - component: {fileID: 645078034}
+  - component: {fileID: 645078033}
+  - component: {fileID: 645078032}
+  - component: {fileID: 645078036}
+  m_Layer: 0
+  m_Name: CheckPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &645078032
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645078031}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 4.333333, z: 1}
+  m_Center: {x: 0, y: 1.6666666, z: 0}
+--- !u!23 &645078033
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645078031}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &645078034
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645078031}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &645078035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645078031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.5, y: 0, z: 27.400002}
+  m_LocalScale: {x: 4, y: 0.3, z: 4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &645078036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645078031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e8d07eb3bb1a2c4cb980edccf7127cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checkPointID: 1
 --- !u!1 &648981243
 GameObject:
   m_ObjectHideFlags: 0
@@ -3006,7 +3143,7 @@ GameObject:
   - component: {fileID: 690547366}
   - component: {fileID: 690547367}
   m_Layer: 0
-  m_Name: Menu Manager
+  m_Name: 'Menu '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6292,9 +6429,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1556888601}
   - component: {fileID: 1556888602}
-  - component: {fileID: 1556888603}
   m_Layer: 0
-  m_Name: SpawnManager
+  m_Name: Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6328,19 +6464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _checkPoints: []
---- !u!114 &1556888603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1556888600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e8d07eb3bb1a2c4cb980edccf7127cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _checkPointID: 1
+  _lastCheckPointPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1561477443
 GameObject:
   m_ObjectHideFlags: 0
@@ -8083,6 +8207,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038459179}
   m_Mesh: {fileID: 4300000, guid: 13c5b9d94ac272145a30191629f297fa, type: 3}
+--- !u!1 &2039321154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2039321155}
+  - component: {fileID: 2039321156}
+  m_Layer: 0
+  m_Name: Data Persistent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2039321155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039321154}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 169776625}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2039321156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039321154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5399f61b770b5814dad713054d2425b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FileName: data.game
+  GameData:
+    Sensitivity: 9
+    RespawnPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2064611896
 GameObject:
   m_ObjectHideFlags: 0
@@ -8099,7 +8271,7 @@ GameObject:
   - component: {fileID: 2064611902}
   - component: {fileID: 2064611903}
   m_Layer: 5
-  m_Name: UI Manager
+  m_Name: 'UI '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8191,6 +8363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dec87132ae749845b43f0330454b6e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pausedAsset: {fileID: 0}
+  _defaultAsset: {fileID: 0}
 --- !u!114 &2064611903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14225,7 +14399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4790681316528917896, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
       propertyPath: m_Name
-      value: Audio Manager
+      value: Audio
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16190,6 +16364,7 @@ SceneRoots:
   - {fileID: 464361613}
   - {fileID: 169776625}
   - {fileID: 30363107}
+  - {fileID: 645078035}
   - {fileID: 1743167203172464292}
   - {fileID: 8733907973814210416}
   - {fileID: 543450652170353990}

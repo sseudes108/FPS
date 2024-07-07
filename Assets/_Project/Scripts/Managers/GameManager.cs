@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour{
     //Events
     public static Action OnGameStart;
     public static Action OnGameEnd;
-    public static Action<bool> OnGamePaused;
+    public static Action<GameData, bool> OnGamePaused;
 
     //Global variables
     private Vector2 _rotationInput;
@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour{
     public VFXManager VFXManager { get; private set;}
     public PauseManager PauseManager { get; private set;}
     public ObjectPoolManager ObjectPoolManager { get; private set;}
+
+    public DataPersistentManager DataManager { get; private set;}
 
     //Debug
     public Testing Testing;
@@ -78,17 +80,19 @@ public class GameManager : MonoBehaviour{
         VFXManager = GetComponentInChildren<VFXManager>();
         PauseManager = GetComponentInChildren<PauseManager>();
         ObjectPoolManager = GetComponentInChildren<ObjectPoolManager>();
+        DataManager = GetComponentInChildren<DataPersistentManager>();
     }
 
 #endregion
 
 #region Events
 
-    private void GameManager_OnGamePaused(bool paused){
+    private void GameManager_OnGamePaused(GameData data, bool paused){
         if(paused){
             Cursor.lockState = CursorLockMode.Confined;
         }else{
             Cursor.lockState = CursorLockMode.Locked;
+            DataManager.SaveGame();
         }
     }
 

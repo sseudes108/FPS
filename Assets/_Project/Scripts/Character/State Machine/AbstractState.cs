@@ -1,3 +1,4 @@
+[System.Serializable]
 public abstract class AbstractState {
     public Character Character {get; private set;}
     protected Player Player;

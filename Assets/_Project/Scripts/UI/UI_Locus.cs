@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UI_Locus : MonoBehaviour {
+public class UI_Locus : MonoBehaviour, IDataPersistencer {
     private VisualElement _crossHair;
     [SerializeField] private Texture2D _crosshairTexture;
     [SerializeField] private Color _crosshairColor;
@@ -31,7 +31,7 @@ public class UI_Locus : MonoBehaviour {
         CrossHairStyleConfig();
     }
 
-    private void GameManager_OnGamePaused(bool paused){ //Reset The elements after the change in style asset from pause menu
+    private void GameManager_OnGamePaused(GameData data, bool paused){ //Reset The elements after the change in style asset from pause menu
         if(!paused){
             SetElements();
             if(crossChanged){
@@ -43,7 +43,8 @@ public class UI_Locus : MonoBehaviour {
             if(crossHasChanged){
                 _crossHair.style.backgroundImage = updatedCrossHair;
             }
-            
+
+            GameManager.Instance.DataManager.SaveGame();
         }
     }
 
@@ -53,7 +54,11 @@ public class UI_Locus : MonoBehaviour {
     }
 
     private void CrossHairStyleConfig(){
-        _crossHair.style.backgroundImage = _crosshairTexture;
+        if(updatedCrossHair == null){
+            _crossHair.style.backgroundImage = _crosshairTexture;
+        }else{
+            _crossHair.style.backgroundImage = updatedCrossHair;
+        }
         _crossHair.style.unityBackgroundImageTintColor = _crosshairColor;
     }
 
@@ -66,6 +71,14 @@ public class UI_Locus : MonoBehaviour {
     private void UI_PauseMenu_OnCrossChange(Background newCross){
         updatedCrossHair = newCross;
         crossChanged = true;
+        SaveData(GameManager.Instance.DataManager.GameData);
     }
 
+    public void LoadData(GameData data){
+        updatedCrossHair = data.CrossHair;
+    }
+
+    public void SaveData(GameData data){
+        data.CrossHair = updatedCrossHair;
+    }
 }

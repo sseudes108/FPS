@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour {
+public class PlayerCamera : MonoBehaviour, IDataPersistencer {
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private FirstPersonCamera _firstPersonCamera;
 
@@ -19,9 +19,9 @@ public class PlayerCamera : MonoBehaviour {
         GameManager.OnGamePaused += GameManager_OnGamePaused;
     }
 
-    private void Start() {
-        GameManager.Instance.SetCurrentSensitivity(_sensitivity);
-    }
+    // private void Start() {
+    //     GameManager.Instance.SetCurrentSensitivity(_sensitivity);
+    // }
 
     public void CameraRotation(float mouseInput){
         _rotationValue -= mouseInput;
@@ -35,9 +35,24 @@ public class PlayerCamera : MonoBehaviour {
 
     private void OnPauseMenu_OnSensivityChange(float value){
         _sensitivity = value;
+        SaveData(GameManager.Instance.DataManager.GameData);
     }
 
-    private void GameManager_OnGamePaused(bool paused){
-        GameManager.Instance.SetCurrentSensitivity(_sensitivity);
+    private void GameManager_OnGamePaused(GameData data, bool paused){
+        if(!paused){
+            GameManager.Instance.DataManager.SaveGame();
+        }
+        // GameManager.Instance.SetCurrentSensitivity(_sensitivity);
+    }
+
+    public void LoadData(GameData data){
+        Debug.Log("LoadData Called");
+        _sensitivity = data.Sensitivity;
+        Debug.Log($"_sensitivity {_sensitivity} -- data.Sensitivity -{data.Sensitivity}");
+    }
+
+    public void SaveData(GameData data){
+        data.Sensitivity = _sensitivity;
+        // GameManager.Instance.DataManager.SaveGame();
     }
 }

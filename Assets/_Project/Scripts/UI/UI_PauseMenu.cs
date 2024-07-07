@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UI_PauseMenu : MonoBehaviour {
+public class UI_PauseMenu : UIManager {
     public static Action<float> OnSensivityChange;
     public static Action<Background> OnCrossChange;
 
     private Button _resume, _reset;
     private Slider _sensitivity;
-    private float _sensitivityValue;
+    // private float _updatedSensitivity;
+    private float _currentSensitivity;
 
     public List<Button> buttons = new ();
 
@@ -21,13 +21,14 @@ public class UI_PauseMenu : MonoBehaviour {
         GameManager.OnGamePaused -= GameManager_OnGamePaused;
     }
 
-    private void GameManager_OnGamePaused(bool paused){
+    private void GameManager_OnGamePaused(GameData data, bool paused){
         if(paused){
             SetElements();
             _resume.clicked += ResumeClicked;
             _reset.clicked += ResetClicked;
 
-            _sensitivity.value = GameManager.Instance.CurrentSensitivity;
+            // _sensitivity.value = GameManager.Instance.CurrentSensitivity;
+            _sensitivity.value = GameManager.Instance.DataManager.GameData.Sensitivity;
             _sensitivity.RegisterCallback<ChangeEvent<float>>(SensitivityChanged);
 
             foreach(Button button in buttons){
@@ -41,6 +42,8 @@ public class UI_PauseMenu : MonoBehaviour {
             foreach(Button button in buttons){
                 button.clicked -= () => OnButtonClick(button);
             }
+
+            GameManager.Instance.DataManager.SaveGame();
         }
     }
 
@@ -56,37 +59,11 @@ public class UI_PauseMenu : MonoBehaviour {
     }
 
     private void OnButtonClick(Button button){
-        // Debug.Log($"{button.name} clicked");
         OnCrossChange?.Invoke(button.iconImage);
-
-        // switch (button.name){
-        //     case "Cross1":
-        //         var Texture2D = button.iconImage;
-        //     break;
-
-        //     case "Cross2":
-        //     break;
-
-        //     case "Cross3":
-        //     break;
-
-        //     case "Cross4":
-        //     break;
-
-        //     case "Cross5":
-        //     break;
-
-        //     case "Cross6":
-        //     break;
-
-        //     default:
-        //     break;
-
-        // }
     }
 
     private void ResumeClicked(){
-        GameManager.OnGamePaused?.Invoke(false);
+        GameManager.OnGamePaused?.Invoke(GameManager.Instance.DataManager.GameData, false);
     }
 
     private void ResetClicked(){
@@ -94,7 +71,15 @@ public class UI_PauseMenu : MonoBehaviour {
     }
 
     private void SensitivityChanged(ChangeEvent<float> evt){
-        _sensitivityValue = evt.newValue;
-        OnSensivityChange?.Invoke(_sensitivityValue);
+        // _updatedSensitivity = evt.newValue;
+        _currentSensitivity = evt.newValue;
+        OnSensivityChange?.Invoke(_currentSensitivity);
+        // SaveData(GameManager.Instance.DataManager.GameData);
     }
+
+    public void LoadData(GameData data){
+        _currentSensitivity = data.Sensitivity;
+    }
+
+    public void SaveData(GameData data){}
 }

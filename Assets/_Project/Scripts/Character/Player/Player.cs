@@ -27,7 +27,7 @@ public class Player : Character {
 
 #region UnityMethods
     private void OnEnable() {
-        SpawnManager.OnCheckPoint += CheckPoint_UpdatePosition;
+        SpawnManager.OnCheckPoint += SpawnManager_UpdatePosition;
         GameManager.OnGameStart += GameManager_OnGameStart;
         GameManager.OnGamePaused += GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp += Gun_OnPlayerCloseForPickUp;
@@ -35,7 +35,7 @@ public class Player : Character {
         Health.OnPlayerDied += Health_OnPlayerDied;
     }
     private void OnDisable() {
-        SpawnManager.OnCheckPoint -= CheckPoint_UpdatePosition;
+        SpawnManager.OnCheckPoint -= SpawnManager_UpdatePosition;
         GameManager.OnGameStart -= GameManager_OnGameStart;
         GameManager.OnGamePaused -= GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp -= Gun_OnPlayerCloseForPickUp;
@@ -100,9 +100,9 @@ public class Player : Character {
     private void HandlePause(){
         if(!UnityEngine.Input.GetKeyDown(KeyCode.Escape)){return;}
         if(GameManager.Instance.PauseManager.IsPaused){
-            GameManager.OnGamePaused?.Invoke(false);
+            GameManager.OnGamePaused?.Invoke(GameManager.Instance.DataManager.GameData, false);
         }else{
-            GameManager.OnGamePaused?.Invoke(true);
+            GameManager.OnGamePaused?.Invoke(GameManager.Instance.DataManager.GameData, true);
         }
     }
 
@@ -159,7 +159,7 @@ public class Player : Character {
         yield return null;
     }
 
-    private void GameManager_OnGamePause(bool isPaused){
+    private void GameManager_OnGamePause(GameData data, bool isPaused){
         if(isPaused){
             PlayerInput.AllowInputs(false);
         }else{
@@ -167,8 +167,8 @@ public class Player : Character {
         }
     }
 
-    private void CheckPoint_UpdatePosition(Vector3 lastCheckPointPosition){
-        transform.parent.transform.position = lastCheckPointPosition;
+    private void SpawnManager_UpdatePosition(Vector3 lastCheckPointPosition){
+        transform.position = lastCheckPointPosition;
         Movement.Controller.enabled = true; //The Character Controller Component prevent the change in position when enabled
     }
 #endregion

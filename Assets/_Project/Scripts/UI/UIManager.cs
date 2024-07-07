@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour {
         GameManager.OnGameEnd -= GameManager_OnGameEnd;
     }
 
-    private void GameManager_OnGamePaused(bool isPaused){
+    private void GameManager_OnGamePaused(GameData data, bool isPaused){
         if(isPaused){
             UIDocument.visualTreeAsset = _pausedAsset;
         }else{

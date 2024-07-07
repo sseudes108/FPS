@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SpawnManager : MonoBehaviour {
+public class SpawnManager : MonoBehaviour, IDataPersistencer{
     public static Action<Vector3> OnCheckPoint;
     [SerializeField] private List<CheckPoint> _checkPoints;
+    // public Player player;
+
+    public Vector3 _lastCheckPointPosition;
 
     private void OnEnable() {
         Health.OnPlayerDied += Health_OnPlayerDied;
@@ -35,15 +38,14 @@ public class SpawnManager : MonoBehaviour {
     }
 
     private void CheckLastCheckPoint(){
-        string playerPrefKey = $"{SceneManager.GetActiveScene().name} - Checkpoint:";
-        if(PlayerPrefs.HasKey(playerPrefKey)){
-            int key = PlayerPrefs.GetInt(playerPrefKey);
-            foreach(var cp in _checkPoints){
-                if(key == cp.CheckPointID){
-                    OnCheckPoint?.Invoke(cp.transform.position);
-                    break;
-                }
-            }
-        }
+        Debug.Log($"CheckLastCheckPoint - {_lastCheckPointPosition}");
+        OnCheckPoint?.Invoke(_lastCheckPointPosition);
     }
+
+    public void LoadData(GameData data){
+        Debug.Log($"LoadData - {data.RespawnPosition}");
+        _lastCheckPointPosition = data.RespawnPosition;
+    }
+
+    public void SaveData(GameData data){}
 }
