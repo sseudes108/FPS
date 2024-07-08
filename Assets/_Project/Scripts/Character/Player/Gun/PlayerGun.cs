@@ -160,7 +160,6 @@ public class PlayerGun : MonoBehaviour {
         }
 
         int layerMask = ~LayerMask.GetMask("NoHit"); // Cria uma máscara para todas as camadas exceto a "NoHitLayer"
-
         if (Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit, Mathf.Infinity, layerMask)){
             _activeGun.FirePoint.LookAt(hit.point);
             OnShootHit?.Invoke(hit.point);

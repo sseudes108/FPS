@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+
+// TimeStamp in Unity Project = 0.001
 public class Bullet : MonoBehaviour{
     public static Action<Bullet, Material> OnBulletImpact;
     private int _damageValue;
@@ -32,12 +34,11 @@ public class Bullet : MonoBehaviour{
         SetMaterial(material);
         _damageValue = damageValue;
 
-        if(enabled){
-            StartCoroutine(ReleaseBulletRoutine());
-        } 
+        StartCoroutine(ReleaseBulletRoutine());
     }
 
     private void OnTriggerEnter(Collider other) {
+        Debug.Log("HIT");
         var objectTag = other.tag;
         
         switch (objectTag){
