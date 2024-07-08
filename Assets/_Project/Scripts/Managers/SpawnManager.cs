@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class SpawnManager : MonoBehaviour, IDataPersistencer{
     public static Action<Vector3> OnCheckPoint;
     [SerializeField] private List<CheckPoint> _checkPoints;
-    // public Player player;
 
     public Vector3 _lastCheckPointPosition;
 
@@ -38,14 +37,12 @@ public class SpawnManager : MonoBehaviour, IDataPersistencer{
     }
 
     private void CheckLastCheckPoint(){
-        Debug.Log($"CheckLastCheckPoint - {_lastCheckPointPosition}");
         OnCheckPoint?.Invoke(_lastCheckPointPosition);
     }
 
     public void LoadData(GameData data){
-        Debug.Log($"LoadData - {data.RespawnPosition}");
         _lastCheckPointPosition = data.RespawnPosition;
     }
 
-    public void SaveData(GameData data){}
+    public void SaveData(ref GameData data){ }
 }

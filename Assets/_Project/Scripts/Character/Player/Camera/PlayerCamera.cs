@@ -19,10 +19,6 @@ public class PlayerCamera : MonoBehaviour, IDataPersistencer {
         GameManager.OnGamePaused += GameManager_OnGamePaused;
     }
 
-    // private void Start() {
-    //     GameManager.Instance.SetCurrentSensitivity(_sensitivity);
-    // }
-
     public void CameraRotation(float mouseInput){
         _rotationValue -= mouseInput;
         _rotationValue = Mathf.Clamp(_rotationValue, -60f, 60f);
@@ -35,24 +31,20 @@ public class PlayerCamera : MonoBehaviour, IDataPersistencer {
 
     private void OnPauseMenu_OnSensivityChange(float value){
         _sensitivity = value;
-        SaveData(GameManager.Instance.DataManager.GameData);
     }
 
     private void GameManager_OnGamePaused(GameData data, bool paused){
         if(!paused){
+            SaveData(ref GameManager.Instance.DataManager.GameData);
             GameManager.Instance.DataManager.SaveGame();
         }
-        // GameManager.Instance.SetCurrentSensitivity(_sensitivity);
     }
 
-    public void LoadData(GameData data){
-        Debug.Log("LoadData Called");
-        _sensitivity = data.Sensitivity;
-        Debug.Log($"_sensitivity {_sensitivity} -- data.Sensitivity -{data.Sensitivity}");
+    public void LoadData(GameData gameData){
+        _sensitivity = gameData.Sensitivity;
     }
 
-    public void SaveData(GameData data){
-        data.Sensitivity = _sensitivity;
-        // GameManager.Instance.DataManager.SaveGame();
+    public void SaveData(ref GameData gameData){
+        gameData.Sensitivity = _sensitivity;
     }
 }

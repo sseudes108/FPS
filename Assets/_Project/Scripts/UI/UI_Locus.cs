@@ -3,11 +3,13 @@ using UnityEngine.UIElements;
 
 public class UI_Locus : MonoBehaviour, IDataPersistencer {
     private VisualElement _crossHair;
-    [SerializeField] private Texture2D _crosshairTexture;
+    // [SerializeField] private Texture2D _defaulCrossHairTexture;
     [SerializeField] private Color _crosshairColor;
 
     //User to change the crosshair in pause menu
-    private Background updatedCrossHair;
+    private Background _updatedCrossHair;
+    private int _crosshairIndex;
+
     private bool crossChanged; //Seted wen the new cross is selected
     private bool crossHasChanged = false; //If no cross was selected in pause menu the original texture would be reaplied. This variable locks it.
 
@@ -35,16 +37,14 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
         if(!paused){
             SetElements();
             if(crossChanged){
-                _crossHair.style.backgroundImage = updatedCrossHair;
+                _crossHair.style.backgroundImage = _updatedCrossHair;
                 crossChanged = false;
                 crossHasChanged = true;
             }
 
             if(crossHasChanged){
-                _crossHair.style.backgroundImage = updatedCrossHair;
+                _crossHair.style.backgroundImage = _updatedCrossHair;
             }
-
-            GameManager.Instance.DataManager.SaveGame();
         }
     }
 
@@ -54,11 +54,7 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
     }
 
     private void CrossHairStyleConfig(){
-        if(updatedCrossHair == null){
-            _crossHair.style.backgroundImage = _crosshairTexture;
-        }else{
-            _crossHair.style.backgroundImage = updatedCrossHair;
-        }
+        _crossHair.style.backgroundImage = _updatedCrossHair;
         _crossHair.style.unityBackgroundImageTintColor = _crosshairColor;
     }
 
@@ -68,17 +64,21 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
         _maxAmmo = GameManager.Instance.UIManager.Root.Q<Label>("MaxAmmoLabel");
     }
 
-    private void UI_PauseMenu_OnCrossChange(Background newCross){
-        updatedCrossHair = newCross;
+    //Background newCross
+    private void UI_PauseMenu_OnCrossChange(Background newCross, int crossIndex){
+        _updatedCrossHair = newCross;
+        _crosshairIndex = 0;
+        _crosshairIndex = crossIndex;
         crossChanged = true;
-        SaveData(GameManager.Instance.DataManager.GameData);
+        SaveData(ref GameManager.Instance.DataManager.GameData);
+        GameManager.Instance.DataManager.SaveGame();
     }
 
     public void LoadData(GameData data){
-        updatedCrossHair = data.CrossHair;
+        _updatedCrossHair = GameManager.Instance.Visual.CrossesTextures[data.CrossHair];
     }
 
-    public void SaveData(GameData data){
-        data.CrossHair = updatedCrossHair;
+    public void SaveData(ref GameData data){
+        data.CrossHair = _crosshairIndex;
     }
 }

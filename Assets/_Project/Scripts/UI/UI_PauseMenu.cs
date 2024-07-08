@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_PauseMenu : UIManager {
     public static Action<float> OnSensivityChange;
-    public static Action<Background> OnCrossChange;
+    public static Action<Background, int> OnCrossChange;
 
     private Button _resume, _reset;
     private Slider _sensitivity;
@@ -27,7 +28,6 @@ public class UI_PauseMenu : UIManager {
             _resume.clicked += ResumeClicked;
             _reset.clicked += ResetClicked;
 
-            // _sensitivity.value = GameManager.Instance.CurrentSensitivity;
             _sensitivity.value = GameManager.Instance.DataManager.GameData.Sensitivity;
             _sensitivity.RegisterCallback<ChangeEvent<float>>(SensitivityChanged);
 
@@ -43,11 +43,11 @@ public class UI_PauseMenu : UIManager {
                 button.clicked -= () => OnButtonClick(button);
             }
 
-            GameManager.Instance.DataManager.SaveGame();
         }
     }
 
     private void SetElements(){
+        buttons.Clear();
         _resume = GameManager.Instance.UIManager.Root.Q<Button>("Resume");
         _reset = GameManager.Instance.UIManager.Root.Q<Button>("Reset");
         _sensitivity = GameManager.Instance.UIManager.Root.Q<Slider>("Slider");
@@ -59,7 +59,12 @@ public class UI_PauseMenu : UIManager {
     }
 
     private void OnButtonClick(Button button){
-        OnCrossChange?.Invoke(button.iconImage);
+        // var buttonName = button.ToString();
+        // var t = buttonName.LastIndexOf(buttonName);
+        // Debug.Log(t);
+        // Debug.Log(buttonName);
+        var index = buttons.IndexOf(button);
+        OnCrossChange?.Invoke(button.iconImage, index);
     }
 
     private void ResumeClicked(){
@@ -71,15 +76,7 @@ public class UI_PauseMenu : UIManager {
     }
 
     private void SensitivityChanged(ChangeEvent<float> evt){
-        // _updatedSensitivity = evt.newValue;
         _currentSensitivity = evt.newValue;
         OnSensivityChange?.Invoke(_currentSensitivity);
-        // SaveData(GameManager.Instance.DataManager.GameData);
     }
-
-    public void LoadData(GameData data){
-        _currentSensitivity = data.Sensitivity;
-    }
-
-    public void SaveData(GameData data){}
 }

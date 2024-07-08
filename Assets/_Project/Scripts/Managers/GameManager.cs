@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour{
     public ObjectPoolManager ObjectPoolManager { get; private set;}
 
     public DataPersistentManager DataManager { get; private set;}
+    public VisualManager Visual { get; private set;}
 
     //Debug
     public Testing Testing;
@@ -50,8 +51,7 @@ public class GameManager : MonoBehaviour{
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
-
-        OnGameStart?.Invoke();
+        StartGame();
     }
 
     public void UpdateRotationInput(float mouseX, float mouseY){
@@ -81,6 +81,18 @@ public class GameManager : MonoBehaviour{
         PauseManager = GetComponentInChildren<PauseManager>();
         ObjectPoolManager = GetComponentInChildren<ObjectPoolManager>();
         DataManager = GetComponentInChildren<DataPersistentManager>();
+        Visual = GetComponentInChildren<VisualManager>();
+    }
+
+    private void StartGame(){
+        StartCoroutine(StartGameRoutine());
+    }
+
+    private IEnumerator StartGameRoutine(){
+        DataManager.LoadGame();
+        yield return new WaitForSeconds(1f);
+        OnGameStart?.Invoke();
+        yield return null;
     }
 
 #endregion

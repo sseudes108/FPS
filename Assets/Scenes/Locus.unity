@@ -2600,6 +2600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 568983467}
   - component: {fileID: 568983468}
+  - component: {fileID: 568983469}
   m_Layer: 0
   m_Name: Visual Efx
   m_TagString: Untagged
@@ -2635,6 +2636,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletImpact: {fileID: 593372492942271378, guid: bc23ab1b0b01bf3429d1e8c0d959bdd8, type: 3}
+--- !u!114 &568983469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568983466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00723c666f9cda344b301ed2d619c068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _crossTextes:
+  - {fileID: 2800000, guid: cb51610f1993edb408560331ee47acc4, type: 3}
+  - {fileID: 2800000, guid: f4de8b3aa3c77314598c0086588ff662, type: 3}
+  - {fileID: 2800000, guid: 33a3017f08bad204fb42217498c99e69, type: 3}
+  - {fileID: 2800000, guid: ce03f755ff0d2b04188e61af1e507f30, type: 3}
+  - {fileID: 2800000, guid: 0ecc7fa837a3d8046acd1c551c3a59e5, type: 3}
+  - {fileID: 2800000, guid: bd0f3c4a8cabc724aa7c308332630e4c, type: 3}
 --- !u!1 &588427829
 GameObject:
   m_ObjectHideFlags: 0
@@ -8251,8 +8271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5399f61b770b5814dad713054d2425b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: data.game
+  FileName: data.json
   GameData:
+    CrossHair: 0
     Sensitivity: 9
     RespawnPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2064611896
@@ -8323,7 +8344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ff06c31bd80574b898bdff224c1ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _crosshairTexture: {fileID: 2800000, guid: cb51610f1993edb408560331ee47acc4, type: 3}
   _crosshairColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &2064611900
 MonoBehaviour:

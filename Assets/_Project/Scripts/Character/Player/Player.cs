@@ -153,9 +153,7 @@ public class Player : Character {
         PlayerInput.AllowInputs(false);
         yield return new WaitForSeconds(0.5f);
         PlayerInput.AllowInputs(true);
-        if(!Movement.Controller.enabled){
-            Movement.Controller.enabled = true;
-        }
+        Movement.Controller.enabled = true;
         yield return null;
     }
 

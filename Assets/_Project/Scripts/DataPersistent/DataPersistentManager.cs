@@ -12,8 +12,12 @@ public class DataPersistentManager : MonoBehaviour{
         DataHandler = new(Application.persistentDataPath, FileName);
         dataPersistentObjects.Clear();
         dataPersistentObjects = FindAllDataPersistenceObjects();
-        LoadGame();
+        // LoadGame();
     }
+
+    // private void Start() {
+    //     LoadGame();
+    // }
 
     public void NewGame(){
         GameData = new GameData();
@@ -33,9 +37,9 @@ public class DataPersistentManager : MonoBehaviour{
     }
 
     public void SaveGame(){
-        Debug.Log("SaveGame Called");
+        // Debug.Log("SaveGame Called");
         foreach(var obj in dataPersistentObjects){
-            obj.SaveData(GameData);
+            obj.SaveData(ref GameData);
         }
         
         DataHandler.Save(GameData);
@@ -46,5 +50,4 @@ public class DataPersistentManager : MonoBehaviour{
         var updatedList = allObjects.OfType<IDataPersistencer>().ToList();
         return updatedList;
     }
-
 }
