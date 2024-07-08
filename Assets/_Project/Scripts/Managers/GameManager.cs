@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour{
     public UIManager UIManager { get; private set;}
     public SpawnManager SpawnManager { get; private set;}
     public AudioManager AudioManager { get; private set;}
-    public VFXManager VFXManager { get; private set;}
     public PauseManager PauseManager { get; private set;}
     public ObjectPoolManager ObjectPoolManager { get; private set;}
 
@@ -50,8 +49,10 @@ public class GameManager : MonoBehaviour{
     }
 
     private void Start() {
-        Cursor.lockState = CursorLockMode.Locked;
-        StartGame();
+        if(SceneManager.GetActiveScene().name != "TitleScreen"){
+            Cursor.lockState = CursorLockMode.Locked;
+            StartGame();
+        }
     }
 
     public void UpdateRotationInput(float mouseX, float mouseY){
@@ -77,7 +78,6 @@ public class GameManager : MonoBehaviour{
         UIManager = GetComponentInChildren<UIManager>();
         SpawnManager = GetComponentInChildren<SpawnManager>();
         AudioManager = GetComponentInChildren<AudioManager>();
-        VFXManager = GetComponentInChildren<VFXManager>();
         PauseManager = GetComponentInChildren<PauseManager>();
         ObjectPoolManager = GetComponentInChildren<ObjectPoolManager>();
         DataManager = GetComponentInChildren<DataPersistentManager>();

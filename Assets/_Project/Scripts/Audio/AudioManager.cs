@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Audio;
 
-[RequireComponent(typeof(AudioDatabase), typeof(SFXManager), typeof(MusicManager))]
+[RequireComponent(typeof(AudioDatabase), typeof(AudioEffects), typeof(MusicManager))]
 public class AudioManager : MonoBehaviour{
     public AudioDatabase Database;
     // [SerializeField] private AudioMixerGroup _musicMixerGroup, _SFXMixerGroup;

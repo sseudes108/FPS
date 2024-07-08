@@ -2,9 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class SFXManager : MonoBehaviour {
+public class AudioEffects : MonoBehaviour {
     [SerializeField] private SoundSO _footStep;
-    [SerializeField] private ObjectPool<AudioSource> _SFXPool;
+    [SerializeField] private ObjectPool<AudioSource> _audioEffectPool;
+
+    public ObjectPoolManager POOL;
 
     private void OnEnable() {
         PlayerGun.OnHandleGun += PlayerGun_OnHandleGun;
@@ -21,7 +23,8 @@ public class SFXManager : MonoBehaviour {
     }
 
     private void Start() {
-        _SFXPool = GameManager.Instance.ObjectPoolManager.AudioPool;
+        POOL = GameManager.Instance.ObjectPoolManager;
+        _audioEffectPool = GameManager.Instance.ObjectPoolManager.AudioPool;
     }
 
     private void PlayerGun_OnHandleGun(SoundSO GunHandlingSound){
@@ -41,14 +44,14 @@ public class SFXManager : MonoBehaviour {
     }
 
     private void PlayAudio(SoundSO soundSO){
-        var newEffect = _SFXPool.Get();
+        var newEffect = _audioEffectPool.Get();
         newEffect.transform.SetParent(transform);
         Init(newEffect, soundSO);
     }
 
     private IEnumerator ReleaseFromPool(AudioSource audioSource, float audioLenght){
         yield return new WaitForSeconds(audioLenght);
-        _SFXPool.Release(audioSource);
+        _audioEffectPool.Release(audioSource);
     }
 
     private void Init(AudioSource audioSource, SoundSO soundSO){

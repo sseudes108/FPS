@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class TitleScreen : MonoBehaviour{
+public class UI_TitleScreen : MonoBehaviour{
     public static Action OnGameStarted;
 
     private UIDocument _uiDocument;
@@ -44,7 +44,6 @@ public class TitleScreen : MonoBehaviour{
     }
 
     private void OnPlay(){
-        Debug.Log("OnPlay");
         StartCoroutine(StartGameRoutine());
     }
 

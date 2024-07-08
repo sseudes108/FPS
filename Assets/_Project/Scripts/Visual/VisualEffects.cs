@@ -2,9 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class VFXManager : MonoBehaviour{
-    public VFXHelper _bulletImpact;
-    private ObjectPool<VFXHelper> _bulletImpactVFXPool;
+public class VisualEffects : MonoBehaviour{
+    public VisualHelper _bulletImpact;
+    private ObjectPool<VisualHelper> _bulletImpactVFXPool;
 
     private void OnEnable() {
         Bullet.OnBulletImpact += Bullet_OnBulletImpact;
@@ -28,14 +28,14 @@ public class VFXManager : MonoBehaviour{
     }
 
     //Since the effects are configured to 'none' at end of execution this routine releases it (disable object) from the pool
-    private IEnumerator EffectReleaseRoutine(ObjectPool<VFXHelper> objectPool, VFXHelper VFX){
-        yield return new WaitForSeconds(1f);
+    private IEnumerator EffectReleaseRoutine(ObjectPool<VisualHelper> objectPool, VisualHelper VFX){
+        yield return new WaitForSeconds(0.5f);
         ReleaseFromPool(objectPool, VFX);
         yield return null;
     }
 
-    private ObjectPool<VFXHelper> CreateEffectPool(VFXHelper prefab){
-        var VFXPool = new ObjectPool<VFXHelper>(()=>{
+    private ObjectPool<VisualHelper> CreateEffectPool(VisualHelper prefab){
+        var VFXPool = new ObjectPool<VisualHelper>(()=>{
             return Instantiate(prefab);
         }, newEffect =>{
             newEffect.gameObject.SetActive(true);
@@ -48,7 +48,7 @@ public class VFXManager : MonoBehaviour{
         return VFXPool;
     }
 
-    public void ReleaseFromPool(ObjectPool<VFXHelper> objectPool, VFXHelper VFX){
+    public void ReleaseFromPool(ObjectPool<VisualHelper> objectPool, VisualHelper VFX){
         objectPool.Release(VFX);
     }
 }

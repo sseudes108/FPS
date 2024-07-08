@@ -6,11 +6,11 @@ public class TitleMenuAudio : MonoBehaviour{
     private AudioSource AudioSource;
 
     private void OnEnable() {
-        TitleScreen.OnGameStarted += TitleScreen_OnGameStarted;
+        UI_TitleScreen.OnGameStarted += TitleScreen_OnGameStarted;
     }
 
     private void OnDisable() {
-        TitleScreen.OnGameStarted -= TitleScreen_OnGameStarted;
+        UI_TitleScreen.OnGameStarted -= TitleScreen_OnGameStarted;
     }
 
     private void TitleScreen_OnGameStarted(){
