@@ -67,10 +67,8 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
     //Background newCross
     private void UI_PauseMenu_OnCrossChange(Background newCross, int crossIndex){
         _updatedCrossHair = newCross;
-        _crosshairIndex = 0;
         _crosshairIndex = crossIndex;
         crossChanged = true;
-        SaveData(ref GameManager.Instance.DataManager.GameData);
         GameManager.Instance.DataManager.SaveGame();
     }
 

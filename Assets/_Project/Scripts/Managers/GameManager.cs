@@ -12,23 +12,16 @@ public class GameManager : MonoBehaviour{
     public static Action<GameData, bool> OnGamePaused;
 
     //Global variables
-    private Vector2 _rotationInput;
-    public Vector2 RotationInput => _rotationInput;
-    private float _sensitivity;
-    public float CurrentSensitivity => _sensitivity;
+    // public Vector2 RotationInput {get; private set;}
 
     //Managers
     public UIManager UIManager { get; private set;}
     public SpawnManager SpawnManager { get; private set;}
     public AudioManager AudioManager { get; private set;}
     public PauseManager PauseManager { get; private set;}
-    public ObjectPoolManager ObjectPoolManager { get; private set;}
-
+    public ObjectPoolManager Pooling { get; private set;}
     public DataPersistentManager DataManager { get; private set;}
     public VisualManager Visual { get; private set;}
-
-    //Debug
-    public Testing Testing;
 
 #region UnityMethods
     private void OnEnable() {
@@ -44,8 +37,6 @@ public class GameManager : MonoBehaviour{
     private void Awake() {
         SetInstance();
         SetManagers();
-
-        Testing = GetComponent<Testing>();
     }
 
     private void Start() {
@@ -55,9 +46,9 @@ public class GameManager : MonoBehaviour{
         }
     }
 
-    public void UpdateRotationInput(float mouseX, float mouseY){
-        _rotationInput = new Vector2(mouseX, mouseY);
-    }
+    // public void UpdateRotationInput(float mouseX, float mouseY){
+    //     RotationInput = new Vector2(mouseX, mouseY);
+    // }
 
 #endregion
 
@@ -70,16 +61,12 @@ public class GameManager : MonoBehaviour{
         Instance = this;
     }
 
-    public void SetCurrentSensitivity(float sensitivity){
-        _sensitivity = sensitivity;
-    }
-
     private void SetManagers(){
         UIManager = GetComponentInChildren<UIManager>();
         SpawnManager = GetComponentInChildren<SpawnManager>();
         AudioManager = GetComponentInChildren<AudioManager>();
         PauseManager = GetComponentInChildren<PauseManager>();
-        ObjectPoolManager = GetComponentInChildren<ObjectPoolManager>();
+        Pooling = GetComponentInChildren<ObjectPoolManager>();
         DataManager = GetComponentInChildren<DataPersistentManager>();
         Visual = GetComponentInChildren<VisualManager>();
     }

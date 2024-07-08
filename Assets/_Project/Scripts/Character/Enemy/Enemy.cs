@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : Character {
+
     public readonly int IDLE = Animator.StringToHash("Enemy_Idle");
     public readonly int RUN = Animator.StringToHash("Enemy_Run");
     public readonly int SHOOT = Animator.StringToHash("Enemy_Shoot");

@@ -23,8 +23,8 @@ public class AudioEffects : MonoBehaviour {
     }
 
     private void Start() {
-        POOL = GameManager.Instance.ObjectPoolManager;
-        _audioEffectPool = GameManager.Instance.ObjectPoolManager.AudioPool;
+        POOL = GameManager.Instance.Pooling;
+        _audioEffectPool = GameManager.Instance.Pooling.AudioPool;
     }
 
     private void PlayerGun_OnHandleGun(SoundSO GunHandlingSound){

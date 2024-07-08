@@ -6,8 +6,8 @@ public class ObjectPoolManager : MonoBehaviour {
     public ObjectPool<Bullet> BulletPool {get; private set;}
     private Transform _firePoint;
 
+    [SerializeField] private AudioSource _audioPrefab;
     public ObjectPool<AudioSource> AudioPool {get; private set;}
-    public AudioSource _audioPrefab;
 
     private void OnEnable() {
         Gun.OnShoot += Gun_OnShoot;

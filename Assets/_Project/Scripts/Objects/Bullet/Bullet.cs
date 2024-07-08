@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour{
     }
 
     private void OnTriggerEnter(Collider other) {
-        Debug.Log("HIT");
+        
         var objectTag = other.tag;
         
         switch (objectTag){
@@ -55,6 +55,7 @@ public class Bullet : MonoBehaviour{
             break;
 
             case "NoHit":
+                Debug.Log("HIT");
             break;
 
             default:

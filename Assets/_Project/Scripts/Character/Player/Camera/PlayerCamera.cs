@@ -4,7 +4,7 @@ public class PlayerCamera : MonoBehaviour, IDataPersistencer {
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private FirstPersonCamera _firstPersonCamera;
 
-    [Range(1,10)]
+    [Range(0.01f, 18)]
     [SerializeField] private float _sensitivity;
     public float Sensitivity => _sensitivity;
     private float _rotationValue = 0f;
@@ -35,7 +35,6 @@ public class PlayerCamera : MonoBehaviour, IDataPersistencer {
 
     private void GameManager_OnGamePaused(GameData data, bool paused){
         if(!paused){
-            SaveData(ref GameManager.Instance.DataManager.GameData);
             GameManager.Instance.DataManager.SaveGame();
         }
     }

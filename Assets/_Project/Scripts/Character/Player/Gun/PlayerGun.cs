@@ -45,7 +45,7 @@ public class PlayerGun : MonoBehaviour {
 
     private void Awake() {
         _player = GetComponent<Player>();
-        _recoil = transform.Find("Model/CameraRecoil/").GetComponent<Recoil>();
+        _recoil = transform.Find("Model/Camera/").GetComponent<Recoil>();
         _impulseSource = GetComponent<CinemachineImpulseSource>();
         _weapons = GetComponent<PlayerWeapons>();
     }

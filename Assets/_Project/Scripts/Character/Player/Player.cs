@@ -30,7 +30,6 @@ public class Player : Character, IDataPersistencer {
 
 #region UnityMethods
     private void OnEnable() {
-        // SpawnManager.OnCheckPoint += SpawnManager_UpdatePosition;
         GameManager.OnGameStart += GameManager_OnGameStart;
         GameManager.OnGamePaused += GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp += Gun_OnPlayerCloseForPickUp;
@@ -38,7 +37,6 @@ public class Player : Character, IDataPersistencer {
         Health.OnPlayerDied += Health_OnPlayerDied;
     }
     private void OnDisable() {
-        // SpawnManager.OnCheckPoint -= SpawnManager_UpdatePosition;
         GameManager.OnGameStart -= GameManager_OnGameStart;
         GameManager.OnGamePaused -= GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp -= Gun_OnPlayerCloseForPickUp;
@@ -69,12 +67,12 @@ public class Player : Character, IDataPersistencer {
     }
 
     private void Update() {
-        HandleRotation();
         HandleGun();
         HandlePause();
+        HandleRotation();
         HandleInteraction();
     }
-
+    
 #endregion
 
 #region Custom Methods
@@ -123,7 +121,7 @@ public class Player : Character, IDataPersistencer {
         transform.Rotate(Vector3.up * mouseX);
         Camera.CameraRotation(mouseY);
 
-        GameManager.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
+        // GameManager.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
     }
 
     public override void HandleJump(){
@@ -148,7 +146,6 @@ public class Player : Character, IDataPersistencer {
 
     public void SaveSpawnPosition(Vector3 spawnPosition){
         _lastCheckPointPosition = new Vector3(spawnPosition.x, spawnPosition.y + 1.2f, spawnPosition.z); //Add the off set so the player does not spawn into the ground
-        SaveData(ref GameManager.Instance.DataManager.GameData);
         GameManager.Instance.DataManager.SaveGame();
     }
 #endregion

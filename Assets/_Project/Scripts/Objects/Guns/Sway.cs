@@ -17,24 +17,24 @@ public class Sway : MonoBehaviour{
         _originRotation = transform.localRotation;
     }
 
-    private void Update(){
-        UpdatSway();
-    }
+    // private void FixedUpdate(){
+    //     UpdateSway();
+    // }
 
-    private void UpdatSway(){
-        float mouseX = GameManager.Instance.RotationInput.x;
-        float mouseY = GameManager.Instance.RotationInput.y;
+    // private void UpdateSway(){
+    //     // float mouseX = GameManager.Instance.RotationInput.x;
+    //     // float mouseY = GameManager.Instance.RotationInput.y;
 
-        if(_gun.IsAiming){
-            intensity /= 3;
-        }else{
-            intensity = _defaultIntensity;
-        }
+    //     if(_gun.IsAiming){
+    //         intensity  /= 3;
+    //     }else{
+    //         intensity = _defaultIntensity;
+    //     }
 
-        var adjustmentX = Quaternion.AngleAxis(-1 * intensity * mouseX, Vector3.up);
-        var adjustmentY = Quaternion.AngleAxis(intensity * mouseY, Vector3.right);
-        Quaternion _targetRotation = _originRotation * adjustmentX * adjustmentY;
+    //     var adjustmentX = Quaternion.AngleAxis(-1 * intensity * mouseX, Vector3.up);
+    //     var adjustmentY = Quaternion.AngleAxis(intensity * mouseY, Vector3.right);
+    //     Quaternion _targetRotation = _originRotation * adjustmentX * adjustmentY;
 
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, _targetRotation, smooth * Time.deltaTime);
-    }
+    //     transform.localRotation = Quaternion.Lerp(transform.localRotation, _targetRotation, smooth * Time.deltaTime);
+    // }
 }

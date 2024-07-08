@@ -45,13 +45,16 @@ public class Gun : MonoBehaviour{
     }
 
     private void Start() {
-        _bulletPool = GameManager.Instance.ObjectPoolManager.BulletPool;
+        _bulletPool = GameManager.Instance.Pooling.BulletPool;
         ReloadMagazine(_gunData.Magazine);
     }
 
     private void Update() { 
-        Aim();
         DetectPlayer();
+    }
+
+    private void FixedUpdate() { 
+       Aim();
     }
 #endregion
 
@@ -67,8 +70,8 @@ public class Gun : MonoBehaviour{
         StartCoroutine(MuzzleFlashRoutine());
         OnShoot?.Invoke(_firePoint);
         var newBullet = _bulletPool.Get();
-        yield return null;
         newBullet.Init(this,_gunData.BulletMaterial, _gunData.DamageValue, _character, _firePoint);
+        yield return null;
     }
 
     private IEnumerator MuzzleFlashRoutine(){
