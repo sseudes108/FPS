@@ -49,7 +49,7 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
     }
 
     private void PlayerGun_OnAmmoCountChange(int ammoLeftInMag, int magazineSize, int maxAmmo){
-        _currentAmmo.text = $"{ammoLeftInMag}/{magazineSize}";
+        _currentAmmo.text = $"Ammo : {ammoLeftInMag:00}/{magazineSize}";
         _maxAmmo.text = $"{maxAmmo}";
     }
 

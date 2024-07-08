@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour{
     private IEnumerator StartGameRoutine(){
         DataManager.LoadGame();
         yield return new WaitForSeconds(1f);
+
         OnGameStart?.Invoke();
         yield return null;
     }

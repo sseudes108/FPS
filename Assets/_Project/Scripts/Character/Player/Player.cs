@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 
-public class Player : Character {
+public class Player : Character, IDataPersistencer {
     public static Action<Gun> OnWeaponPickUp;
 
     //Public Acess
@@ -25,9 +25,12 @@ public class Player : Character {
     private bool _canInteract;
     private MonoBehaviour _interactItem;
 
+    private Vector3 _lastCheckPointPosition;
+
+
 #region UnityMethods
     private void OnEnable() {
-        SpawnManager.OnCheckPoint += SpawnManager_UpdatePosition;
+        // SpawnManager.OnCheckPoint += SpawnManager_UpdatePosition;
         GameManager.OnGameStart += GameManager_OnGameStart;
         GameManager.OnGamePaused += GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp += Gun_OnPlayerCloseForPickUp;
@@ -35,7 +38,7 @@ public class Player : Character {
         Health.OnPlayerDied += Health_OnPlayerDied;
     }
     private void OnDisable() {
-        SpawnManager.OnCheckPoint -= SpawnManager_UpdatePosition;
+        // SpawnManager.OnCheckPoint -= SpawnManager_UpdatePosition;
         GameManager.OnGameStart -= GameManager_OnGameStart;
         GameManager.OnGamePaused -= GameManager_OnGamePause;
         Gun.OnPlayerCloseForPickUp -= Gun_OnPlayerCloseForPickUp;
@@ -142,6 +145,12 @@ public class Player : Character {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(checkGroundBox.position, checkGroundBoxSize);
     }
+
+    public void SaveSpawnPosition(Vector3 spawnPosition){
+        _lastCheckPointPosition = new Vector3(spawnPosition.x, spawnPosition.y + 1.2f, spawnPosition.z); //Add the off set so the player does not spawn into the ground
+        SaveData(ref GameManager.Instance.DataManager.GameData);
+        GameManager.Instance.DataManager.SaveGame();
+    }
 #endregion
 
 #region Events
@@ -150,10 +159,12 @@ public class Player : Character {
     }
     
     private IEnumerator GameStartAdjustments(){
+        transform.position = _lastCheckPointPosition;
         PlayerInput.AllowInputs(false);
         yield return new WaitForSeconds(0.5f);
         PlayerInput.AllowInputs(true);
         Movement.Controller.enabled = true;
+        Movement.AllowUpdate();
         yield return null;
     }
 
@@ -164,10 +175,15 @@ public class Player : Character {
             PlayerInput.AllowInputs(true);
         }
     }
+#endregion
 
-    private void SpawnManager_UpdatePosition(Vector3 lastCheckPointPosition){
-        transform.position = lastCheckPointPosition;
-        Movement.Controller.enabled = true; //The Character Controller Component prevent the change in position when enabled
+#region Interfaces
+    public void LoadData(GameData data){
+        _lastCheckPointPosition = data.RespawnPosition;
+    }
+
+    public void SaveData(ref GameData data){
+        data.RespawnPosition = _lastCheckPointPosition;
     }
 #endregion
 

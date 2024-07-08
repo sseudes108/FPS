@@ -28,9 +28,6 @@ public abstract class Character : MonoBehaviour {
 
     public void ChangeState(AbstractState newState){
         StateMachine.ChangeState(newState);
-        // if(this is Player){
-        //     GameManager.Instance.Testing.UpdateDebugStateLabel(newState.ToString());
-        // }
     }
 
     public virtual void HandleMovement(){}

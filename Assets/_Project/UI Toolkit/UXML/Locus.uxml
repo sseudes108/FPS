@@ -2,26 +2,29 @@
     <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/Locus.uss?fileID=7433441132597879392&amp;guid=ccb98c04f395d5b49afa66ef24668c5f&amp;type=3#Locus" />
     <engine:VisualElement name="Container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); opacity: 1;">
         <engine:VisualElement name="Canvas" style="flex-grow: 1; opacity: 1;">
-            <engine:VisualElement name="Top" style="flex-grow: 0; flex-shrink: 0; flex-basis: 33%;" />
+            <engine:VisualElement name="Top" style="flex-grow: 0; flex-shrink: 0; flex-basis: 33%; border-top-width: 49px;">
+                <engine:VisualElement name="HealthBar" style="flex-grow: 0; width: 816px; height: 100px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Health_UI.png?fileID=2800000&amp;guid=56e7883ad59991b4c9c66ecce2722ce6&amp;type=3#Health_UI&quot;); background-color: rgba(0, 0, 0, 0); rotate: 0; border-top-width: 0; margin-left: 108px; margin-top: 54px; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+                    <engine:VisualElement name="HBback" style="flex-grow: 1; background-color: rgb(58, 37, 8); opacity: 1; margin-left: 42px; margin-right: 131px; margin-bottom: 15px; margin-top: 2px;">
+                        <engine:VisualElement name="HBFore" style="flex-grow: 1; background-color: rgb(255, 158, 21); transform-origin: left bottom; width: 1%;" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:VisualElement>
             <engine:VisualElement name="Middle" style="flex-grow: 0; flex-shrink: 0; flex-basis: 33%; flex-direction: row; align-content: center; align-self: center; justify-content: space-around; align-items: center;">
                 <engine:VisualElement name="Cross" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); width: 100px; height: 100px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Crosshair/512/60.png?fileID=2800000&amp;guid=cb51610f1993edb408560331ee47acc4&amp;type=3#60&quot;);" />
             </engine:VisualElement>
             <engine:VisualElement name="Bottom" style="flex-grow: 1; flex-basis: 33%; flex-shrink: 0; justify-content: center; opacity: 1; flex-direction: row;">
-                <engine:VisualElement name="LeftAmmo" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: flex-start; width: 30%; align-self: auto; align-content: flex-start; margin-left: 108px; margin-top: 0; rotate: -9deg;">
-                    <engine:VisualElement name="amm" style="position: absolute; height: 102px; width: 714px; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Ammo_UI.png?fileID=2800000&amp;guid=77258000df43be04189228c6f8c43d96&amp;type=3#Ammo_UI&quot;); top: 220px;" />
-                    <engine:VisualElement name="Labels" style="flex-grow: 1; flex-direction: row;">
-                        <engine:Label text="Ammo: " name="AmmoLabel" style="font-size: 72px; -unity-text-align: upper-left; color: rgb(170, 182, 202); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 3px; -unity-font-style: bold;" />
-                        <engine:Label text="33/33" name="CurrentAmmoLabel" style="font-size: 72px; color: rgb(170, 182, 202); -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold;" />
-                        <engine:Label text="216" name="MaxAmmoLabel" style="font-size: 27px; align-content: flex-end; -unity-font-style: bold-and-italic;" />
-                    </engine:VisualElement>
+                <engine:VisualElement name="VisualElement" style="flex-grow: 1; width: 35%; align-self: center; height: 100%; justify-content: center; padding-left: 100px; margin-top: 270px;">
+                    <engine:VisualElement name="VisualElement" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/_Project/Assets/Art/UI/Ammo_UI.png?fileID=2800000&amp;guid=77258000df43be04189228c6f8c43d96&amp;type=3#Ammo_UI&quot;); height: 15%; flex-shrink: 1; justify-content: flex-start; align-content: center; align-items: auto; align-self: auto; flex-direction: row; width: 80%;" />
+                    <engine:Label text="Ammo : 33/33" name="CurrentAmmoLabel" style="position: absolute; right: 0; bottom: 0; left: 0; top: 0; -unity-text-align: middle-left; white-space: pre; align-self: auto; justify-content: flex-start; align-items: auto; align-content: auto; font-size: 72px; -unity-font-style: bold-and-italic; margin-top: 27px; margin-left: 102px;" />
+                    <engine:Label text="216" name="MaxAmmoLabel" style="position: absolute; right: 0; bottom: 0; left: 0; top: 0; -unity-text-align: middle-left; white-space: pre; align-self: auto; justify-content: flex-start; align-items: auto; align-content: auto; margin-left: 661px; font-size: 22px; -unity-font-style: bold; margin-top: 54px;" />
                 </engine:VisualElement>
-                <engine:VisualElement name="CenterEvents" style="flex-grow: 1; width: 40%;">
+                <engine:VisualElement name="CenterEvents" style="flex-grow: 1; width: 30%;">
                     <engine:VisualElement name="EventMessage" style="flex-grow: 1; opacity: 0;">
                         <engine:Label text="Machine Gun" name="ItemName" style="-unity-text-align: upper-center; font-size: 66px; -unity-font-style: bold; -unity-text-outline-width: 3px; -unity-text-outline-color: rgb(195, 195, 195);" />
                         <engine:Label text="Press F to Pick Up" name="ItemMessage" style="-unity-text-align: upper-center; -unity-font-style: bold; font-size: 33px; opacity: 1; -unity-text-outline-color: rgb(195, 195, 195); -unity-text-outline-width: 2px;" />
                     </engine:VisualElement>
                 </engine:VisualElement>
-                <engine:VisualElement name="Right" style="flex-grow: 1; width: 30%;" />
+                <engine:VisualElement name="Right" style="flex-grow: 1; width: 35%;" />
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement name="Overlay" style="flex-grow: 1; opacity: 0; align-self: center; align-content: center; justify-content: space-around;">

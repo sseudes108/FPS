@@ -25,7 +25,7 @@ public class PlayerInput : MonoBehaviour{
     private void OnDisable() { _inputActions.Disable(); }
     private void Awake() { _inputActions = new(); }
     private void Update() {
-        if(!_allowInputs){return;}                             //If its false no FrameInput is created;
+        if(!_allowInputs){return;}
         FrameInput = new FrameInput{
             Move = _move.ReadValue<Vector2>(),
             Aim = _aim.IsInProgress(),

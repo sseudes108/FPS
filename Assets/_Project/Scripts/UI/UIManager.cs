@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour {
     public VisualElement Root {get; private set;}
 
     [SerializeField] private VisualTreeAsset _pausedAsset;
-    [SerializeField] private VisualTreeAsset _defaultAsset;
+    private VisualTreeAsset _defaultAsset;
     
     private void OnEnable() {
         UIDocument = GetComponent<UIDocument>();

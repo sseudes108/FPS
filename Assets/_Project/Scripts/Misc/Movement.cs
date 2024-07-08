@@ -16,6 +16,7 @@ public class Movement : MonoBehaviour {
     private readonly float _jumpTime = 0.2f;
     private readonly float _jumpForceMultiplier = 1f;
     private float _verticalVelocity = 0f;
+    public bool _allowUpdate = false;
 
     private void Awake() {
         Controller = GetComponent<CharacterController>();
@@ -27,6 +28,7 @@ public class Movement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        if(!_allowUpdate){return;}
         if (Controller.enabled){
             if (_canMove){
                 Move();
@@ -72,4 +74,6 @@ public class Movement : MonoBehaviour {
     }
 
     public void SetCharacterDirection(Vector3 direction){ _direction = direction; }
+
+    public void AllowUpdate(){_allowUpdate = true;}
 }
