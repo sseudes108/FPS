@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class Player : Character, IDataPersistencer {
@@ -67,6 +68,15 @@ public class Player : Character, IDataPersistencer {
     }
 
     private void Update() {
+
+        if(UnityEngine.Input.GetKeyDown(KeyCode.Y)){
+            GetComponent<Health>().TakeDamage(1);
+        }
+
+        if(UnityEngine.Input.GetKeyDown(KeyCode.U)){
+            SceneManager.LoadScene("Locus");
+        }
+
         HandleGun();
         HandlePause();
         HandleRotation();
@@ -121,7 +131,7 @@ public class Player : Character, IDataPersistencer {
         transform.Rotate(Vector3.up * mouseX);
         Camera.CameraRotation(mouseY);
 
-        // GameManager.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
+        GameManager.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
     }
 
     public override void HandleJump(){

@@ -9,7 +9,6 @@ public class UI_PauseMenu : UIManager {
 
     private Button _resume, _reset;
     private Slider _sensitivity;
-    // private float _updatedSensitivity;
     private float _currentSensitivity;
 
     public List<Button> buttons = new ();
@@ -26,7 +25,7 @@ public class UI_PauseMenu : UIManager {
         if(paused){
             SetElements();
             _resume.clicked += ResumeClicked;
-            _reset.clicked += ResetClicked;
+            _reset.clicked += MainMenuClicked;
 
             _sensitivity.value = GameManager.Instance.DataManager.GameData.Sensitivity;
             _sensitivity.RegisterCallback<ChangeEvent<float>>(SensitivityChanged);
@@ -37,7 +36,7 @@ public class UI_PauseMenu : UIManager {
         }else{
 
             _resume.clicked -= ResumeClicked;
-            _reset.clicked -= ResetClicked;
+            _reset.clicked -= MainMenuClicked;
 
             foreach(Button button in buttons){
                 button.clicked -= () => OnButtonClick(button);
@@ -59,10 +58,6 @@ public class UI_PauseMenu : UIManager {
     }
 
     private void OnButtonClick(Button button){
-        // var buttonName = button.ToString();
-        // var t = buttonName.LastIndexOf(buttonName);
-        // Debug.Log(t);
-        // Debug.Log(buttonName);
         var index = buttons.IndexOf(button);
         OnCrossChange?.Invoke(button.iconImage, index);
     }
@@ -71,8 +66,8 @@ public class UI_PauseMenu : UIManager {
         GameManager.OnGamePaused?.Invoke(GameManager.Instance.DataManager.GameData, false);
     }
 
-    private void ResetClicked(){
-        GameManager.OnGameEnd?.Invoke();
+    private void MainMenuClicked(){
+        Debug.LogWarning("Need implemente Main Menu Logic in the button");
     }
 
     private void SensitivityChanged(ChangeEvent<float> evt){

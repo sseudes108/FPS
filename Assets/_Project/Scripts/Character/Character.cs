@@ -5,7 +5,7 @@ public abstract class Character : MonoBehaviour {
     public AnimationController Anim;
 
     public StateMachine StateMachine;
-        public IdleState Idle => StateMachine.IdleState;
+    public IdleState Idle => StateMachine.IdleState;
     public JumpState Jump => StateMachine.JumpState;
     public MoveState Move => StateMachine.MoveState;
 

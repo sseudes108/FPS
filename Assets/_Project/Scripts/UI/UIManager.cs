@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 public class UIManager : MonoBehaviour {
     public UIDocument UIDocument {get; private set;}
     public VisualElement Root {get; private set;}
+    public UI_FadeScreen Fade { get; private set;}
 
     [SerializeField] private VisualTreeAsset _pausedAsset;
     private VisualTreeAsset _defaultAsset;
@@ -20,6 +21,10 @@ public class UIManager : MonoBehaviour {
     private void OnDisable() {
         GameManager.OnGamePaused -= GameManager_OnGamePaused;
         GameManager.OnGameEnd -= GameManager_OnGameEnd;
+    }
+
+    private void Awake() {
+        Fade = GetComponent<UI_FadeScreen>();
     }
 
     private void GameManager_OnGamePaused(GameData data, bool isPaused){

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 
 public class VisualEffects : MonoBehaviour{
+    public FadeScreenShaderController FadeScreen { get; private set; }	
     public VisualHelper _bulletImpact;
     private ObjectPool<VisualHelper> _bulletImpactVFXPool;
 
@@ -15,7 +16,8 @@ public class VisualEffects : MonoBehaviour{
     }
 
     public void Awake(){
-        _bulletImpactVFXPool = CreateEffectPool(_bulletImpact);
+        SetComponents();
+        CreatePools();
     }
 
     private void Bullet_OnBulletImpact(Bullet bullet, Material material){
@@ -50,5 +52,13 @@ public class VisualEffects : MonoBehaviour{
 
     public void ReleaseFromPool(ObjectPool<VisualHelper> objectPool, VisualHelper VFX){
         objectPool.Release(VFX);
+    }
+
+    public void CreatePools(){
+        _bulletImpactVFXPool = CreateEffectPool(_bulletImpact);
+    }
+
+    public void SetComponents(){
+        FadeScreen = GetComponent<FadeScreenShaderController>();
     }
 }

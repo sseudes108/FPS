@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour{
     public static Action<GameData, bool> OnGamePaused;
 
     //Global variables
-    // public Vector2 RotationInput {get; private set;}
+    public Vector2 RotationInput {get; private set;}
 
     //Managers
     public UIManager UIManager { get; private set;}
@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour{
     public DataPersistentManager DataManager { get; private set;}
     public VisualManager Visual { get; private set;}
 
+    private IEnumerator _startRoutine;
+
 #region UnityMethods
     private void OnEnable() {
         OnGamePaused += GameManager_OnGamePaused;
@@ -30,11 +32,13 @@ public class GameManager : MonoBehaviour{
     }
 
     private void OnDisable() {
+        Debug.Log("DISABLE");
         OnGamePaused -= GameManager_OnGamePaused;
         OnGameEnd -= GameManager_OnGameEnd;
     }
         
     private void Awake() {
+        Debug.Log("AWAKE");
         SetInstance();
         SetManagers();
     }
@@ -46,9 +50,9 @@ public class GameManager : MonoBehaviour{
         }
     }
 
-    // public void UpdateRotationInput(float mouseX, float mouseY){
-    //     RotationInput = new Vector2(mouseX, mouseY);
-    // }
+    public void UpdateRotationInput(float mouseX, float mouseY){
+        RotationInput = new Vector2(mouseX, mouseY);
+    }
 
 #endregion
 
@@ -72,7 +76,10 @@ public class GameManager : MonoBehaviour{
     }
 
     private void StartGame(){
-        StartCoroutine(StartGameRoutine());
+        if(_startRoutine != null){
+            _startRoutine = StartGameRoutine();
+            StartCoroutine(_startRoutine);
+        }
     }
 
     private IEnumerator StartGameRoutine(){
@@ -80,6 +87,16 @@ public class GameManager : MonoBehaviour{
         yield return new WaitForSeconds(1f);
 
         OnGameStart?.Invoke();
+        yield return null;
+    }
+
+    public void LoadMainMenu(){
+        StartCoroutine(LoadMainMenuRoutine());
+    }
+
+    private IEnumerator LoadMainMenuRoutine(){
+        // yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("TitleScreen");
         yield return null;
     }
 
@@ -97,6 +114,7 @@ public class GameManager : MonoBehaviour{
     }
 
     private void GameManager_OnGameEnd(){
+        _startRoutine = null;
         StartCoroutine(ReloadGameRoutine());
     }
 
