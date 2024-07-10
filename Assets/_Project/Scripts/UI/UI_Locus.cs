@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_Locus : MonoBehaviour, IDataPersistencer {
     private VisualElement _crossHair;
-    // [SerializeField] private Texture2D _defaulCrossHairTexture;
+    private VisualElement _canvas;
+
     [SerializeField] private Color _crosshairColor;
 
     //User to change the crosshair in pause menu
@@ -30,7 +32,12 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
 
     private void Start() {
         SetElements();
+        _canvas.style.opacity = 0;
         CrossHairStyleConfig();
+    }
+
+    public void MakeScreenVisible(){
+        StartCoroutine(ElementOpacityRoutine(_canvas, 0, 1, 1f));
     }
 
     private void GameManager_OnGamePaused(GameData data, bool paused){ //Reset The elements after the change in style asset from pause menu
@@ -59,6 +66,7 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
     }
 
     private void SetElements(){
+        _canvas = GameManager.Instance.UIManager.Root.Q("Canvas");
         _crossHair = GameManager.Instance.UIManager.Root.Q("Cross");
         _currentAmmo = GameManager.Instance.UIManager.Root.Q<Label>("CurrentAmmoLabel");
         _maxAmmo = GameManager.Instance.UIManager.Root.Q<Label>("MaxAmmoLabel");
@@ -74,9 +82,23 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
 
     public void LoadData(GameData data){
         _updatedCrossHair = GameManager.Instance.Visual.CrossesTextures[data.CrossHair];
+        _crosshairIndex = data.CrossHair;
     }
 
     public void SaveData(ref GameData data){
         data.CrossHair = _crosshairIndex;
+    }
+
+    private IEnumerator ElementOpacityRoutine(VisualElement element, float start, float end, float duration){
+        float time = 0f;
+        float currentOpacity;
+        do{
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / duration);
+            currentOpacity  = Mathf.Lerp(start, end, t);
+            element.style.opacity = currentOpacity;
+            yield return null;
+        }while(currentOpacity > 0);
+        yield return null;
     }
 }

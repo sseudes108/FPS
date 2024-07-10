@@ -17,6 +17,8 @@ public class FadeScreenShaderController : MonoBehaviour {
         Health.OnPlayerDamaged -= Health_OnPlayerDamaged;
         Health.OnPlayerDied -= Health_OnPlayerDie;
         GameManager.OnGameStart -= GameManager_OnGameStart;
+
+        ResetVignete();
     }
 
     private void GameManager_OnGameStart(){
@@ -46,7 +48,7 @@ public class FadeScreenShaderController : MonoBehaviour {
         }
     }
 
-    public void ResetRadius(){
+    public void ResetVignete(){
         _currentRadius = 1;
         _fadeScreenMaterial.SetFloat("_VigneteRadius", _currentRadius);
         _fadeScreenMaterial.SetColor("_Tint", _redDefaultColor);
@@ -81,13 +83,15 @@ public class FadeScreenShaderController : MonoBehaviour {
     }
 
     private IEnumerator DeathEffectRoutine(){
-        StartCoroutine(ChangeFadeColorToBlack(2f, 1f));
+        StartCoroutine(LerpColorToBlack(2f, 1f));
         StartCoroutine(FadeToBlackRoutine(2f));
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.UIManager.DeathScreen.PlayerDied();
         yield return null;
     }
 
-    private IEnumerator ChangeFadeColorToBlack(float count, float duration){
-        yield return new WaitForSeconds(count);
+    private IEnumerator LerpColorToBlack(float wait, float duration){
+        yield return new WaitForSeconds(wait);
         Color startColor = _redDefaultColor;
         Color endColor = Color.black;
 
@@ -124,9 +128,9 @@ public class FadeScreenShaderController : MonoBehaviour {
 
     private IEnumerator FadeFromBlackRoutine(float duration){
         _fadeScreenMaterial.SetFloat("_ApplyNoise", 0);
+        _fadeScreenMaterial.SetFloat("_VigneteRadius", 0);
         _fadeScreenMaterial.SetColor("_Tint", Color.black);
         var targetRadius = 1;
-        
         float time = 0;
         do{
             time += Time.deltaTime;
@@ -140,6 +144,17 @@ public class FadeScreenShaderController : MonoBehaviour {
     }
 
     private void ChangeColor(Color newColor){
+        Debug.Log("ChangeColor Called");
         _fadeScreenMaterial.SetColor("_Tint", newColor);
+    }
+
+    public void FadeScreenToBlack(float duration){ // Made for UI_TitleScreen.cs
+        ChangeColor(Color.black);
+        FadeToBlack(duration);
+    }
+
+    public void FadeScreenFromBlack(float duration){ // Made for UI_TitleScreen.cs
+        ChangeColor(Color.black);
+        FadeFromBlack(duration);
     }
 }

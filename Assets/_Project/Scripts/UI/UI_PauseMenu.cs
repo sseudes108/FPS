@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -67,7 +68,14 @@ public class UI_PauseMenu : UIManager {
     }
 
     private void MainMenuClicked(){
-        Debug.LogWarning("Need implemente Main Menu Logic in the button");
+        GameManager.Instance.Visual.Effects.FadeScreen.FadeScreenToBlack(1f);
+        GameManager.OnGameEnd?.Invoke();
+        StartCoroutine(MainMenuRoutine());
+    }
+
+    private IEnumerator MainMenuRoutine(){
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.LoadMainMenu();
     }
 
     private void SensitivityChanged(ChangeEvent<float> evt){

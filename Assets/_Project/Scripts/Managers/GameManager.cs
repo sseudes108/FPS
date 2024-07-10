@@ -32,13 +32,11 @@ public class GameManager : MonoBehaviour{
     }
 
     private void OnDisable() {
-        Debug.Log("DISABLE");
         OnGamePaused -= GameManager_OnGamePaused;
         OnGameEnd -= GameManager_OnGameEnd;
     }
         
     private void Awake() {
-        Debug.Log("AWAKE");
         SetInstance();
         SetManagers();
     }
@@ -76,7 +74,7 @@ public class GameManager : MonoBehaviour{
     }
 
     private void StartGame(){
-        if(_startRoutine != null){
+        if(_startRoutine == null){
             _startRoutine = StartGameRoutine();
             StartCoroutine(_startRoutine);
         }
@@ -91,13 +89,7 @@ public class GameManager : MonoBehaviour{
     }
 
     public void LoadMainMenu(){
-        StartCoroutine(LoadMainMenuRoutine());
-    }
-
-    private IEnumerator LoadMainMenuRoutine(){
-        // yield return new WaitForSeconds(1f);
         SceneManager.LoadScene("TitleScreen");
-        yield return null;
     }
 
 #endregion

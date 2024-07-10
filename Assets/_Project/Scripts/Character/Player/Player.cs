@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 
@@ -168,6 +169,7 @@ public class Player : Character, IDataPersistencer {
     private IEnumerator GameStartAdjustments(){
         transform.position = _lastCheckPointPosition;
         PlayerInput.AllowInputs(false);
+        GameManager.Instance.UIManager.Locus.MakeScreenVisible();
         yield return new WaitForSeconds(0.5f);
         PlayerInput.AllowInputs(true);
         Movement.Controller.enabled = true;

@@ -4,10 +4,11 @@ using UnityEngine.UIElements;
 public class UIManager : MonoBehaviour {
     public UIDocument UIDocument {get; private set;}
     public VisualElement Root {get; private set;}
-    public UI_FadeScreen Fade { get; private set;}
 
     [SerializeField] private VisualTreeAsset _pausedAsset;
     private VisualTreeAsset _defaultAsset;
+    public UI_DeathScreen DeathScreen {get; private set;}
+    public UI_Locus Locus {get; private set;}
     
     private void OnEnable() {
         UIDocument = GetComponent<UIDocument>();
@@ -24,7 +25,8 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Awake() {
-        Fade = GetComponent<UI_FadeScreen>();
+        DeathScreen = GetComponent<UI_DeathScreen>();
+        Locus = GetComponent<UI_Locus>();
     }
 
     private void GameManager_OnGamePaused(GameData data, bool isPaused){
@@ -33,7 +35,6 @@ public class UIManager : MonoBehaviour {
         }else{
             UIDocument.visualTreeAsset = _defaultAsset;
         }
-
         SetRoot();
     }
 
