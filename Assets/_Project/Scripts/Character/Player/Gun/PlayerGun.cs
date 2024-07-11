@@ -1,18 +1,11 @@
-using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerGun : MonoBehaviour {
-
-    //Events
-    public static Action<int, int, int> OnAmmoCountChange;
-    public static Action<PlayerGun, int> OnWeaponChange;
-    // public static Action<PlayerGun, int, SoundSO> OnWeaponChange;
-    public static Action<SoundSO> OnShootFired;
-    public static Action<SoundSO> OnGunReload;
-    public static Action<SoundSO> OnHandleGun;
-    public static Action<Vector3> OnShootHit;
+    [field:SerializeField] public AudioEventHandlerSO AudioManager  { get; private set;}
+    [field:SerializeField] public GunEventHandlerSO GunManager  { get; private set;}
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
 
     //Components
     [SerializeField] private Gun _activeGun;
@@ -21,26 +14,25 @@ public class PlayerGun : MonoBehaviour {
     private Recoil _recoil;
 
     //Camera and Recoil
-    private Transform _firstPersonCameraTransform;
-    [SerializeField] private FirstPersonCamera _firstPersonCamera;
-    private CinemachineImpulseSource _impulseSource;
-    private bool _resetZoom;
+    public Transform _firstPersonCameraTransform;
+    public FirstPersonCamera _firstPersonCamera;
+    public CinemachineImpulseSource _impulseSource;
+    public bool _resetZoom;
 
     //Shoot
     private IEnumerator _shotRoutine;
     private bool _canShoot;
     private bool _isReloading = false;
-   
 
+   
 #region UnityMethods
 
     private void OnEnable() {
-        GameManager.OnGamePaused += GameManager_OnGamePaused;
+        GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
     }
 
     private void OnDisable() {
-        GameManager.OnGamePaused -= GameManager_OnGamePaused;
-        
+        GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
     }
 
     private void Awake() {
@@ -48,10 +40,12 @@ public class PlayerGun : MonoBehaviour {
         _recoil = transform.Find("Model/Camera/").GetComponent<Recoil>();
         _impulseSource = GetComponent<CinemachineImpulseSource>();
         _weapons = GetComponent<PlayerWeapons>();
+        _firstPersonCameraTransform = transform.Find("Model/Camera/FPS Cam");
+        _firstPersonCamera = _firstPersonCameraTransform.GetComponent<FirstPersonCamera>();
     }
 
     public void Start() {
-        OnWeaponChange?.Invoke(this, 0);
+        GunManager.OnWeaponChange?.Invoke(this, 0);
         HandleGunReload();
     }
 #endregion
@@ -81,7 +75,7 @@ public class PlayerGun : MonoBehaviour {
     
     private void UpdateAmmoCount(){
         if(_activeGun != null){
-            OnAmmoCountChange?.Invoke(_activeGun.AmmoLeftInMag, _activeGun.GunData.Magazine, _weapons.GetCurrentGunAmmoInventory());
+            GunManager.OnAmmoCountChange?.Invoke(_activeGun.AmmoLeftInMag, _activeGun.GunData.Magazine, _weapons.GetCurrentGunAmmoInventory());
         }
     }
 
@@ -109,7 +103,7 @@ public class PlayerGun : MonoBehaviour {
             amountToFill = bulletsLeftInTotal;
         }
 
-        OnGunReload?.Invoke(_activeGun.GunData.ReloadSound);
+        AudioManager.PlayReloadSound(_activeGun.GunData.ReloadSound);
         StartCoroutine(ReloadRoutine(amountToFill));
     }
     #endregion
@@ -128,7 +122,7 @@ public class PlayerGun : MonoBehaviour {
                     if(!_canShoot){
                         return;
                     }else{
-                        ShootProjectile();
+                        // ShootProjectile();
                         _canShoot = false;
                     }
                 }
@@ -162,7 +156,6 @@ public class PlayerGun : MonoBehaviour {
         int layerMask = ~LayerMask.GetMask("NoHit"); // Cria uma máscara para todas as camadas exceto a "NoHitLayer"
         if (Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit, Mathf.Infinity, layerMask)){
             _activeGun.FirePoint.LookAt(hit.point);
-            OnShootHit?.Invoke(hit.point);
         }else{
             _activeGun.FirePoint.LookAt(_firstPersonCameraTransform.position + (_firstPersonCameraTransform.forward * 30f));
         }
@@ -171,7 +164,7 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void ShootFired(){
-        OnShootFired?.Invoke(_activeGun.GunData.ShootSound);
+        AudioManager.PlayShootSound(_activeGun.GunData.ShootSound);
         
         _activeGun.Shoot();
         _recoil.RecoilFire();
@@ -185,11 +178,11 @@ public class PlayerGun : MonoBehaviour {
     #region Gun Settings
     public void HandleSwitchGun(){
         if(_player.Input.Previous){
-            OnWeaponChange?.Invoke(this, -1);
-            OnHandleGun?.Invoke(_activeGun.GunData.HandlingSound);
+            GunManager.OnWeaponChange?.Invoke(this, -1);
+            AudioManager.PlayHandleGunSound(_activeGun.GunData.HandlingSound);
         }else if(_player.Input.Next){
-            OnWeaponChange?.Invoke(this, +1);
-            OnHandleGun?.Invoke(_activeGun.GunData.HandlingSound);
+            GunManager.OnWeaponChange?.Invoke(this, +1);
+            AudioManager.PlayHandleGunSound(_activeGun.GunData.HandlingSound);
         }
         UpdateAmmoCount();
     }

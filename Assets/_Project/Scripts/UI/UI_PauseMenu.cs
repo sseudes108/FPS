@@ -1,25 +1,25 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UI_PauseMenu : UIManager {
-    public static Action<float> OnSensivityChange;
-    public static Action<Background, int> OnCrossChange;
+public class UI_PauseMenu : MonoBehaviour {
+    [field:SerializeField] public AudioEventHandlerSO AudioManager { get; private set; }
+    [field:SerializeField] public VisualsEventHandlerSO VisualsManager { get; private set; }
+    [field:SerializeField] public PauseMenuEventHandlerSO PauseMenuManager { get; private set; }
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
 
     private Button _resume, _reset;
     private Slider _sensitivity;
     private float _currentSensitivity;
-
-    public List<Button> buttons = new ();
+    private List<Button> buttons = new ();
 
     private void OnEnable() {
-        GameManager.OnGamePaused += GameManager_OnGamePaused;
+        GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
     }
 
     private void OnDisable() {
-        GameManager.OnGamePaused -= GameManager_OnGamePaused;
+        GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
     }
 
     private void GameManager_OnGamePaused(GameData data, bool paused){
@@ -28,11 +28,11 @@ public class UI_PauseMenu : UIManager {
             _resume.clicked += ResumeClicked;
             _reset.clicked += MainMenuClicked;
 
-            _sensitivity.value = GameManager.Instance.DataManager.GameData.Sensitivity;
+            _sensitivity.value = GameController.Instance.DataManager.GameData.Sensitivity;
             _sensitivity.RegisterCallback<ChangeEvent<float>>(SensitivityChanged);
 
             foreach(Button button in buttons){
-                button.clicked += () => OnButtonClick(button);
+                button.clicked += () => OnCrossButtonClick(button);
             }
         }else{
 
@@ -40,7 +40,7 @@ public class UI_PauseMenu : UIManager {
             _reset.clicked -= MainMenuClicked;
 
             foreach(Button button in buttons){
-                button.clicked -= () => OnButtonClick(button);
+                button.clicked -= () => OnCrossButtonClick(button);
             }
 
         }
@@ -48,38 +48,41 @@ public class UI_PauseMenu : UIManager {
 
     private void SetElements(){
         buttons.Clear();
-        _resume = GameManager.Instance.UIManager.Root.Q<Button>("Resume");
-        _reset = GameManager.Instance.UIManager.Root.Q<Button>("Reset");
-        _sensitivity = GameManager.Instance.UIManager.Root.Q<Slider>("Slider");
+        _resume = GameController.Instance.UIManager.Root.Q<Button>("Resume");
+        _reset = GameController.Instance.UIManager.Root.Q<Button>("Reset");
+        _sensitivity = GameController.Instance.UIManager.Root.Q<Slider>("Slider");
 
         for (int i = 0; i < 6; i++){
-            var button = GameManager.Instance.UIManager.Root.Q<Button>($"Cross{i+1}");
+            var button = GameController.Instance.UIManager.Root.Q<Button>($"Cross{i+1}");
             buttons.Add(button);
         }
     }
 
-    private void OnButtonClick(Button button){
+    private void OnCrossButtonClick(Button button){
         var index = buttons.IndexOf(button);
-        OnCrossChange?.Invoke(button.iconImage, index);
+        PauseMenuManager.CrossChanged(button.iconImage, index);
+        AudioManager.PlayClickSound();
     }
 
     private void ResumeClicked(){
-        GameManager.OnGamePaused?.Invoke(GameManager.Instance.DataManager.GameData, false);
+        AudioManager.PlayClickSound();
+        GameManager.Paused(GameController.Instance.DataManager.GameData, false);
     }
 
     private void MainMenuClicked(){
-        GameManager.Instance.Visual.Effects.FadeScreen.FadeScreenToBlack(1f);
-        GameManager.OnGameEnd?.Invoke();
+        AudioManager.PlayClickSound();
+        VisualsManager.FadeToBlack(1f);
+        GameManager.End();
         StartCoroutine(MainMenuRoutine());
     }
 
     private IEnumerator MainMenuRoutine(){
         yield return new WaitForSeconds(1f);
-        GameManager.Instance.LoadMainMenu();
+        GameController.Instance.LoadMainMenu();
     }
 
     private void SensitivityChanged(ChangeEvent<float> evt){
         _currentSensitivity = evt.newValue;
-        OnSensivityChange?.Invoke(_currentSensitivity);
+        PauseMenuManager.SensitivityChanged(_currentSensitivity);
     }
 }

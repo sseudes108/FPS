@@ -1,17 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
-
 public class Player : Character, IDataPersistencer {
-    public static Action<Gun> OnWeaponPickUp;
+    [field:SerializeField] public GunEventHandlerSO GunManager { get; private set;}
+    [field:SerializeField] public AudioEventHandlerSO AudioManager { get; private set;}
+    [field:SerializeField] public PlayerAnimationsSO Animations { get; private set;}
+    [field:SerializeField] public HealthEventHandlerSO HealthManager { get; private set;}
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
 
-    //Public Acess
-    public readonly int IDLE = Animator.StringToHash("Player_Idle");
-    public readonly int WALK = Animator.StringToHash("Player_Walk");
-    public readonly int RUN = Animator.StringToHash("Player_Run");
     public FrameInput Input => PlayerInput.FrameInput;
 
     //Ground Check Settings
@@ -26,27 +23,28 @@ public class Player : Character, IDataPersistencer {
 
     private bool _canInteract;
     private MonoBehaviour _interactItem;
-
     private Vector3 _lastCheckPointPosition;
 
 
 #region UnityMethods
     private void OnEnable() {
-        GameManager.OnGameStart += GameManager_OnGameStart;
-        GameManager.OnGamePaused += GameManager_OnGamePause;
-        Gun.OnPlayerCloseForPickUp += Gun_OnPlayerCloseForPickUp;
-        Gun.OnPlayerMoveOutRange += Gun_OnPlayerMoveOutRange;
-        Health.OnPlayerDied += Health_OnPlayerDied;
+        GameManager.OnGameStart.AddListener(GameManager_OnGameStart);
+        GameManager.OnGamePaused.AddListener(GameManager_OnGamePause);
+
+        GunManager.OnPlayerClosePickUp.AddListener(Gun_OnPlayerCloseForPickUp);
+        GunManager.OnPlayerMoveOutRange.AddListener(Gun_OnPlayerMoveOutRange);
+        HealthManager.OnPlayerDied.AddListener(HealthManager_OnPlayerDied);
     }
     private void OnDisable() {
-        GameManager.OnGameStart -= GameManager_OnGameStart;
-        GameManager.OnGamePaused -= GameManager_OnGamePause;
-        Gun.OnPlayerCloseForPickUp -= Gun_OnPlayerCloseForPickUp;
-        Gun.OnPlayerMoveOutRange -= Gun_OnPlayerMoveOutRange;
-        Health.OnPlayerDied -= Health_OnPlayerDied;
+        GameManager.OnGameStart.RemoveListener(GameManager_OnGameStart);
+        GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePause);
+
+        GunManager.OnPlayerClosePickUp.RemoveListener(Gun_OnPlayerCloseForPickUp);
+        GunManager.OnPlayerMoveOutRange.RemoveListener(Gun_OnPlayerMoveOutRange);
+        HealthManager.OnPlayerDied.RemoveListener(HealthManager_OnPlayerDied);
     }
 
-    private void Health_OnPlayerDied(){
+    private void HealthManager_OnPlayerDied(){
         PlayerInput.AllowInputs(false);
     }
 
@@ -91,7 +89,7 @@ public class Player : Character, IDataPersistencer {
     private void HandleInteraction(){
         if(!_canInteract){return;}
         if(!Input.Interact){return;}
-        OnWeaponPickUp?.Invoke(_interactItem as Gun);
+        GunManager.WeaponPickedUp(_interactItem as Gun);
     }
 
     public override void SetStates(){
@@ -111,10 +109,10 @@ public class Player : Character, IDataPersistencer {
 
     private void HandlePause(){
         if(!UnityEngine.Input.GetKeyDown(KeyCode.Escape)){return;}
-        if(GameManager.Instance.PauseManager.IsPaused){
-            GameManager.OnGamePaused?.Invoke(GameManager.Instance.DataManager.GameData, false);
+        if(GameController.Instance.PauseManager.IsPaused){
+            GameManager.Paused(GameController.Instance.DataManager.GameData, false);
         }else{
-            GameManager.OnGamePaused?.Invoke(GameManager.Instance.DataManager.GameData, true);
+            GameManager.Paused(GameController.Instance.DataManager.GameData, true);
         }
     }
 
@@ -132,7 +130,7 @@ public class Player : Character, IDataPersistencer {
         transform.Rotate(Vector3.up * mouseX);
         Camera.CameraRotation(mouseY);
 
-        GameManager.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
+        GameController.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
     }
 
     public override void HandleJump(){
@@ -157,7 +155,7 @@ public class Player : Character, IDataPersistencer {
 
     public void SaveSpawnPosition(Vector3 spawnPosition){
         _lastCheckPointPosition = new Vector3(spawnPosition.x, spawnPosition.y + 1.2f, spawnPosition.z); //Add the off set so the player does not spawn into the ground
-        GameManager.Instance.DataManager.SaveGame();
+        GameController.Instance.DataManager.SaveGame();
     }
 #endregion
 
@@ -169,7 +167,7 @@ public class Player : Character, IDataPersistencer {
     private IEnumerator GameStartAdjustments(){
         transform.position = _lastCheckPointPosition;
         PlayerInput.AllowInputs(false);
-        GameManager.Instance.UIManager.Locus.MakeScreenVisible();
+        GameController.Instance.UIManager.Locus.MakeScreenVisible();
         yield return new WaitForSeconds(0.5f);
         PlayerInput.AllowInputs(true);
         Movement.Controller.enabled = true;

@@ -3,6 +3,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_Locus : MonoBehaviour, IDataPersistencer {
+    [field:SerializeField] public GunEventHandlerSO GunManager  { get; private set; }
+    [field:SerializeField] public VisualsEventHandlerSO VisualsManager  { get; private set; }
+    [field:SerializeField] public PauseMenuEventHandlerSO PauseMenuManager { get; private set; }
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+
     private VisualElement _crossHair;
     private VisualElement _canvas;
 
@@ -19,15 +24,17 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
     private Label _maxAmmo;
 
     private void OnEnable() {
-        PlayerGun.OnAmmoCountChange += PlayerGun_OnAmmoCountChange;
-        GameManager.OnGamePaused += GameManager_OnGamePaused;
-        UI_PauseMenu.OnCrossChange += UI_PauseMenu_OnCrossChange;
+        GunManager.OnAmmoCountChange.AddListener(GunManager_OnAmmoCountChange);
+        // GameController.OnGamePaused += GameManager_OnGamePaused;
+        GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
+        PauseMenuManager.OnCrossChange.AddListener(PauseMenuManager_OnCrossChange);
     }
 
     private void OnDisable() {
-        PlayerGun.OnAmmoCountChange -= PlayerGun_OnAmmoCountChange;
-        GameManager.OnGamePaused -= GameManager_OnGamePaused;
-        UI_PauseMenu.OnCrossChange -= UI_PauseMenu_OnCrossChange;
+        GunManager.OnAmmoCountChange.RemoveListener(GunManager_OnAmmoCountChange);
+        // GameController.OnGamePaused -= GameManager_OnGamePaused;
+        GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
+        PauseMenuManager.OnCrossChange.RemoveListener(PauseMenuManager_OnCrossChange);
     }
 
     private void Start() {
@@ -55,7 +62,7 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
         }
     }
 
-    private void PlayerGun_OnAmmoCountChange(int ammoLeftInMag, int magazineSize, int maxAmmo){
+    private void GunManager_OnAmmoCountChange(int ammoLeftInMag, int magazineSize, int maxAmmo){
         _currentAmmo.text = $"Ammo : {ammoLeftInMag:00}/{magazineSize}";
         _maxAmmo.text = $"{maxAmmo}";
     }
@@ -66,22 +73,22 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
     }
 
     private void SetElements(){
-        _canvas = GameManager.Instance.UIManager.Root.Q("Canvas");
-        _crossHair = GameManager.Instance.UIManager.Root.Q("Cross");
-        _currentAmmo = GameManager.Instance.UIManager.Root.Q<Label>("CurrentAmmoLabel");
-        _maxAmmo = GameManager.Instance.UIManager.Root.Q<Label>("MaxAmmoLabel");
+        _canvas = GameController.Instance.UIManager.Root.Q("Canvas");
+        _crossHair = GameController.Instance.UIManager.Root.Q("Cross");
+        _currentAmmo = GameController.Instance.UIManager.Root.Q<Label>("CurrentAmmoLabel");
+        _maxAmmo = GameController.Instance.UIManager.Root.Q<Label>("MaxAmmoLabel");
     }
 
     //Background newCross
-    private void UI_PauseMenu_OnCrossChange(Background newCross, int crossIndex){
+    private void PauseMenuManager_OnCrossChange(Background newCross, int crossIndex){
         _updatedCrossHair = newCross;
         _crosshairIndex = crossIndex;
         crossChanged = true;
-        GameManager.Instance.DataManager.SaveGame();
+        GameController.Instance.DataManager.SaveGame();
     }
 
     public void LoadData(GameData data){
-        _updatedCrossHair = GameManager.Instance.Visual.CrossesTextures[data.CrossHair];
+        _updatedCrossHair = VisualsManager.CrossesTextures[data.CrossHair];
         _crosshairIndex = data.CrossHair;
     }
 

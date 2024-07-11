@@ -1,39 +1,34 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour{
+public class GameController : MonoBehaviour{
+    public static GameController Instance { get; private set;}
 
-    public static GameManager Instance { get; private set;}
-    //Events
-    public static Action OnGameStart;
-    public static Action OnGameEnd;
-    public static Action<GameData, bool> OnGamePaused;
+    [field:SerializeField] public AudioEventHandlerSO AudioManager{ get; private set;}
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+    
 
     //Global variables
-    public Vector2 RotationInput {get; private set;}
+    public Vector2 RotationInput;
 
     //Managers
-    public UIManager UIManager { get; private set;}
-    public SpawnManager SpawnManager { get; private set;}
-    public AudioManager AudioManager { get; private set;}
-    public PauseManager PauseManager { get; private set;}
-    public ObjectPoolManager Pooling { get; private set;}
-    public DataPersistentManager DataManager { get; private set;}
-    public VisualManager Visual { get; private set;}
-
+    public UIManager UIManager;
+    public SpawnManager SpawnManager;
+    public PauseManager PauseManager;
+    public DataPersistentManager DataManager;
     private IEnumerator _startRoutine;
+
 
 #region UnityMethods
     private void OnEnable() {
-        OnGamePaused += GameManager_OnGamePaused;
-        OnGameEnd += GameManager_OnGameEnd;
+        GameManager.OnGameEnd.AddListener(GameManager_OnGameEnd);
+        GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
     }
 
     private void OnDisable() {
-        OnGamePaused -= GameManager_OnGamePaused;
-        OnGameEnd -= GameManager_OnGameEnd;
+        GameManager.OnGameEnd.RemoveListener(GameManager_OnGameEnd);
+        GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
     }
         
     private void Awake() {
@@ -66,11 +61,8 @@ public class GameManager : MonoBehaviour{
     private void SetManagers(){
         UIManager = GetComponentInChildren<UIManager>();
         SpawnManager = GetComponentInChildren<SpawnManager>();
-        AudioManager = GetComponentInChildren<AudioManager>();
         PauseManager = GetComponentInChildren<PauseManager>();
-        Pooling = GetComponentInChildren<ObjectPoolManager>();
         DataManager = GetComponentInChildren<DataPersistentManager>();
-        Visual = GetComponentInChildren<VisualManager>();
     }
 
     private void StartGame(){
@@ -84,7 +76,8 @@ public class GameManager : MonoBehaviour{
         DataManager.LoadGame();
         yield return new WaitForSeconds(1f);
 
-        OnGameStart?.Invoke();
+        GameManager.Start();
+        AudioManager.PlayStartGameMusic();
         yield return null;
     }
 

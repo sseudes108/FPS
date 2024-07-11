@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerMove : MoveState{
-    public static Action OnStep;
     public bool _needReset = false;
     private IEnumerator _stepRoutine;
 
     public override void Enter(){
-        Player.ChangeAnimation(Player.WALK);
+        _needReset = false;
+        Player.ChangeAnimation(Player.Animations.WALK);
         _stepRoutine = HandleSteps();
         Player.StartCoroutine(_stepRoutine);
     }
@@ -26,7 +25,7 @@ public class PlayerMove : MoveState{
     }
 
     public override void Exit(){
-        Player.ChangeAnimation(Player.IDLE);
+        Player.ChangeAnimation(Player.Animations.IDLE);
         Player.StopCoroutine(_stepRoutine);
         _stepRoutine = null;
     }
@@ -35,12 +34,12 @@ public class PlayerMove : MoveState{
         if(Player.Input.Run){
             if(_needReset){ return; }
             Player.Movement.SetSpeed(Player.Movement.GetRunSpeed());
-            Player.Anim.ChangeAnimation(Player.RUN);
+            Player.Anim.ChangeAnimation(Player.Animations.RUN);
             _needReset = true;
         }else{
             if(!_needReset){ return; }
             Player.Movement.SetSpeed(Player.Movement.GetDefaultSpeed());
-            Player.Anim.ChangeAnimation(Player.WALK);
+            Player.Anim.ChangeAnimation(Player.Animations.WALK);
             _needReset = false;
         }
     }
@@ -49,14 +48,15 @@ public class PlayerMove : MoveState{
         do{
             float _stepTime;
 
-            if(Player.Anim.CurrentAnimation == Player.RUN){
+            if(Player.Anim.CurrentAnimation == Player.Animations.RUN){
                 _stepTime = 0.3f;
             }else{
                 _stepTime = 0.5f;
             }
 
             yield return new WaitForSeconds(_stepTime);
-            OnStep?.Invoke();
+            // OnStep?.Invoke();
+            Player.AudioManager.PlayStepSound();
             yield return null;
         }while(_stepRoutine != null);
     }

@@ -2,23 +2,24 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_HealthBar : MonoBehaviour {
+    [field:SerializeField] public HealthEventHandlerSO HealthManager { get; private set;}
     private VisualElement _HBforeground;
     private int _lentgh = 100;
 
     private void OnEnable() {
-        Health.OnHealthChange += Health_OnHealthChange;
+        HealthManager.OnHealthChange.AddListener(HealthManager_OnHealthChange);
     }
 
     private void OnDisable() {
-        Health.OnHealthChange -= Health_OnHealthChange;
+        HealthManager.OnHealthChange.RemoveListener(HealthManager_OnHealthChange);
     }
 
     private void Start() {
-        _HBforeground = GameManager.Instance.UIManager.Root.Q("HBFore");
+        _HBforeground = GameController.Instance.UIManager.Root.Q("HBFore");
         UpdateHealthBar();
     }
 
-    private void Health_OnHealthChange(int currentHP){
+    private void HealthManager_OnHealthChange(int currentHP){
         _lentgh = currentHP;
         if (_lentgh <= 0){
             _lentgh = 0;

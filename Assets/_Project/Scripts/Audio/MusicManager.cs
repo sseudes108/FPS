@@ -2,31 +2,45 @@ using System.Collections;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour {
-    private bool playMusic;
+    private bool _playMusic;
+    private AudioSource _musicPlaying;
+    [SerializeField] private AudioEventHandlerSO AudioManager;
 
     private void OnEnable() {
-        GameManager.OnGameStart += GameManager_OnGameStart;
+        AudioManager.OnGameStart.AddListener(AudioManager_OnGameStart);
     }
 
     private void OnDisable() {
-        GameManager.OnGameStart -= GameManager_OnGameStart;
+        AudioManager.OnGameStart.RemoveListener(AudioManager_OnGameStart);
+    }
+    
+    private void Start() {
+        _playMusic = true;
     }
 
-    private void GameManager_OnGameStart(){
-        playMusic = true;
-        StartCoroutine(MusicPlayRoutine());
+    private void AudioManager_OnGameStart(){
+        StartCoroutine(StartMusic());
+    }
+
+    public IEnumerator StartMusic(){
+        do{
+            SoundSO currentMusic = AudioManager.InGameMusics[Random.Range(0, AudioManager.InGameMusics.Count)];
+            PlayMusic(currentMusic);
+            yield return StartCoroutine(AudioManager.VolumeRoutine(_musicPlaying, 0, 1f, 10f));
+            yield return new WaitForSeconds(currentMusic.AudioClip.length - 12f);
+        }while(_playMusic);
     }
 
     public void PlayMusic(SoundSO musicToPlay){
-        GameManager.Instance.AudioManager.SoundToPlay(musicToPlay);
-    }
+        var newMusic = AudioManager.AudioPool.Get();
+        _musicPlaying = newMusic;
+        _musicPlaying.volume = 0f;
+        newMusic.transform.SetParent(transform);
 
-    public IEnumerator MusicPlayRoutine(){
-        do{
-            var randomIndex = Random.Range(0, GameManager.Instance.AudioManager.Database.InGameMusics.Count);
-            PlayMusic(GameManager.Instance.AudioManager.Database.InGameMusics[randomIndex]);
-            yield return new WaitForSeconds(GameManager.Instance.AudioManager.Database.InGameMusics[randomIndex].AudioClip.length); //Add efect do low the volume near the end and up from the start
-            yield return null;
-        }while(playMusic);
+        AudioManager.Init(newMusic, musicToPlay);
+        newMusic.Play();
+        if(!newMusic.loop){
+            StartCoroutine(AudioManager.ReleaseFromPool(newMusic, musicToPlay.AudioClip.length));
+        }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UI_TitleScreen : MonoBehaviour{
-    public static Action OnGameStarted;
+    [SerializeField] private VisualsEventHandlerSO VisualsManager;
 
     private UIDocument _uiDocument;
     private VisualElement _root;
@@ -17,6 +17,7 @@ public class UI_TitleScreen : MonoBehaviour{
     private VisualElement _buttonsBox;
     private VisualElement _mainContainer;
 
+    private TitleMenuAudio _audio;
 
     private void OnEnable() {
         _uiDocument = GetComponent<UIDocument>();
@@ -38,6 +39,10 @@ public class UI_TitleScreen : MonoBehaviour{
         _quit.clicked -= OnQuit;
     }
 
+    private void Awake() {
+        _audio = GetComponent<TitleMenuAudio>();
+    }
+
     private void Start(){
         _buttonsBox.style.opacity = 0;
         _mainContainer.style.opacity = 1;
@@ -46,6 +51,7 @@ public class UI_TitleScreen : MonoBehaviour{
     }
 
     private void OnPlay(){
+        _audio.MuteSound();
         StartCoroutine(StartGameRoutine());
     }
 
@@ -58,9 +64,9 @@ public class UI_TitleScreen : MonoBehaviour{
     }
 
     private IEnumerator StartFadeOutRoutine(){
-        // StartCoroutine(FadeRoutine(_overLay, 1f, 0f, 2f));
         StartCoroutine(FadeRoutine(_mainContainer, 0f, 1f, 2f));
-        GameManager.Instance.Visual.Effects.FadeScreen.FadeScreenFromBlack(3f);
+        VisualsManager.FadeFromBlack(3f);
+        // VisualsManager.OnFadeFromBlack?.Invoke(3f);
         yield return new WaitForSeconds(3f);
         yield return null;
         _overLay.style.display = DisplayStyle.None;
@@ -69,10 +75,11 @@ public class UI_TitleScreen : MonoBehaviour{
     }
 
     private IEnumerator StartGameRoutine(){
-        OnGameStarted?.Invoke();
+        // OnGameStarted?.Invoke();
         yield return null;
         StartCoroutine(FadeRoutine(_mainContainer, 1f, 0f, 0.7f));
-        GameManager.Instance.Visual.Effects.FadeScreen.FadeScreenToBlack(2f);
+        VisualsManager.FadeToBlack(3f);
+        // VisualsManager.OnFadeToBlack?.Invoke(2f);
         yield return new WaitForSeconds(4f);
         yield return null;
 

@@ -15,8 +15,8 @@ public class UI_DeathScreen : MonoBehaviour {
     }
 
     private void SetElements(){
-        _overLay = GameManager.Instance.UIManager.Root.Q("Overlay");
-        _youDied = GameManager.Instance.UIManager.Root.Q("YouDied");
+        _overLay = GameController.Instance.UIManager.Root.Q("Overlay");
+        _youDied = GameController.Instance.UIManager.Root.Q("YouDied");
     }
 
     private void FadeOverlayFromBlack(){

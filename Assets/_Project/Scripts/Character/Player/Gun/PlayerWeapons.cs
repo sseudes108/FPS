@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 public class PlayerWeapons : MonoBehaviour {
+    [SerializeField] private GunEventHandlerSO GunManager;
     [SerializeField] private List<Gun> _weapons = new();
     private Dictionary<string, int> _ammoAmountDict = new();
     private List<Gun> _availableGuns = new();
@@ -14,13 +15,13 @@ public class PlayerWeapons : MonoBehaviour {
 #region UnityMethods
 
     private void OnEnable() {
-        PlayerGun.OnWeaponChange += PlayerGun_OnWeaponChange;
-        Player.OnWeaponPickUp += Player_OnWeaponPickUp;
+        GunManager.OnWeaponPickUp.AddListener(GunManager_OnWeaponPickUp);
+        GunManager.OnWeaponChange.AddListener(GunManager_OnWeaponChange);
     }
     
     private void OnDisable() {
-        PlayerGun.OnWeaponChange -= PlayerGun_OnWeaponChange;
-        Player.OnWeaponPickUp -= Player_OnWeaponPickUp;
+        GunManager.OnWeaponPickUp.RemoveListener(GunManager_OnWeaponPickUp);
+        GunManager.OnWeaponChange.RemoveListener(GunManager_OnWeaponChange);
     }
 
     public void Start(){
@@ -83,7 +84,8 @@ public class PlayerWeapons : MonoBehaviour {
 
 #region Events
 
-    private void Player_OnWeaponPickUp(Gun pickedGun){
+    private void GunManager_OnWeaponPickUp(Gun pickedGun){
+        Debug.Log("PlayerWeapons - GunManager_OnWeaponPickUp");
         foreach(var weapon in _weapons){
             if(pickedGun.GunData.WeaponType == weapon.GunData.WeaponType){
                 pickedGun.PickUpGun();
@@ -94,9 +96,8 @@ public class PlayerWeapons : MonoBehaviour {
         UpdateFullAmmoInventory();
     }
 
-    private void PlayerGun_OnWeaponChange(PlayerGun playerGun, int key){
+    private void GunManager_OnWeaponChange(PlayerGun playerGun, int key){
         StartCoroutine(ChangeWeaponRoutine(playerGun, key)); //Coroutine used to be asure that the available guns list has been updated
-        
     }
 
     private IEnumerator ChangeWeaponRoutine(PlayerGun playerGun, int key){

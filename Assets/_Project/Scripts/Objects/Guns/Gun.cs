@@ -5,11 +5,8 @@ using UnityEngine.Pool;
 
 [RequireComponent(typeof(Sway))]
 public class Gun : MonoBehaviour{
-    public static Action<Gun> OnPlayerCloseForPickUp;
-    public static Action<bool> OnPlayerMoveOutRange;
-    public static Action<Transform> OnShoot;
+    [SerializeField] private GunEventHandlerSO GunManager;
     
-    protected ObjectPool<Bullet> _bulletPool;
     protected Character _character;
 
     [SerializeField] protected GunSO _gunData;
@@ -45,7 +42,6 @@ public class Gun : MonoBehaviour{
     }
 
     private void Start() {
-        _bulletPool = GameManager.Instance.Pooling.BulletPool;
         ReloadMagazine(_gunData.Magazine);
     }
 
@@ -68,8 +64,8 @@ public class Gun : MonoBehaviour{
     public IEnumerator ShootRoutine(){
         _ammoLeftInMag--;
         StartCoroutine(MuzzleFlashRoutine());
-        OnShoot?.Invoke(_firePoint);
-        var newBullet = _bulletPool.Get();
+        GunManager.SetFirePoint(_firePoint);
+        var newBullet = GunManager.BulletPool.Get();
         newBullet.Init(this,_gunData.BulletMaterial, _gunData.DamageValue, _character, _firePoint);
         yield return null;
     }
@@ -81,7 +77,7 @@ public class Gun : MonoBehaviour{
     }
 
     public void ReleaseBulletFromPool(Bullet bullet){
-        _bulletPool.Release(bullet);
+        GunManager.BulletPool.Release(bullet);
     }
 
     #endregion
@@ -98,18 +94,19 @@ public class Gun : MonoBehaviour{
 
         if(playerInRange > 0 && player[0] != null){
             _playerInRange = true;
-            OnPlayerCloseForPickUp?.Invoke(this);
+            GunManager.PlayerClosePickUp(this);
         }else{
             if(!_playerInRange){return;}
             _playerInRange = false;
-            OnPlayerMoveOutRange?.Invoke(false);
+            GunManager.OnPlayerMoveOutRange?.Invoke(false);
+
         }
     }
 
     public void PickUpGun(){
         gameObject.SetActive(false);
         Destroy(gameObject, 5f);
-        OnPlayerMoveOutRange?.Invoke(false);
+        GunManager.OnPlayerMoveOutRange?.Invoke(false);
     }
 
     #endregion

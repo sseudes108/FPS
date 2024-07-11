@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7bd6d131a9a9684cb51bc28cd530e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AudioManager: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
 --- !u!1 &2389168285842108888
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pausedAsset: {fileID: 0}
+  AudioManager: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
 --- !u!114 &8627648589722150084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,9 +457,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 2152689315109675010}
     m_Modifications:
     - target: {fileID: 968434381906265127, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
+      propertyPath: _click
+      value: 
+      objectReference: {fileID: 11400000, guid: e8d7c2e5ddec64c4cb8617852d35b6ea, type: 2}
+    - target: {fileID: 968434381906265127, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
       propertyPath: _bulletHit
       value: 
       objectReference: {fileID: 11400000, guid: 58463d0997d42434b833e6bba85af527, type: 2}
+    - target: {fileID: 968434381906265127, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
+      propertyPath: AudioManager
+      value: 
+      objectReference: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+    - target: {fileID: 968434381906265127, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
+      propertyPath: _switchCrossHair
+      value: 
+      objectReference: {fileID: 11400000, guid: 04f90d88215e1b047b4e585194132617, type: 2}
     - target: {fileID: 1275052685907666165, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 33.888325
@@ -502,6 +516,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Audio
       objectReference: {fileID: 0}
+    - target: {fileID: 4790681316528917896, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8642268306550492073, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
+      propertyPath: AudioManager
+      value: 
+      objectReference: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

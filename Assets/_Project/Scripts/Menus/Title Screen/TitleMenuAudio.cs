@@ -1,48 +1,39 @@
-using System.Collections;
 using UnityEngine;
 
 public class TitleMenuAudio : MonoBehaviour{
-    private AudioManager Manager;
+    // [SerializeField] private AudioManager _manager;
     private AudioSource AudioSource;
+    [SerializeField] private AudioEventHandlerSO AudioManager;
 
-    private void OnEnable() {
-        UI_TitleScreen.OnGameStarted += TitleScreen_OnGameStarted;
-    }
-
-    private void OnDisable() {
-        UI_TitleScreen.OnGameStarted -= TitleScreen_OnGameStarted;
-    }
-
-    private void TitleScreen_OnGameStarted(){
-        StartCoroutine(VolumeRoutine(AudioSource, 1f, 0f, 50f));
-    }
-
-    private void Awake() {
-        Manager = GetComponent<AudioManager>();
-    }
-    
     private void Start() {
         RandomSound();
-        StartCoroutine(VolumeRoutine(AudioSource, 0f, 1f, 50f));
+        StartCoroutine(AudioManager.VolumeRoutine(AudioSource, 0f, 1f, 3f));
+    }
+
+    public void MuteSound(){
+        StartCoroutine(AudioManager.VolumeRoutine(AudioSource, 1f, 0f, 2f));
     }
 
     private void RandomSound(){
-        var rand = Random.Range(0, Manager.Database.MainMenuMusics.Count);
-        var randomSoundSo = Manager.CreateAudioSource(Manager.Database.MainMenuMusics[rand]);
-        randomSoundSo.volume = 0;
-        AudioSource = randomSoundSo;
+        AudioSource = AudioManager.GetRandomMainMenuMusic();
+        // var rand = Random.Range(0, AudioManager.MainMenuMusics.Count);
+
+        // var randomSoundSo = CreateAudioSource(AudioManager.MainMenuMusics[rand]);
+        // randomSoundSo.volume = 0;
+        // AudioSource = randomSoundSo;
     }
 
-    private IEnumerator VolumeRoutine(AudioSource audioSource, float start, float end, float duration){
-        audioSource.Play();
-
-        float elapsedTime = 0;
-        do{
-            elapsedTime += Time.deltaTime;
-            float interpolation = Mathf.Clamp01(elapsedTime / duration);
-            audioSource.volume = Mathf.Lerp(start, end, interpolation);
-            yield return null;
-        }while(elapsedTime < duration);
-    }
-
+    // private IEnumerator VolumeRoutine(AudioSource audioSource, float start, float end, float duration){
+    //     if(!audioSource.isPlaying){
+    //         audioSource.Play();
+    //     }
+        
+    //     float elapsedTime = 0;
+    //     do{
+    //         elapsedTime += Time.deltaTime;
+    //         float interpolation = Mathf.Clamp01(elapsedTime / duration);
+    //         audioSource.volume = Mathf.Lerp(start, end, interpolation);
+    //         yield return null;
+    //     }while(elapsedTime < duration);
+    // }
 }

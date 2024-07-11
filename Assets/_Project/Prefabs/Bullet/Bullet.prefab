@@ -266,4 +266,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513b288685e0524409e6f14ea98b769c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VisualsManager: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
   _moveSpeed: 100

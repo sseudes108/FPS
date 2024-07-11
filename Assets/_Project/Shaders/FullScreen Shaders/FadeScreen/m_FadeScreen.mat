@@ -48,7 +48,7 @@ Material:
     - _ApplyNoise: 0
     - _VignetSoftness: 1
     - _VigneteDarkening: 1
-    - _VigneteRadius: 1
+    - _VigneteRadius: 2
     m_Colors:
     - _Tint: {r: 0.6509804, g: 0.0627451, b: 0.0627451, a: 0}
   m_BuildTextureStacks: []

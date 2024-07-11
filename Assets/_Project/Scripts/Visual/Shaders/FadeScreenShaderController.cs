@@ -2,21 +2,28 @@ using System.Collections;
 using UnityEngine;
 
 public class FadeScreenShaderController : MonoBehaviour {
+    [field:SerializeField] public VisualsEventHandlerSO VisualsManager { get; private set;}
+    [field:SerializeField] public HealthEventHandlerSO HealthManager { get; private set;}
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
     [SerializeField] private Material _fadeScreenMaterial;
     private IEnumerator _fadeScreenTask;
     private float _currentRadius;
     [SerializeField] private Color _redDefaultColor;
 
     private void OnEnable() {
-        Health.OnPlayerDamaged += Health_OnPlayerDamaged;
-        Health.OnPlayerDied += Health_OnPlayerDie;
-        GameManager.OnGameStart += GameManager_OnGameStart;
+        VisualsManager.OnFadeFromBlack.AddListener(VisualsManager_OnFadeFromBlack);
+        VisualsManager.OnFadeToBlack.AddListener(VisualsManager_OnfadeToBlack);
+        HealthManager.OnPlayerDamaged.AddListener(HealthManager_OnPlayerDamaged);
+        HealthManager.OnPlayerDied.AddListener(HealthManager_OnPlayerDied);
+        GameManager.OnGameStart.AddListener(GameManager_OnGameStart);
     }
 
     private void OnDisable() {
-        Health.OnPlayerDamaged -= Health_OnPlayerDamaged;
-        Health.OnPlayerDied -= Health_OnPlayerDie;
-        GameManager.OnGameStart -= GameManager_OnGameStart;
+        VisualsManager.OnFadeFromBlack.RemoveListener(VisualsManager_OnFadeFromBlack);
+        VisualsManager.OnFadeToBlack.RemoveListener(VisualsManager_OnfadeToBlack);
+        HealthManager.OnPlayerDamaged.RemoveListener(HealthManager_OnPlayerDamaged);
+        HealthManager.OnPlayerDied.RemoveListener(HealthManager_OnPlayerDied);
+        GameManager.OnGameStart.RemoveListener(GameManager_OnGameStart);
 
         ResetVignete();
     }
@@ -25,11 +32,11 @@ public class FadeScreenShaderController : MonoBehaviour {
         StartCoroutine(FadeFromBlackRoutine(2f));
     }
     
-    private void Health_OnPlayerDamaged(){
+    private void HealthManager_OnPlayerDamaged(){
         DamageEffect(Random.Range(0.1f, 1));
     }
 
-    private void Health_OnPlayerDie(){
+    private void HealthManager_OnPlayerDied(){
         DeathEffect();
     }
 
@@ -49,7 +56,7 @@ public class FadeScreenShaderController : MonoBehaviour {
     }
 
     public void ResetVignete(){
-        _currentRadius = 1;
+        _currentRadius = 2;
         _fadeScreenMaterial.SetFloat("_VigneteRadius", _currentRadius);
         _fadeScreenMaterial.SetColor("_Tint", _redDefaultColor);
     }
@@ -57,7 +64,7 @@ public class FadeScreenShaderController : MonoBehaviour {
     private IEnumerator ScreenDamageRoutine(float intensity){
         ChangeColor(_redDefaultColor);
         var targetRadius = Remap(intensity, 0, 1, 0.4f, -0.15f);
-        _currentRadius = 1f; //No Dagame
+        _currentRadius = 2f; //No Dagame
 
         for(float t = 0; _currentRadius != targetRadius; t += Time.deltaTime * 3f){
             _currentRadius = Mathf.Lerp(1, targetRadius, t);
@@ -66,7 +73,7 @@ public class FadeScreenShaderController : MonoBehaviour {
         }
 
         for(float t = 0; _currentRadius < 1 ; t += Time.deltaTime * 3f){
-            _currentRadius = Mathf.Lerp(targetRadius, 1, t);
+            _currentRadius = Mathf.Lerp(targetRadius, 2, t);
             _fadeScreenMaterial.SetFloat("_VigneteRadius", _currentRadius);
             yield return null;
         }
@@ -86,7 +93,7 @@ public class FadeScreenShaderController : MonoBehaviour {
         StartCoroutine(LerpColorToBlack(2f, 1f));
         StartCoroutine(FadeToBlackRoutine(2f));
         yield return new WaitForSeconds(1f);
-        GameManager.Instance.UIManager.DeathScreen.PlayerDied();
+        GameController.Instance.UIManager.DeathScreen.PlayerDied();
         yield return null;
     }
 
@@ -116,7 +123,7 @@ public class FadeScreenShaderController : MonoBehaviour {
         do{
             time += Time.deltaTime;
             float t = Mathf.Clamp01(time / duration);
-            _currentRadius = Mathf.Lerp(1, targetRadius, t);
+            _currentRadius = Mathf.Lerp(2, targetRadius, t);
             _fadeScreenMaterial.SetFloat("_VigneteRadius", _currentRadius);
             yield return null;
         }while(_currentRadius > targetRadius);
@@ -130,7 +137,7 @@ public class FadeScreenShaderController : MonoBehaviour {
         _fadeScreenMaterial.SetFloat("_ApplyNoise", 0);
         _fadeScreenMaterial.SetFloat("_VigneteRadius", 0);
         _fadeScreenMaterial.SetColor("_Tint", Color.black);
-        var targetRadius = 1;
+        var targetRadius = 2;
         float time = 0;
         do{
             time += Time.deltaTime;
@@ -144,16 +151,15 @@ public class FadeScreenShaderController : MonoBehaviour {
     }
 
     private void ChangeColor(Color newColor){
-        Debug.Log("ChangeColor Called");
         _fadeScreenMaterial.SetColor("_Tint", newColor);
     }
 
-    public void FadeScreenToBlack(float duration){ // Made for UI_TitleScreen.cs
+    public void VisualsManager_OnfadeToBlack(float duration){ // Made for UI_TitleScreen.cs
         ChangeColor(Color.black);
         FadeToBlack(duration);
     }
 
-    public void FadeScreenFromBlack(float duration){ // Made for UI_TitleScreen.cs
+    public void VisualsManager_OnFadeFromBlack(float duration){ // Made for UI_TitleScreen.cs
         ChangeColor(Color.black);
         FadeFromBlack(duration);
     }

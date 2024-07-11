@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37ddb3254e456844baad2999a5e53374, type: 3}
-  m_Name: RossiniElBarbero
+  m_Script: {fileID: 11500000, guid: 4ccde7cde43f10e4e9bd45e164472995, type: 3}
+  m_Name: GameEventHandler
   m_EditorClassIdentifier: 
-  AudioType: 2
-  AudioClip: {fileID: 8300000, guid: 7f4a28ddb27e88645a476f12f54ba351, type: 3}
-  Loop: 0
-  RandomizePitch: 0
-  RandomPitchModifier: 0.1
-  Volume: 0.1
-  Pitch: 0.1
+  OnGameStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGameEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGamePaused:
+    m_PersistentCalls:
+      m_Calls: []

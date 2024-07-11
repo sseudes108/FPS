@@ -22,8 +22,8 @@ public class Sway : MonoBehaviour{
     }
 
     private void UpdateSway(){
-        float mouseX = GameManager.Instance.RotationInput.x;
-        float mouseY = GameManager.Instance.RotationInput.y * -1;
+        float mouseX = GameController.Instance.RotationInput.x;
+        float mouseY = GameController.Instance.RotationInput.y * -1;
 
         if(_gun.IsAiming){
             intensity  /= 3;

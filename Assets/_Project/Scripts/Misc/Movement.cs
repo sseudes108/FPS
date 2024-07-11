@@ -28,7 +28,7 @@ public class Movement : MonoBehaviour {
         _runSpeed = _defaultMoveSpeed + (_defaultMoveSpeed * 0.9f);
     }
 
-    private void LateUpdate() {
+    private void LateUpdate() { //Was LateUpdate
         if(!_allowUpdate){return;}
         if (Controller.enabled){
             if (_canMove){

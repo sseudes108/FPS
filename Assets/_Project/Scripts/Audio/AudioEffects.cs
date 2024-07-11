@@ -1,72 +1,30 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class AudioEffects : MonoBehaviour {
-    [SerializeField] private SoundSO _footStep;
-    [SerializeField] private ObjectPool<AudioSource> _audioEffectPool;
-
-    public ObjectPoolManager POOL;
+    [SerializeField] private AudioEventHandlerSO AudioManager;
 
     private void OnEnable() {
-        PlayerGun.OnHandleGun += PlayerGun_OnHandleGun;
-        PlayerGun.OnShootFired += PlayerGun_OnShootFired;
-        PlayerGun.OnGunReload += PlayerGun_OnGunReload;
-        PlayerMove.OnStep += PlayerMove_OnStep;
+        AudioManager.OnClick.AddListener(PlayClickSound);
+        AudioManager.OnShoot.AddListener(PlayShootSound);
+        AudioManager.OnReload.AddListener(PlayReloadSound);
+        AudioManager.OnHandleGun.AddListener(PlayHandleGunSound);
+        AudioManager.OnStep.AddListener(PlayStepSound);
+        AudioManager.OnCrossHairChange.AddListener(PlayCrossHairChangeSound);
     }
 
     private void OnDisable() {
-        PlayerGun.OnHandleGun -= PlayerGun_OnHandleGun;
-        PlayerGun.OnShootFired -= PlayerGun_OnShootFired;
-        PlayerGun.OnGunReload -= PlayerGun_OnGunReload;
-        PlayerMove.OnStep -= PlayerMove_OnStep;    
+        AudioManager.OnClick.RemoveListener(PlayClickSound);
+        AudioManager.OnShoot.RemoveListener(PlayShootSound);
+        AudioManager.OnReload.RemoveListener(PlayReloadSound);
+        AudioManager.OnHandleGun.RemoveListener(PlayHandleGunSound);
+        AudioManager.OnStep.RemoveListener(PlayStepSound);
+        AudioManager.OnCrossHairChange.RemoveListener(PlayCrossHairChangeSound);
     }
 
-    private void Start() {
-        POOL = GameManager.Instance.Pooling;
-        _audioEffectPool = GameManager.Instance.Pooling.AudioPool;
-    }
-
-    private void PlayerGun_OnHandleGun(SoundSO GunHandlingSound){
-        PlayAudio(GunHandlingSound);
-    }
-
-    private void PlayerGun_OnShootFired(SoundSO shootSound){
-        PlayAudio(shootSound);
-    }
-    
-    private void PlayerGun_OnGunReload(SoundSO reloadSound){
-        PlayAudio(reloadSound);
-    }
- 
-    private void PlayerMove_OnStep(){
-        PlayAudio(_footStep);
-    }
-
-    private void PlayAudio(SoundSO soundSO){
-        var newEffect = _audioEffectPool.Get();
-        newEffect.transform.SetParent(transform);
-        Init(newEffect, soundSO);
-    }
-
-    private IEnumerator ReleaseFromPool(AudioSource audioSource, float audioLenght){
-        yield return new WaitForSeconds(audioLenght);
-        _audioEffectPool.Release(audioSource);
-    }
-
-    private void Init(AudioSource audioSource, SoundSO soundSO){
-        audioSource.clip = soundSO.AudioClip;
-        audioSource.volume = soundSO.Volume;
-        audioSource.loop = soundSO.Loop;
-
-        if(soundSO.RandomizePitch){
-            float randomPitchModifier = Random.Range(-soundSO.RandomPitchModifier, soundSO.RandomPitchModifier);
-            audioSource.pitch = soundSO.Pitch + randomPitchModifier;
-        }
-
-        audioSource.Play();
-        if(!audioSource.loop){
-            StartCoroutine(ReleaseFromPool(audioSource, soundSO.AudioClip.length));
-        }
-    }
+    private void PlayHandleGunSound(SoundSO GunHandlingSound) { AudioManager.PlayAudio(GunHandlingSound); }
+    private void PlayShootSound(SoundSO shootSound) { AudioManager.PlayAudio(shootSound); }
+    private void PlayReloadSound(SoundSO reloadSound) { AudioManager.PlayAudio(reloadSound); }
+    private void PlayStepSound(SoundSO stepSound) { AudioManager.PlayAudio(stepSound); }
+    public void PlayCrossHairChangeSound(SoundSO CrossHairChangeSound) { AudioManager.PlayAudio(CrossHairChangeSound); }
+    public void PlayClickSound(SoundSO clickSound) { AudioManager.PlayAudio(clickSound); }
 }

@@ -8,7 +8,7 @@ public class UI_CrossHair : MonoBehaviour {
     [SerializeField] private Color _crosshairColor;
 
     private void Start() {
-        _crosshair = GameManager.Instance.UIManager.Root.Q("CrossHair");
+        _crosshair = GameController.Instance.UIManager.Root.Q("CrossHair");
         CrosshairSettings();
     }
 

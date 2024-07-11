@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37ddb3254e456844baad2999a5e53374, type: 3}
-  m_Name: RossiniElBarbero
+  m_Name: Click
   m_EditorClassIdentifier: 
-  AudioType: 2
-  AudioClip: {fileID: 8300000, guid: 7f4a28ddb27e88645a476f12f54ba351, type: 3}
+  AudioType: 1
+  AudioClip: {fileID: 8300000, guid: c851aa4e27af0c94785239167a41cf99, type: 3}
   Loop: 0
-  RandomizePitch: 0
+  RandomizePitch: 1
   RandomPitchModifier: 0.1
-  Volume: 0.1
-  Pitch: 0.1
+  Volume: 0.9
+  Pitch: 2

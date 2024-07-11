@@ -3,21 +3,24 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_InGameEvents : MonoBehaviour {
+    [field:SerializeField] public GunEventHandlerSO GunManager { get; private set;}
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+
     private Label _itemName;
     private Label _itemMessage;
     private VisualElement _eventMessage;
     private IEnumerator _blinkRoutine;
 
     private void OnEnable() {
-        Gun.OnPlayerCloseForPickUp += Gun_OnPlayerCloseForPickUp;
-        Gun.OnPlayerMoveOutRange += Gun_OnPlayerMoveOutRange;
-        GameManager.OnGamePaused += GameManager_OnGamePaused;
+        GunManager.OnPlayerClosePickUp.AddListener(Gun_OnPlayerCloseForPickUp);
+        GunManager.OnPlayerMoveOutRange.AddListener(Gun_OnPlayerMoveOutRange);
+        GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
     }
 
     private void OnDisable() {
-        Gun.OnPlayerCloseForPickUp -= Gun_OnPlayerCloseForPickUp;
-        Gun.OnPlayerMoveOutRange -= Gun_OnPlayerMoveOutRange;
-        GameManager.OnGamePaused -= GameManager_OnGamePaused;
+        GunManager.OnPlayerClosePickUp.RemoveListener(Gun_OnPlayerCloseForPickUp);
+        GunManager.OnPlayerMoveOutRange.RemoveListener(Gun_OnPlayerMoveOutRange);
+        GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
     }
 
     private void Start() {
@@ -25,9 +28,9 @@ public class UI_InGameEvents : MonoBehaviour {
     }
 
     private void SetElements(){
-        _itemName = GameManager.Instance.UIManager.Root.Q<Label>("ItemName");
-        _itemMessage = GameManager.Instance.UIManager.Root.Q<Label>("ItemMessage");
-        _eventMessage = GameManager.Instance.UIManager.Root.Q("EventMessage");
+        _itemName = GameController.Instance.UIManager.Root.Q<Label>("ItemName");
+        _itemMessage = GameController.Instance.UIManager.Root.Q<Label>("ItemMessage");
+        _eventMessage = GameController.Instance.UIManager.Root.Q("EventMessage");
     }
 
     private IEnumerator BlinkText(){

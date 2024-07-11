@@ -1121,6 +1121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 86e7fcedc1d7d9644bcc7bf9cc066e39, type: 2}
   _isAvailable: 1
   _ammoLeftInMag: 0
@@ -5826,6 +5827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 1e4c89d453fcbc040831e8d67e706e25, type: 2}
   _isAvailable: 0
   _ammoLeftInMag: 0
@@ -26185,6 +26187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 63bd51353e488f14287cf758941fc3ae, type: 2}
   _isAvailable: 0
   _ammoLeftInMag: 0
@@ -27395,6 +27398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 137d90230f1608648ae54b87b54a4c63, type: 2}
   _isAvailable: 0
   _ammoLeftInMag: 0
@@ -29305,6 +29309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: c26c0384cda8047479bbe7aaa4a08b1b, type: 2}
   _isAvailable: 0
   _ammoLeftInMag: 0
@@ -30758,6 +30763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 86e7fcedc1d7d9644bcc7bf9cc066e39, type: 2}
   _isAvailable: 1
   _ammoLeftInMag: 0
@@ -46621,6 +46627,11 @@ MonoBehaviour:
   Anim: {fileID: 0}
   StateMachine: {fileID: 0}
   Gun: {fileID: 0}
+  <GunManager>k__BackingField: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+  <AudioManager>k__BackingField: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+  <Animations>k__BackingField: {fileID: 11400000, guid: 4441c5596c918724c8357dd211fa0a57, type: 2}
+  <HealthManager>k__BackingField: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
   checkGroundBox: {fileID: 5303327429958349127}
   checkGroundBoxSize: {x: 0.4, y: 0.4, z: 0.4}
 --- !u!33 &1311176822252028534
@@ -57139,6 +57150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 137d90230f1608648ae54b87b54a4c63, type: 2}
   _isAvailable: 1
   _ammoLeftInMag: 0
@@ -61394,6 +61406,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1879601721245103040, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <HealthManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
     - target: {fileID: 2086734777893172543, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -61438,8 +61454,85 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 3148451433089058807, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: GunManager
+      value: 
+      objectReference: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+    - target: {fileID: 3148451433089058807, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: VisualsManager
+      value: 
+      objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 3148451433089058807, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GunManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+    - target: {fileID: 3148451433089058807, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <VisualsManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 3148451433089058807, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <PauseMenuManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f4c152d821377449a26a4220a521844, type: 2}
+    - target: {fileID: 4726329902307459555, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: VisualsManager
+      value: 
+      objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 4726329902307459555, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GameManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
+    - target: {fileID: 4726329902307459555, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <HealthManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
+    - target: {fileID: 4726329902307459555, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <VisualsManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 5134133780981453848, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: VisualsManager
+      value: 
+      objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 5134133780981453848, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <AudioManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+    - target: {fileID: 5134133780981453848, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <VisualsManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 5134133780981453848, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <PauseMenuManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f4c152d821377449a26a4220a521844, type: 2}
+    - target: {fileID: 5758921505838835560, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: VisualsManager
+      value: 
+      objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 5890831434617560316, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <HealthManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
+    - target: {fileID: 7111188474603125273, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GameManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
+    - target: {fileID: 7111188474603125273, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <AudioManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+    - target: {fileID: 8627648589722150084, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: GunManager
+      value: 
+      objectReference: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+    m_RemovedComponents:
+    - {fileID: 2982806912752038671, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+    - {fileID: 2037660796358084634, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+    - {fileID: 5448253772125894568, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+    - {fileID: 5758921505838835560, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 5424430569844528994, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
@@ -64798,8 +64891,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00293c5867de092479660038cd0f01ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AudioManager: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _activeGun: {fileID: 0}
-  _firstPersonCamera: {fileID: 4920616105560971403}
+  _firstPersonCameraTransform: {fileID: 0}
+  _firstPersonCamera: {fileID: 0}
+  _impulseSource: {fileID: 0}
+  _resetZoom: 0
 --- !u!23 &5533122998964136463
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -69724,6 +69822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 63bd51353e488f14287cf758941fc3ae, type: 2}
   _isAvailable: 0
   _ammoLeftInMag: 0
@@ -72837,6 +72936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 86e7fcedc1d7d9644bcc7bf9cc066e39, type: 2}
   _isAvailable: 1
   _ammoLeftInMag: 0
@@ -74879,8 +74979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8397646fde23edc47ab0d8109d52838c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraTarget: {fileID: 3238811225077642959}
-  _firstPersonCamera: {fileID: 4920616105560971403}
+  <PauseMenuManager>k__BackingField: {fileID: 11400000, guid: 5f4c152d821377449a26a4220a521844, type: 2}
   _sensitivity: 9
 --- !u!114 &7795515571441830578
 MonoBehaviour:
@@ -74894,6 +74993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d028a03732383c548be818850b5b000d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _weapons:
   - {fileID: 1675012882}
   - {fileID: 34328540}
@@ -77376,6 +77476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: 1e4c89d453fcbc040831e8d67e706e25, type: 2}
   _isAvailable: 0
   _ammoLeftInMag: 0
@@ -77508,6 +77609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f0e1efc55041642b11616ed30b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _gunData: {fileID: 11400000, guid: c26c0384cda8047479bbe7aaa4a08b1b, type: 2}
   _isAvailable: 1
   _ammoLeftInMag: 0
@@ -80396,6 +80498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d14dd45ef5ca3409d4ad5a38879d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HealthManager>k__BackingField: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
   _maxHealth: 5
   _currentHealth: 0
 --- !u!4 &9051379835430312424

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour {
+    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+    
     public UIDocument UIDocument {get; private set;}
     public VisualElement Root {get; private set;}
 
@@ -15,13 +17,13 @@ public class UIManager : MonoBehaviour {
         SetRoot();
         _defaultAsset = UIDocument.visualTreeAsset;
 
-        GameManager.OnGamePaused += GameManager_OnGamePaused;
-        GameManager.OnGameEnd += GameManager_OnGameEnd;
+        GameManager.OnGameEnd.AddListener(GameManager_OnGameEnd);
+        GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
     }
 
     private void OnDisable() {
-        GameManager.OnGamePaused -= GameManager_OnGamePaused;
-        GameManager.OnGameEnd -= GameManager_OnGameEnd;
+        GameManager.OnGameEnd.RemoveListener(GameManager_OnGameEnd);
+        GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
     }
 
     private void Awake() {

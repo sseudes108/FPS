@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-
 // TimeStamp in Unity Project = 0.001
 public class Bullet : MonoBehaviour{
-    public static Action<Bullet, Material> OnBulletImpact;
+    [SerializeField] private VisualsEventHandlerSO VisualsManager;
+
     private int _damageValue;
     private Material _bulletMaterial;
     private TrailRenderer _trailRenderer;
@@ -79,7 +79,8 @@ public class Bullet : MonoBehaviour{
     }
 
     private void HandleImpact(Collider other){
-        OnBulletImpact?.Invoke(this, _bulletMaterial);
+        VisualsManager.BulletImpactEffect(this, _bulletMaterial);
+        // VisualsManager.OnBulletImpact?.Invoke(this, _bulletMaterial);
         if(other.TryGetComponent(out Health health)){
             health.TakeDamage(CalculateDamage());
         }

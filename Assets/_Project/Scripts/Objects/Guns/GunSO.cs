@@ -16,7 +16,6 @@ public class GunSO : ScriptableObject {
 
     [Header("Bullet")]
     public Material BulletMaterial;
-    // public Bullet BulletPrefab;
 
     [Header("Aim")]
     public float ZoomAmount;
@@ -29,8 +28,8 @@ public class GunSO : ScriptableObject {
 }
 
 public enum WeaponTypes{
-        Pistol = 0,
-        Sniper = 1,
-        AssaultRifle = 2,
-        RocketLauncher = 3
-    }
+    Pistol = 0,
+    Sniper = 1,
+    AssaultRifle = 2,
+    RocketLauncher = 3
+}
