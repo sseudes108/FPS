@@ -61,16 +61,16 @@ public class UI_PauseMenu : MonoBehaviour {
     private void OnCrossButtonClick(Button button){
         var index = buttons.IndexOf(button);
         PauseMenuManager.CrossChanged(button.iconImage, index);
-        AudioManager.PlayClickSound();
+        AudioManager.PlayClickSound(this);
     }
 
     private void ResumeClicked(){
-        AudioManager.PlayClickSound();
+        AudioManager.PlayClickSound(this);
         GameManager.Paused(GameController.Instance.DataManager.GameData, false);
     }
 
     private void MainMenuClicked(){
-        AudioManager.PlayClickSound();
+        AudioManager.PlayClickSound(this);
         VisualsManager.FadeToBlack(1f);
         GameManager.End();
         StartCoroutine(MainMenuRoutine());

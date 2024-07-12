@@ -12,27 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f128187a12643744991f400f1590a246, type: 3}
   m_Name: AudioEventHandler
   m_EditorClassIdentifier: 
-  AudioPrefab: {fileID: 8233159046283423093, guid: cf6d0811611e5ac4fa519d1e9502a97b, type: 3}
   ObjectPool: {fileID: 11400000, guid: a5bb6b180c13b6640b9612f2233dc7cb, type: 2}
+  AudioPrefab: {fileID: 8233159046283423093, guid: cf6d0811611e5ac4fa519d1e9502a97b, type: 3}
+  MusicMixer: {fileID: 5527557725470123408, guid: ff96350e917ec6641b045500d8c76cf1, type: 2}
+  EffectMixer: {fileID: 1385986709991578551, guid: ff96350e917ec6641b045500d8c76cf1, type: 2}
   OnGameStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStep:
-    m_PersistentCalls:
-      m_Calls: []
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCrossHairChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnShoot:
-    m_PersistentCalls:
-      m_Calls: []
-  OnReload:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHandleGun:
     m_PersistentCalls:
       m_Calls: []
   Click: {fileID: 11400000, guid: e8d7c2e5ddec64c4cb8617852d35b6ea, type: 2}

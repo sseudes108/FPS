@@ -1,20 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.Pool;
 
 [CreateAssetMenu(fileName = "AudioEventHandler", menuName = "FPS/EventHandlers/Audio", order = 0)]
 public class AudioEventHandlerSO : ScriptableObject {
-    public AudioSource AudioPrefab;
     public ObjectPoolSO ObjectPool;
+    public ObjectPool<AudioSource> AudioPool;
+    public AudioSource AudioPrefab;
+    public AudioMixerGroup MusicMixer, EffectMixer;
 
     public UnityEvent OnGameStart;
-    public UnityEvent<SoundSO> OnStep;
-    public UnityEvent<SoundSO> OnClick, OnCrossHairChange;
-    public UnityEvent<SoundSO> OnShoot, OnReload, OnHandleGun;
-
-    public ObjectPool<AudioSource> AudioPool;
 
     public SoundSO Click;
     public SoundSO Step;
@@ -25,45 +23,32 @@ public class AudioEventHandlerSO : ScriptableObject {
     
     private void OnEnable() {
         AudioPool ??= ObjectPool.CreateAudioPool(AudioPrefab);
-
-        //Events
-        OnClick ??= new UnityEvent<SoundSO>();
-        OnCrossHairChange ??= new UnityEvent<SoundSO>();
-        OnStep ??= new UnityEvent<SoundSO>();
-        OnShoot ??= new UnityEvent<SoundSO>();
-        OnHandleGun ??= new UnityEvent<SoundSO>();
     }
     
-    public void PlayClickSound() { OnClick?.Invoke(Click); }
-    public void PlayStepSound() { OnClick?.Invoke(Step); }
-    public void PlayCrossHairChangeSound() { OnClick?.Invoke(CrossHairChange); }
-    public void PlayShootSound(SoundSO shootSound) { OnShoot?.Invoke(shootSound); }
-    public void PlayReloadSound(SoundSO shootSound) { OnShoot?.Invoke(shootSound); }
-    public void PlayHandleGunSound(SoundSO shootSound) { OnShoot?.Invoke(shootSound); }
+    public void PlayClickSound(MonoBehaviour starter) {
+        PlayAudioEffect(starter, Click);
+    }
+
+    public void PlayStepSound(MonoBehaviour starter) {
+        PlayAudioEffect(starter, Step);
+    }
+
+    public void PlayCrossHairChangeSound(MonoBehaviour starter) {
+        PlayAudioEffect(starter, CrossHairChange); 
+    }
+    public void PlayShootSound(MonoBehaviour starter, SoundSO shootSound) { 
+        PlayAudioEffect(starter, shootSound);
+    }
+
+    public void PlayReloadSound(MonoBehaviour starter, SoundSO reloadSound) {
+        PlayAudioEffect(starter, reloadSound);
+    }
+
+    public void PlayHandleGunSound(MonoBehaviour starter, SoundSO handleGunSound) {
+        PlayAudioEffect(starter, handleGunSound);
+    }
+
     public void PlayStartGameMusic() { OnGameStart?.Invoke(); }
-
-    public AudioSource GetRandomMainMenuMusic(){
-        var rand = Random.Range(0, MainMenuMusics.Count);
-        var randomSoundSo = CreateAudioSource(MainMenuMusics[rand]);
-        randomSoundSo.volume = 0;
-        return randomSoundSo;
-    }
-
-    public AudioSource CreateAudioSource(SoundSO soundSO){
-        GameObject soundObject = new($"Tempo. Audio Source");
-        AudioSource audioSource = soundObject.AddComponent<AudioSource>();
-
-        audioSource.clip = soundSO.AudioClip;
-        audioSource.volume = soundSO.Volume;
-        audioSource.loop = soundSO.Loop;
-
-        if(soundSO.RandomizePitch){
-            float randomPitchModifier = Random.Range(-soundSO.RandomPitchModifier, soundSO.RandomPitchModifier);
-            audioSource.pitch = soundSO.Pitch + randomPitchModifier;
-        }
-
-        return audioSource;
-    }
 
     public void ReleaseFromPool(AudioSource audioSource) { AudioPool.Release(audioSource); }
 
@@ -81,7 +66,13 @@ public class AudioEventHandlerSO : ScriptableObject {
         }while(elapsedTime < duration);
     }
 
-    public void Init(AudioSource newAudioSource, SoundSO soundSO){
+    public AudioSource CreateAudioSource(SoundSO soundSO){
+        AudioSource newAudioSource;
+        
+        do{
+            newAudioSource = AudioPool.Get();
+        }while(newAudioSource == null);
+
         newAudioSource.clip = soundSO.AudioClip;
         newAudioSource.volume = soundSO.Volume;
         newAudioSource.loop = soundSO.Loop;
@@ -91,10 +82,13 @@ public class AudioEventHandlerSO : ScriptableObject {
             newAudioSource.pitch = soundSO.Pitch + randomPitchModifier;
         }
 
-        newAudioSource.Play();
-        if(!newAudioSource.loop){
-            GameController.Instance.StartCoroutine(ReleaseFromPool(newAudioSource, soundSO.AudioClip.length));
+        if(soundSO.AudioType == SoundSO.AudioTypes.Music){
+            newAudioSource.outputAudioMixerGroup = MusicMixer;
+        }else{
+            newAudioSource.outputAudioMixerGroup = EffectMixer;
         }
+
+        return newAudioSource;
     }
 
     public IEnumerator ReleaseFromPool(AudioSource audioSource, float audioLenght){
@@ -102,14 +96,19 @@ public class AudioEventHandlerSO : ScriptableObject {
         AudioPool.Release(audioSource);
     }
 
-    public void PlayAudio(SoundSO soundSO){
-        AudioSource newAudioSource;
-        
-        do{
-            newAudioSource = AudioPool.Get();
-        }while(newAudioSource == null);
-
-        Init(newAudioSource, soundSO);
+    public void PlayAudioEffect(MonoBehaviour starter, SoundSO soundSO){
+        var newSound = CreateAudioSource(soundSO);
+        StartAudioSource(starter, newSound, soundSO);
     }
 
+    public void StartAudioSource(MonoBehaviour starter, AudioSource newAudioSource, SoundSO soundSO){
+        newAudioSource.Play();
+        if(!newAudioSource.loop){
+            starter.StartCoroutine(ReleaseFromPool(newAudioSource, soundSO.AudioClip.length));
+        }
+    }
+
+    public void MuteMusicSound(MonoBehaviour starter, AudioSource audio){
+        starter.StartCoroutine(VolumeRoutine(audio, 1f, 0f, 2f));
+    }
 }

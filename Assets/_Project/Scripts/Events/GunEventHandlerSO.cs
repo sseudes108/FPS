@@ -17,12 +17,6 @@ public class GunEventHandlerSO : ScriptableObject {
     public UnityEvent<int, int, int> OnAmmoCountChange;
     public UnityEvent<PlayerGun, int> OnWeaponChange;
     
-        
-    public void SetFirePosition(Vector3 firePoint){
-        FirePosition = firePoint;
-        ObjectPool.SetPosition(FirePosition);
-    }
-
     public void OnEnable() {
         BulletPool ??= ObjectPool.CreatePool(BulletPrefab, FirePosition);
 
@@ -34,19 +28,16 @@ public class GunEventHandlerSO : ScriptableObject {
         OnWeaponChange ??= new UnityEvent<PlayerGun, int>();
     }
 
+    public void WeaponPickedUp(Gun pickedGun) { OnWeaponPickUp?.Invoke(pickedGun); }
+    public void PlayerClosePickUp(Gun gun) { OnPlayerClosePickUp?.Invoke(gun); }
+    public void PlayerOutOfRangePickUp(bool isOutofRange) { OnPlayerMoveOutRange?.Invoke(isOutofRange); }
+
     public void ReleaseBulletFromPool(Bullet bullet){
         BulletPool.Release(bullet);
     }
 
-    public void WeaponPickedUp(Gun pickedGun){
-        OnWeaponPickUp?.Invoke(pickedGun);
-    }
-
-    public void PlayerClosePickUp(Gun gun){
-        OnPlayerClosePickUp?.Invoke(gun);
-    }
-
-    public void PlayerOutOfRangePickUp(bool isOutofRange){
-        OnPlayerMoveOutRange?.Invoke(isOutofRange);
+    public void SetFirePosition(Vector3 firePoint){
+        FirePosition = firePoint;
+        ObjectPool.SetPosition(FirePosition);
     }
 }

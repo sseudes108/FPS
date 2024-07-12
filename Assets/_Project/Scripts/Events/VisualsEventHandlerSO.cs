@@ -22,9 +22,8 @@ public class VisualsEventHandlerSO : ScriptableObject {
         OnFadeToBlack ??= new UnityEvent<float>();
     }
 
-    public void ReleaseFromPool(ObjectPool<VisualHelper> objectPool, VisualHelper VFX){
-        objectPool.Release(VFX);
-    }
+    public void FadeToBlack(float duration) { OnFadeToBlack?.Invoke(duration); }
+    public void FadeFromBlack(float duration) { OnFadeFromBlack?.Invoke(duration); }
 
     public void BulletImpactEffect(Bullet bullet, Material material){
         VisualHelper bulletImpact;
@@ -47,11 +46,7 @@ public class VisualsEventHandlerSO : ScriptableObject {
         yield return null;
     }
 
-    public void FadeToBlack(float duration){
-        OnFadeToBlack?.Invoke(duration);
-    }
-
-    public void FadeFromBlack(float duration){
-        OnFadeFromBlack?.Invoke(duration);
+    public void ReleaseFromPool(ObjectPool<VisualHelper> objectPool, VisualHelper VFX){
+        objectPool.Release(VFX);
     }
 }

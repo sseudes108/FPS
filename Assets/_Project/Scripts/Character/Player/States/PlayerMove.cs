@@ -56,7 +56,7 @@ public class PlayerMove : MoveState{
 
             yield return new WaitForSeconds(_stepTime);
             // OnStep?.Invoke();
-            Player.AudioManager.PlayStepSound();
+            Player.AudioManager.PlayStepSound(Player);
             yield return null;
         }while(_stepRoutine != null);
     }

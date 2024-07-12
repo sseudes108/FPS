@@ -103,7 +103,7 @@ public class PlayerGun : MonoBehaviour {
             amountToFill = bulletsLeftInTotal;
         }
 
-        AudioManager.PlayReloadSound(_activeGun.GunData.ReloadSound);
+        AudioManager.PlayReloadSound(this, _activeGun.GunData.ReloadSound);
         StartCoroutine(ReloadRoutine(amountToFill));
     }
     #endregion
@@ -164,7 +164,7 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void ShootFired(){
-        AudioManager.PlayShootSound(_activeGun.GunData.ShootSound);
+        AudioManager.PlayShootSound(this, _activeGun.GunData.ShootSound);
         
         _activeGun.Shoot();
         _recoil.RecoilFire();
@@ -179,10 +179,10 @@ public class PlayerGun : MonoBehaviour {
     public void HandleSwitchGun(){
         if(_player.Input.Previous){
             GunManager.OnWeaponChange?.Invoke(this, -1);
-            AudioManager.PlayHandleGunSound(_activeGun.GunData.HandlingSound);
+            AudioManager.PlayHandleGunSound(this, _activeGun.GunData.HandlingSound);
         }else if(_player.Input.Next){
             GunManager.OnWeaponChange?.Invoke(this, +1);
-            AudioManager.PlayHandleGunSound(_activeGun.GunData.HandlingSound);
+            AudioManager.PlayHandleGunSound(this, _activeGun.GunData.HandlingSound);
         }
         UpdateAmmoCount();
     }
