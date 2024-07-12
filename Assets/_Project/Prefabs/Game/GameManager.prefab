@@ -35,7 +35,6 @@ Transform:
   - {fileID: 1370450648835309206}
   - {fileID: 1788607290217657664}
   - {fileID: 2067753183900289589}
-  - {fileID: 211317043072748714}
   - {fileID: 40149250806701701}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -51,7 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7bd6d131a9a9684cb51bc28cd530e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioManager: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+  <AudioManager>k__BackingField: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
+  RotationInput: {x: 0, y: 0}
+  UIManager: {fileID: 0}
+  SpawnManager: {fileID: 0}
+  PauseManager: {fileID: 0}
+  DataManager: {fileID: 0}
 --- !u!1 &2389168285842108888
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f82f713b8063f242b69adb167eab446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
   _pausedAsset: {fileID: 9197481963319205126, guid: 6ace60e32b79a2648b7630cc0f4e6d56, type: 3}
 --- !u!114 &3148451433089058807
 MonoBehaviour:
@@ -134,6 +140,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ff06c31bd80574b898bdff224c1ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GunManager>k__BackingField: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+  <VisualsManager>k__BackingField: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+  <PauseMenuManager>k__BackingField: {fileID: 11400000, guid: 5f4c152d821377449a26a4220a521844, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
   _crosshairColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &6435465318743235135
 MonoBehaviour:
@@ -159,8 +169,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dec87132ae749845b43f0330454b6e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pausedAsset: {fileID: 0}
-  AudioManager: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+  <AudioManager>k__BackingField: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+  <VisualsManager>k__BackingField: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+  <PauseMenuManager>k__BackingField: {fileID: 11400000, guid: 5f4c152d821377449a26a4220a521844, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
 --- !u!114 &8627648589722150084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4d6789427b2d946bfde621b68d083d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GunManager>k__BackingField: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
 --- !u!114 &1879601721245103040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abf3499ac4939314193d07f2516b3d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HealthManager>k__BackingField: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
 --- !u!1 &3893827358760522199
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47bf87de0db24ed43833a3e8ddad0fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HealthManager>k__BackingField: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
 --- !u!1 &4148729836471227388
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,52 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f52d670cddc016c498dde04ff33f73b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &5424430569844528994
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 211317043072748714}
-  - component: {fileID: 6302509532351086540}
-  m_Layer: 0
-  m_Name: 'Object Pool '
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &211317043072748714
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5424430569844528994}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2152689315109675010}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6302509532351086540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5424430569844528994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c758d69af25015649881f70ffbb7af4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletPrefab: {fileID: 3429045405079578221, guid: 86de78c728f4e2447a3ac1902dc65d9b, type: 3}
-  _audioPrefab: {fileID: 8233159046283423093, guid: cf6d0811611e5ac4fa519d1e9502a97b, type: 3}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
 --- !u!1 &6689965577301865294
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,8 +299,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3904970977693216548}
-  - component: {fileID: 5758921505838835560}
-  - component: {fileID: 5448253772125894568}
   - component: {fileID: 4726329902307459555}
   m_Layer: 0
   m_Name: Visual
@@ -353,38 +322,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2152689315109675010}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5758921505838835560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6689965577301865294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd5ca802d8bb70945a9cb5870f8c5783, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletImpact: {fileID: 593372492942271378, guid: bc23ab1b0b01bf3429d1e8c0d959bdd8, type: 3}
---- !u!114 &5448253772125894568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6689965577301865294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00723c666f9cda344b301ed2d619c068, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _crossTextes:
-  - {fileID: 2800000, guid: cb51610f1993edb408560331ee47acc4, type: 3}
-  - {fileID: 2800000, guid: f4de8b3aa3c77314598c0086588ff662, type: 3}
-  - {fileID: 2800000, guid: 33a3017f08bad204fb42217498c99e69, type: 3}
-  - {fileID: 2800000, guid: ce03f755ff0d2b04188e61af1e507f30, type: 3}
-  - {fileID: 2800000, guid: 0ecc7fa837a3d8046acd1c551c3a59e5, type: 3}
-  - {fileID: 2800000, guid: bd0f3c4a8cabc724aa7c308332630e4c, type: 3}
 --- !u!114 &4726329902307459555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,6 +334,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 419ddf9f3a26d87469bcc648e2330f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <VisualsManager>k__BackingField: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+  <HealthManager>k__BackingField: {fileID: 11400000, guid: cc686bb523572b1438ad5d2c566d005b, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
   _fadeScreenMaterial: {fileID: 2100000, guid: 0aa8ddbdb560974498ad7c357555b14c, type: 2}
   _redDefaultColor: {r: 0.6509804, g: 0.0627451, b: 0.0627451, a: 0}
 --- !u!1 &8802508371632515658
@@ -524,7 +464,9 @@ PrefabInstance:
       propertyPath: AudioManager
       value: 
       objectReference: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1176512375171494538, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
+    - {fileID: 2698211851953588639, guid: ce0373e4dfd947c48a169dc2254542a4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

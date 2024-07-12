@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AudioEventHandler
   m_EditorClassIdentifier: 
   AudioPrefab: {fileID: 8233159046283423093, guid: cf6d0811611e5ac4fa519d1e9502a97b, type: 3}
+  ObjectPool: {fileID: 11400000, guid: a5bb6b180c13b6640b9612f2233dc7cb, type: 2}
   OnGameStart:
     m_PersistentCalls:
       m_Calls: []

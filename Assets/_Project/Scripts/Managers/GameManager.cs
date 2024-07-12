@@ -8,13 +8,11 @@ public class GameController : MonoBehaviour{
     [field:SerializeField] public AudioEventHandlerSO AudioManager{ get; private set;}
     [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
     
-
     //Global variables
     public Vector2 RotationInput;
 
     //Managers
     public UIManager UIManager;
-    public SpawnManager SpawnManager;
     public PauseManager PauseManager;
     public DataPersistentManager DataManager;
     private IEnumerator _startRoutine;
@@ -60,7 +58,6 @@ public class GameController : MonoBehaviour{
 
     private void SetManagers(){
         UIManager = GetComponentInChildren<UIManager>();
-        SpawnManager = GetComponentInChildren<SpawnManager>();
         PauseManager = GetComponentInChildren<PauseManager>();
         DataManager = GetComponentInChildren<DataPersistentManager>();
     }

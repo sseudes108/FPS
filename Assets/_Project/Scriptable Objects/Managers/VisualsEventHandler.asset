@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e8cc2d909c0ec42a30d4717166542f, type: 3}
   m_Name: VisualsEventHandler
   m_EditorClassIdentifier: 
+  ObjectPool: {fileID: 11400000, guid: a5bb6b180c13b6640b9612f2233dc7cb, type: 2}
+  BulletImpactPrefab: {fileID: 593372492942271378, guid: bc23ab1b0b01bf3429d1e8c0d959bdd8, type: 3}
   CrossesTextures:
   - {fileID: 2800000, guid: cb51610f1993edb408560331ee47acc4, type: 3}
   - {fileID: 2800000, guid: f4de8b3aa3c77314598c0086588ff662, type: 3}
@@ -19,10 +21,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: ce03f755ff0d2b04188e61af1e507f30, type: 3}
   - {fileID: 2800000, guid: 0ecc7fa837a3d8046acd1c551c3a59e5, type: 3}
   - {fileID: 2800000, guid: bd0f3c4a8cabc724aa7c308332630e4c, type: 3}
-  BulletImpactPrefab: {fileID: 593372492942271378, guid: bc23ab1b0b01bf3429d1e8c0d959bdd8, type: 3}
-  OnBulletImpact:
-    m_PersistentCalls:
-      m_Calls: []
   OnFadeFromBlack:
     m_PersistentCalls:
       m_Calls: []

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -64,10 +65,17 @@ public class Gun : MonoBehaviour{
     public IEnumerator ShootRoutine(){
         _ammoLeftInMag--;
         StartCoroutine(MuzzleFlashRoutine());
-        GunManager.SetFirePoint(_firePoint);
-        var newBullet = GunManager.BulletPool.Get();
-        newBullet.Init(this,_gunData.BulletMaterial, _gunData.DamageValue, _character, _firePoint);
         yield return null;
+
+        GunManager.SetFirePosition(FirePoint.position);
+
+        Bullet newBullet;
+        do{
+            newBullet = GunManager.BulletPool.Get();
+        }while(newBullet == null);
+        
+        newBullet.transform.SetPositionAndRotation(FirePoint.position, Quaternion.identity);
+        newBullet.Init(this, _gunData.BulletMaterial, _gunData.DamageValue, _character, FirePoint);
     }
 
     private IEnumerator MuzzleFlashRoutine(){
@@ -77,7 +85,7 @@ public class Gun : MonoBehaviour{
     }
 
     public void ReleaseBulletFromPool(Bullet bullet){
-        GunManager.BulletPool.Release(bullet);
+        GunManager.ReleaseBulletFromPool(bullet);
     }
 
     #endregion

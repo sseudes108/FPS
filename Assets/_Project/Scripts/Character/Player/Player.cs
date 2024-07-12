@@ -44,20 +44,6 @@ public class Player : Character, IDataPersistencer {
         HealthManager.OnPlayerDied.RemoveListener(HealthManager_OnPlayerDied);
     }
 
-    private void HealthManager_OnPlayerDied(){
-        PlayerInput.AllowInputs(false);
-    }
-
-    private void Gun_OnPlayerCloseForPickUp(Gun gun){
-        _canInteract = true;
-        _interactItem = gun;
-    }
-
-    private void Gun_OnPlayerMoveOutRange(bool interact){
-        _canInteract = interact;
-        _interactItem = null;
-    }
-
     public override void Awake() {
         base.Awake();
         _playerGun = GetComponent<PlayerGun>();
@@ -160,6 +146,21 @@ public class Player : Character, IDataPersistencer {
 #endregion
 
 #region Events
+
+    private void HealthManager_OnPlayerDied(){
+        PlayerInput.AllowInputs(false);
+    }
+
+    private void Gun_OnPlayerCloseForPickUp(Gun gun){
+        _canInteract = true;
+        _interactItem = gun;
+    }
+
+    private void Gun_OnPlayerMoveOutRange(bool interact){
+        _canInteract = interact;
+        _interactItem = null;
+    }
+    
     public void GameManager_OnGameStart(){
         StartCoroutine(GameStartAdjustments());
     }

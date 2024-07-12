@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SpawnManager : MonoBehaviour{
     [field:SerializeField] public HealthEventHandlerSO HealthManager { get; private set;}
-    // public static Action<Vector3> OnCheckPoint;
 
     private void OnEnable() {
         HealthManager.OnPlayerDied.AddListener(HealthManager_OnPlayerDied);

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "GameEventHandlerSO", menuName = "FPS/EventHandlers/Game", order = 0)]
+[CreateAssetMenu(fileName = "GameEventHandlerSO", menuName = "FPS/EventHandlers/Game", order = 3)]
 public class GameEventHandlerSO : ScriptableObject {
     public UnityEvent OnGameStart;
     public UnityEvent OnGameEnd;

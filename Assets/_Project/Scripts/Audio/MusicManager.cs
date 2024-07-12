@@ -32,15 +32,21 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void PlayMusic(SoundSO musicToPlay){
-        var newMusic = AudioManager.AudioPool.Get();
-        _musicPlaying = newMusic;
-        _musicPlaying.volume = 0f;
-        newMusic.transform.SetParent(transform);
+        if(this != null){
+            AudioSource newMusic = null;
+            do{
+                newMusic = AudioManager.AudioPool.Get();
+            }while(newMusic == null);
+            // var newMusic = AudioManager.AudioPool.Get();
+            _musicPlaying = newMusic;
+            _musicPlaying.volume = 0f;
+            newMusic.transform.SetParent(transform);
 
-        AudioManager.Init(newMusic, musicToPlay);
-        newMusic.Play();
-        if(!newMusic.loop){
-            StartCoroutine(AudioManager.ReleaseFromPool(newMusic, musicToPlay.AudioClip.length));
+            AudioManager.Init(newMusic, musicToPlay);
+            newMusic.Play();
+            if(!newMusic.loop){
+                StartCoroutine(AudioManager.ReleaseFromPool(newMusic, musicToPlay.AudioClip.length));
+            }
         }
     }
 }

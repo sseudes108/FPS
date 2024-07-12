@@ -267,4 +267,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VisualsManager: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
   _moveSpeed: 100

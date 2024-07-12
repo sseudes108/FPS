@@ -1,10 +1,10 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 // TimeStamp in Unity Project = 0.001
 public class Bullet : MonoBehaviour{
     [SerializeField] private VisualsEventHandlerSO VisualsManager;
+    [SerializeField] private GunEventHandlerSO GunManager;
 
     private int _damageValue;
     private Material _bulletMaterial;
@@ -29,12 +29,14 @@ public class Bullet : MonoBehaviour{
     }
 
     public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint){
-        SetDirection(firePoint);
+        SetDirectionAndPosition(firePoint);
         SetGunAndCharacter(gun, character);
         SetMaterial(material);
         _damageValue = damageValue;
 
-        StartCoroutine(ReleaseBulletRoutine());
+        if(gameObject.activeSelf){
+            StartCoroutine(ReleaseBulletRoutine());
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -66,21 +68,18 @@ public class Bullet : MonoBehaviour{
 
     private IEnumerator ReleaseBulletRoutine(){
         //Time to release bullet case dont hit anything
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
         DisableBullet();
         yield return null;
     }
 
     private void DisableBullet(){
         _trailRenderer.enabled = false;
-        if(_gun != false){
-            _gun.ReleaseBulletFromPool(this);
-        }
+        GunManager.ReleaseBulletFromPool(this);
     }
 
     private void HandleImpact(Collider other){
         VisualsManager.BulletImpactEffect(this, _bulletMaterial);
-        // VisualsManager.OnBulletImpact?.Invoke(this, _bulletMaterial);
         if(other.TryGetComponent(out Health health)){
             health.TakeDamage(CalculateDamage());
         }
@@ -105,7 +104,7 @@ public class Bullet : MonoBehaviour{
         _trailRenderer.material  = _bulletMaterial;
     }
 
-    private void SetDirection(Transform firePoint){
+    private void SetDirectionAndPosition(Transform firePoint){
         transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
         _direction = firePoint.forward;
         _trailRenderer.enabled = true;

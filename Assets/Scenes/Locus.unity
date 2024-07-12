@@ -21545,6 +21545,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141010371}
   m_Mesh: {fileID: 7084212482943961920, guid: bf18ae8db0acf284eb2ee1a7951fe633, type: 3}
+--- !u!1 &1175702563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175702565}
+  - component: {fileID: 1175702564}
+  m_Layer: 0
+  m_Name: Tester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1175702564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175702563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4351245ec76c82a4299fc1484bd3c0ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1175702565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175702563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1175796213
 GameObject:
   m_ObjectHideFlags: 0
@@ -57154,7 +57198,7 @@ MonoBehaviour:
   _gunData: {fileID: 11400000, guid: 137d90230f1608648ae54b87b54a4c63, type: 2}
   _isAvailable: 1
   _ammoLeftInMag: 0
-  _firePoint: {fileID: 0}
+  _firePoint: {fileID: 4650886673624638250}
 --- !u!1 &3731046962586428185
 GameObject:
   m_ObjectHideFlags: 0
@@ -61406,6 +61450,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1820157409799994914, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GameManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
     - target: {fileID: 1879601721245103040, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
       propertyPath: <HealthManager>k__BackingField
       value: 
@@ -61467,6 +61515,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
     - target: {fileID: 3148451433089058807, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GameManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
+    - target: {fileID: 3148451433089058807, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
       propertyPath: <VisualsManager>k__BackingField
       value: 
       objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
@@ -61494,6 +61546,10 @@ PrefabInstance:
       propertyPath: VisualsManager
       value: 
       objectReference: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
+    - target: {fileID: 5134133780981453848, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GameManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
     - target: {fileID: 5134133780981453848, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
       propertyPath: <AudioManager>k__BackingField
       value: 
@@ -61526,6 +61582,18 @@ PrefabInstance:
       propertyPath: GunManager
       value: 
       objectReference: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+    - target: {fileID: 8627648589722150084, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GunManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+    - target: {fileID: 8627648589722150084, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GameManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
+    - target: {fileID: 8895158687491205993, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
+      propertyPath: <GameManager>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
     m_RemovedComponents:
     - {fileID: 2982806912752038671, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
     - {fileID: 2037660796358084634, guid: 100ea73d50b8ec946946cb516eec8537, type: 3}
@@ -64891,8 +64959,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00293c5867de092479660038cd0f01ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioManager: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
-  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+  <AudioManager>k__BackingField: {fileID: 11400000, guid: 00398b4fdbc48d449b61f03ace47b244, type: 2}
+  <GunManager>k__BackingField: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
   _activeGun: {fileID: 0}
   _firstPersonCameraTransform: {fileID: 0}
   _firstPersonCamera: {fileID: 0}
@@ -74980,6 +75049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PauseMenuManager>k__BackingField: {fileID: 11400000, guid: 5f4c152d821377449a26a4220a521844, type: 2}
+  <GameManager>k__BackingField: {fileID: 11400000, guid: 6087c90ebf46c4642b15cfeecddb62ac, type: 2}
   _sensitivity: 9
 --- !u!114 &7795515571441830578
 MonoBehaviour:
@@ -77613,7 +77683,7 @@ MonoBehaviour:
   _gunData: {fileID: 11400000, guid: c26c0384cda8047479bbe7aaa4a08b1b, type: 2}
   _isAvailable: 1
   _ammoLeftInMag: 0
-  _firePoint: {fileID: 0}
+  _firePoint: {fileID: 3565495794883351162}
 --- !u!4 &8404306728050077257
 Transform:
   m_ObjectHideFlags: 0
@@ -81217,3 +81287,4 @@ SceneRoots:
   - {fileID: 8850725385316535907}
   - {fileID: 8733907973814210416}
   - {fileID: 1032862902090253610}
+  - {fileID: 1175702565}

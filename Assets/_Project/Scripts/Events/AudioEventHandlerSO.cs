@@ -7,6 +7,7 @@ using UnityEngine.Pool;
 [CreateAssetMenu(fileName = "AudioEventHandler", menuName = "FPS/EventHandlers/Audio", order = 0)]
 public class AudioEventHandlerSO : ScriptableObject {
     public AudioSource AudioPrefab;
+    public ObjectPoolSO ObjectPool;
 
     public UnityEvent OnGameStart;
     public UnityEvent<SoundSO> OnStep;
@@ -23,7 +24,7 @@ public class AudioEventHandlerSO : ScriptableObject {
     public List<SoundSO> InGameMusics;
     
     private void OnEnable() {
-        AudioPool ??= CreateAudioSourcePool();
+        AudioPool ??= ObjectPool.CreateAudioPool(AudioPrefab);
 
         //Events
         OnClick ??= new UnityEvent<SoundSO>();
@@ -80,19 +81,19 @@ public class AudioEventHandlerSO : ScriptableObject {
         }while(elapsedTime < duration);
     }
 
-    public void Init(AudioSource audioSource, SoundSO soundSO){
-        audioSource.clip = soundSO.AudioClip;
-        audioSource.volume = soundSO.Volume;
-        audioSource.loop = soundSO.Loop;
+    public void Init(AudioSource newAudioSource, SoundSO soundSO){
+        newAudioSource.clip = soundSO.AudioClip;
+        newAudioSource.volume = soundSO.Volume;
+        newAudioSource.loop = soundSO.Loop;
 
         if(soundSO.RandomizePitch){
             float randomPitchModifier = Random.Range(-soundSO.RandomPitchModifier, soundSO.RandomPitchModifier);
-            audioSource.pitch = soundSO.Pitch + randomPitchModifier;
+            newAudioSource.pitch = soundSO.Pitch + randomPitchModifier;
         }
 
-        audioSource.Play();
-        if(!audioSource.loop){
-            GameController.Instance.StartCoroutine(ReleaseFromPool(audioSource, soundSO.AudioClip.length));
+        newAudioSource.Play();
+        if(!newAudioSource.loop){
+            GameController.Instance.StartCoroutine(ReleaseFromPool(newAudioSource, soundSO.AudioClip.length));
         }
     }
 
@@ -102,23 +103,13 @@ public class AudioEventHandlerSO : ScriptableObject {
     }
 
     public void PlayAudio(SoundSO soundSO){
-        var newAudio = AudioPool.Get();
-        Init(newAudio, soundSO);
+        AudioSource newAudioSource;
+        
+        do{
+            newAudioSource = AudioPool.Get();
+        }while(newAudioSource == null);
+
+        Init(newAudioSource, soundSO);
     }
 
-    public ObjectPool<AudioSource> CreateAudioSourcePool(){
-        var audioPool = new ObjectPool<AudioSource>(()=>{
-            return Instantiate(AudioPrefab);
-        }, newAudio =>{
-            if(newAudio != null){
-                newAudio.gameObject.SetActive(true);
-            }
-        }, newAudio =>{
-            newAudio.gameObject.SetActive(false);
-        }, newAudio =>{
-            Destroy(newAudio);
-        }, false, 50, 70);
-
-        return audioPool;
-    }
 }
