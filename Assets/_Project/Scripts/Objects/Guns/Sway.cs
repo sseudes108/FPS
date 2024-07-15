@@ -1,7 +1,8 @@
-using System;
 using UnityEngine;
 
 public class Sway : MonoBehaviour{
+    [field:SerializeField] public GameManagerSO GameManager { get; private set;}
+
     [SerializeField] private float intensity;
     [SerializeField] private float smooth;
     private Quaternion _originRotation;
@@ -22,8 +23,8 @@ public class Sway : MonoBehaviour{
     }
 
     private void UpdateSway(){
-        float mouseX = GameController.Instance.RotationInput.x;
-        float mouseY = GameController.Instance.RotationInput.y * -1;
+        float mouseX = GameManager.RotationInput.x;
+        float mouseY = GameManager.RotationInput.y * -1;
 
         if(_gun.IsAiming){
             intensity  /= 3;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ddb3254e456844baad2999a5e53374, type: 3}
   m_Name: Handling
   m_EditorClassIdentifier: 
-  AudioType: 1
+  AudioType: 0
   AudioClip: {fileID: 8300000, guid: e0a481c7ef999b54593dfeb13d841f96, type: 3}
   Loop: 0
   RandomizePitch: 1

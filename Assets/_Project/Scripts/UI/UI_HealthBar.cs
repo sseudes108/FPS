@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_HealthBar : MonoBehaviour {
-    [field:SerializeField] public HealthEventHandlerSO HealthManager { get; private set;}
+    [field:SerializeField] public HealthManagerSO HealthManager { get; private set;}
     private VisualElement _HBforeground;
     private int _lentgh = 100;
 

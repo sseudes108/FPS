@@ -1,9 +1,8 @@
-using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class Health : MonoBehaviour{
-    [field:SerializeField] public HealthEventHandlerSO HealthManager { get; private set; }
+    [field:SerializeField] public HealthManagerSO HealthManager { get; private set; }
 
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;

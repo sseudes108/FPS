@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour {
     private bool _playMusic;
-    // private AudioSource _musicPlaying;
-    [SerializeField] private AudioEventHandlerSO AudioManager;
+    [SerializeField] private AudioManagerSO AudioManager;
+
+    private AudioSource _currentMusicPlaying;
 
     private void OnEnable() {
         AudioManager.OnGameStart.AddListener(AudioManager_OnGameStart);
@@ -26,14 +27,17 @@ public class MusicManager : MonoBehaviour {
         do{
             SoundSO currentMusic = AudioManager.InGameMusics[Random.Range(0, AudioManager.InGameMusics.Count)];
             PlayMusic(currentMusic);
-            //Create routine to volume down
+            yield return new WaitForSeconds(currentMusic.AudioClip.length - 3f);
+            Debug.Log("currentMusic.AudioClip.length - 3f");
+            AudioManager.MuteGameMusic(this);
+            Debug.Log("AudioManager.MuteGameMusic(this)");
             yield return new WaitForSeconds(currentMusic.AudioClip.length + Random.Range(30f, 90f));
         }while(_playMusic);
     }
 
     public void PlayMusic(SoundSO musicToPlay){
         var newMusic = AudioManager.CreateAudioSource(musicToPlay);
-        // _musicPlaying = newMusic;
+        AudioManager.SetMusicPlaying(newMusic);
         newMusic.transform.SetParent(transform);
         AudioManager.StartAudioSource(this, newMusic, musicToPlay);
     }

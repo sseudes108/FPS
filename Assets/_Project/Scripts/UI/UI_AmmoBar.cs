@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_AmmoBar : MonoBehaviour {
-    [SerializeField] private GunEventHandlerSO GunManager;
+    [SerializeField] private GunManagerSO GunManager;
     private Label _ammoLabel;
     private Label _ammoMaxLabel;
 

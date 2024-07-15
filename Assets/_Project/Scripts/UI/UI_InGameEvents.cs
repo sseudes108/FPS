@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_InGameEvents : MonoBehaviour {
-    [field:SerializeField] public GunEventHandlerSO GunManager { get; private set;}
-    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+    [field:SerializeField] public GunManagerSO GunManager { get; private set;}
+    [field:SerializeField] public GameManagerSO GameManager { get; private set;}
 
     private Label _itemName;
     private Label _itemMessage;
@@ -84,13 +84,17 @@ public class UI_InGameEvents : MonoBehaviour {
 
     private void UpdateEventMessageOpacity(bool show){
         if(show){
-            _eventMessage.style.opacity = 1f;
+            if(_eventMessage != null){
+                _eventMessage.style.opacity = 1f;
+            }
         }else{
-            _eventMessage.style.opacity = 0f;
+            if(_eventMessage != null){
+                _eventMessage.style.opacity = 0f;
+            }
         }
     }
 
-    private void GameManager_OnGamePaused(GameData data, bool paused){
+    private void GameManager_OnGamePaused(bool paused){
         SetElements();
     }
 }

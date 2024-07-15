@@ -1,15 +1,10 @@
-using System;
 using System.Collections;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Pool;
 
 [RequireComponent(typeof(Sway))]
 public class Gun : MonoBehaviour{
-    [SerializeField] private GunEventHandlerSO GunManager;
+    [SerializeField] private GunManagerSO GunManager;
     
-    protected Character _character;
-
     [SerializeField] protected GunSO _gunData;
     public GunSO GunData => _gunData;
     
@@ -18,7 +13,7 @@ public class Gun : MonoBehaviour{
 
 
     // *** SET PRIVATE *** ///
-    public int _ammoLeftInMag;
+    private int _ammoLeftInMag;
     public int AmmoLeftInMag => _ammoLeftInMag;
     [SerializeField] protected Transform _firePoint;
     public Transform FirePoint => _firePoint;
@@ -34,7 +29,7 @@ public class Gun : MonoBehaviour{
 #region UnityMethods
 
     private void Awake() {    
-        _character = GetComponent<Character>();
+        // _character = GetComponent<Character>();
         _hip = transform.Find("States/Hip");
         _aim = transform.Find("States/Aim");
         _model = transform.Find("Model");
@@ -75,10 +70,11 @@ public class Gun : MonoBehaviour{
         }while(newBullet == null);
         
         newBullet.transform.SetPositionAndRotation(FirePoint.position, Quaternion.identity);
-        newBullet.Init(this, _gunData.BulletMaterial, _gunData.DamageValue, _character, FirePoint);
+        newBullet.Init(_gunData.BulletMaterial, _gunData.DamageValue, FirePoint);
     }
 
     private IEnumerator MuzzleFlashRoutine(){
+        _muzzleFlash.transform.rotation = Quaternion.Euler(0,0,Random.Range(-360, 360));
         _muzzleFlash.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.05f);
         _muzzleFlash.gameObject.SetActive(false);

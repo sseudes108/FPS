@@ -1,17 +1,32 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_DeathScreen : MonoBehaviour {
+    [SerializeField] private HealthManagerSO _healthManager;
+
     private VisualElement _overLay;
     private VisualElement _youDied;
 
+    private void OnEnable() {
+        _healthManager.OnPlayerDied.AddListener(HealthManager_OnPlayerDied);
+    }
+
+    private void OnDisable() {
+        _healthManager.OnPlayerDied.RemoveListener(HealthManager_OnPlayerDied);
+    }
     private void Start() {
         SetElements();
         _overLay.style.opacity = 1;
         _youDied.style.opacity = 0;
 
         FadeOverlayFromBlack();
+    }
+
+    private void HealthManager_OnPlayerDied(){
+        _overLay.style.display = DisplayStyle.Flex;
+        StartCoroutine(DeathRoutine());
     }
 
     private void SetElements(){
@@ -29,11 +44,6 @@ public class UI_DeathScreen : MonoBehaviour {
 
     private void ShowYouDeadSign(){
         StartCoroutine(ElementOpacityRoutine(_youDied, 0f, 1f, 1f));
-    }
-
-    public void PlayerDied(){
-        _overLay.style.display = DisplayStyle.Flex;
-        StartCoroutine(DeathRoutine());
     }
 
     public IEnumerator DeathRoutine(){

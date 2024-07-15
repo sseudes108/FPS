@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerWeapons : MonoBehaviour {
-    [SerializeField] private GunEventHandlerSO GunManager;
-    [SerializeField] private List<Gun> _weapons = new();
-    private Dictionary<string, int> _ammoAmountDict = new();
-    private List<Gun> _availableGuns = new();
+    [SerializeField] private GunManagerSO GunManager;
+    [SerializeField] private AmmoInventorySO AmmoInventory;
 
+    [SerializeField] private List<Gun> _weapons = new();
+    private List<Gun> _availableGuns = new();
     private int _activeWeaponIndex;
-    private string _activeGunName;
+    private Gun _activeGun;
 
 #region UnityMethods
 
@@ -36,26 +35,20 @@ public class PlayerWeapons : MonoBehaviour {
     #region Ammo Inventory
     private void UpdateFullAmmoInventory(){
         foreach(var gun in _availableGuns){
-            if(!_ammoAmountDict.ContainsKey(gun.name)){ //If the actual gun does not exist in the dict, so the ammo count still the same already saved
-                var totalBullets = gun.GunData.Magazine * 3;
-                _ammoAmountDict.Add(gun.name, totalBullets);
-            }
+            AmmoInventory.UpdateBullets(gun.GunData.WeaponType, gun.GunData.Magazine * 9);
         }
     }
 
     public int GetCurrentGunAmmoInventory(){
-        return _ammoAmountDict[_activeGunName]; //Used in the UI to show the actual ammo amount of the active gun
+        return AmmoInventory.GetCurrentGunTypeBulletInventoryCount(_activeGun.GunData.WeaponType);
     }
 
     public void RemoveBulletsFromInventory(int bulletsUsed){
-        _ammoAmountDict[_activeGunName] -= bulletsUsed;
+        AmmoInventory.UpdateBullets(_activeGun.GunData.WeaponType, -bulletsUsed); //negative received value
     }
 
     public void AddBulletsToInventory(int bulletsGained){
-        _ammoAmountDict[_activeGunName] += bulletsGained;
-        if(_ammoAmountDict[_activeGunName] > _weapons[_activeWeaponIndex].GunData.Magazine * 3){
-            _ammoAmountDict[_activeGunName] = _weapons[_activeWeaponIndex].GunData.Magazine * 3;
-        }
+        AmmoInventory.UpdateBullets(_activeGun.GunData.WeaponType, bulletsGained);
     }
     #endregion
 
@@ -74,9 +67,10 @@ public class PlayerWeapons : MonoBehaviour {
             gun.DeactiveGun();
             gun.gameObject.SetActive(false);
         }
-        _availableGuns[index].gameObject.SetActive(true);
-        _activeGunName = _availableGuns[_activeWeaponIndex].name;
-        playerGun.ChangeActiveGun(_availableGuns[index]);
+
+        _activeGun = _availableGuns[index];
+        _activeGun.gameObject.SetActive(true);
+        playerGun.ChangeActiveGun(_activeGun);
     }
     #endregion
 
@@ -85,15 +79,14 @@ public class PlayerWeapons : MonoBehaviour {
 #region Events
 
     private void GunManager_OnWeaponPickUp(Gun pickedGun){
-        Debug.Log("PlayerWeapons - GunManager_OnWeaponPickUp");
         foreach(var weapon in _weapons){
             if(pickedGun.GunData.WeaponType == weapon.GunData.WeaponType){
                 pickedGun.PickUpGun();
                 weapon.SetAvailable();
+                AmmoInventory.UpdateBullets(pickedGun.GunData.WeaponType, pickedGun.GunData.Magazine * 9);
             }
         }
         CheckGuns();
-        UpdateFullAmmoInventory();
     }
 
     private void GunManager_OnWeaponChange(PlayerGun playerGun, int key){
@@ -115,10 +108,6 @@ public class PlayerWeapons : MonoBehaviour {
                 _activeWeaponIndex = 0;//go to start of the available guns list
             }
         }else{//when start game
-            _activeWeaponIndex = 0;
-        }
-
-        if(_activeGunName == _availableGuns[_activeWeaponIndex].name){//In the start the pistol is index 0, but when other gun is picked becames 1, so the first change without this correction change index 0 for index 1 both are the pistol, so no visible change.
             _activeWeaponIndex = 0;
         }
 

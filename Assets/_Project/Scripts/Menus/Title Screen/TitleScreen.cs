@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class TitleScreen : MonoBehaviour{
-    [SerializeField] private VisualsEventHandlerSO VisualsManager;
-    [SerializeField] private AudioEventHandlerSO AudioManager;
+    [SerializeField] private VisualManagerSO VisualsManager;
+    [SerializeField] private AudioManagerSO AudioManager;
 
     private UIDocument _uiDocument;
     private VisualElement _root;
@@ -47,7 +47,7 @@ public class TitleScreen : MonoBehaviour{
 
 #region Button Clicks
     private void OnPlay(){
-        AudioManager.MuteMusicSound(this, _musicPlaying);
+        AudioManager.MuteTitleScreenMusic(this, _musicPlaying);
         StartCoroutine(OnPlay_StartGameRoutine());
     }
     
@@ -110,7 +110,6 @@ public class TitleScreen : MonoBehaviour{
     }
 
     private IEnumerator FadeRoutine(VisualElement element, float start, float end, float duration){
-        Debug.Log($"Fade Routine {element.name}");
         float elapsedTime = 0;
         do{
             elapsedTime += Time.deltaTime;

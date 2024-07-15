@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(AnimationController), typeof(StateMachine))]
 public abstract class Character : MonoBehaviour {
     public AnimationController Anim;
-
     public StateMachine StateMachine;
     public IdleState Idle => StateMachine.IdleState;
     public JumpState Jump => StateMachine.JumpState;

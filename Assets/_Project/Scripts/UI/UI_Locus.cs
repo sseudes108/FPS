@@ -2,11 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UI_Locus : MonoBehaviour, IDataPersistencer {
-    [field:SerializeField] public GunEventHandlerSO GunManager  { get; private set; }
-    [field:SerializeField] public VisualsEventHandlerSO VisualsManager  { get; private set; }
-    [field:SerializeField] public PauseMenuEventHandlerSO PauseMenuManager { get; private set; }
-    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+public class UI_Locus : MonoBehaviour {
+    [field:SerializeField] public GunManagerSO GunManager  { get; private set; }
+    [field:SerializeField] public VisualManagerSO VisualsManager  { get; private set; }
+    [field:SerializeField] public PauseMenuManagerSO PauseMenuManager { get; private set; }
+    [field:SerializeField] public GameManagerSO GameManager { get; private set;}
+
+    [field:SerializeField] public  DataManagerSO DataManager { get; private set;}
 
     private VisualElement _crossHair;
     private VisualElement _canvas;
@@ -25,19 +27,18 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
 
     private void OnEnable() {
         GunManager.OnAmmoCountChange.AddListener(GunManager_OnAmmoCountChange);
-        // GameController.OnGamePaused += GameManager_OnGamePaused;
         GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
         PauseMenuManager.OnCrossChange.AddListener(PauseMenuManager_OnCrossChange);
     }
 
     private void OnDisable() {
         GunManager.OnAmmoCountChange.RemoveListener(GunManager_OnAmmoCountChange);
-        // GameController.OnGamePaused -= GameManager_OnGamePaused;
         GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
         PauseMenuManager.OnCrossChange.RemoveListener(PauseMenuManager_OnCrossChange);
     }
 
     private void Start() {
+        LoadData();
         SetElements();
         _canvas.style.opacity = 0;
         CrossHairStyleConfig();
@@ -47,7 +48,7 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
         StartCoroutine(ElementOpacityRoutine(_canvas, 0, 1, 1f));
     }
 
-    private void GameManager_OnGamePaused(GameData data, bool paused){ //Reset The elements after the change in style asset from pause menu
+    private void GameManager_OnGamePaused(bool paused){ //Reset The elements after the change in style asset from pause menu
         if(!paused){
             SetElements();
             if(crossChanged){
@@ -84,16 +85,12 @@ public class UI_Locus : MonoBehaviour, IDataPersistencer {
         _updatedCrossHair = newCross;
         _crosshairIndex = crossIndex;
         crossChanged = true;
-        GameController.Instance.DataManager.SaveGame();
+        DataManager.SaveCrosshair(_crosshairIndex);
     }
 
-    public void LoadData(GameData data){
-        _updatedCrossHair = VisualsManager.CrossesTextures[data.CrossHair];
-        _crosshairIndex = data.CrossHair;
-    }
-
-    public void SaveData(ref GameData data){
-        data.CrossHair = _crosshairIndex;
+    public void LoadData(){
+        _updatedCrossHair = VisualsManager.CrossesTextures[DataManager.LoadCrosshair()];
+        _crosshairIndex = DataManager.LoadCrosshair();
     }
 
     private IEnumerator ElementOpacityRoutine(VisualElement element, float start, float end, float duration){

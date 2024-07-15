@@ -1,19 +1,24 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
-public class Player : Character, IDataPersistencer {
-    [field:SerializeField] public GunEventHandlerSO GunManager { get; private set;}
-    [field:SerializeField] public AudioEventHandlerSO AudioManager { get; private set;}
+public class Player : Character {
+    [field:SerializeField] public GunManagerSO GunManager { get; private set;}
+    [field:SerializeField] public AudioManagerSO AudioManager { get; private set;}
+    [field:SerializeField] public HealthManagerSO HealthManager { get; private set;}
+    [field:SerializeField] public GameManagerSO GameManager { get; private set;}
+    [field:SerializeField] public DataManagerSO DataManager { get; private set;}
+    [field:SerializeField] public PlayerStateMachineSO PlayerManager { get; private set;}
+
     [field:SerializeField] public PlayerAnimationsSO Animations { get; private set;}
-    [field:SerializeField] public HealthEventHandlerSO HealthManager { get; private set;}
-    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+
 
     public FrameInput Input => PlayerInput.FrameInput;
 
     //Ground Check Settings
-    [SerializeField] private Transform checkGroundBox;
-    [SerializeField] private Vector3 checkGroundBoxSize;
+    [SerializeField] private Transform _checkGroundBox;
+    [SerializeField] private Vector3 _checkGroundBoxSize;
 
     //Components
     public PlayerInput PlayerInput {get; private set;}
@@ -25,22 +30,29 @@ public class Player : Character, IDataPersistencer {
     private MonoBehaviour _interactItem;
     private Vector3 _lastCheckPointPosition;
 
+    private bool _isPaused = false;
+
 
 #region UnityMethods
     private void OnEnable() {
         GameManager.OnGameStart.AddListener(GameManager_OnGameStart);
         GameManager.OnGamePaused.AddListener(GameManager_OnGamePause);
+        GameManager.OnGameFinished.AddListener(GameManager_OnGameFinished);
 
         GunManager.OnPlayerClosePickUp.AddListener(Gun_OnPlayerCloseForPickUp);
         GunManager.OnPlayerMoveOutRange.AddListener(Gun_OnPlayerMoveOutRange);
+
         HealthManager.OnPlayerDied.AddListener(HealthManager_OnPlayerDied);
     }
+
     private void OnDisable() {
         GameManager.OnGameStart.RemoveListener(GameManager_OnGameStart);
         GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePause);
+        GameManager.OnGameFinished.RemoveListener(GameManager_OnGameFinished);
 
         GunManager.OnPlayerClosePickUp.RemoveListener(Gun_OnPlayerCloseForPickUp);
         GunManager.OnPlayerMoveOutRange.RemoveListener(Gun_OnPlayerMoveOutRange);
+        
         HealthManager.OnPlayerDied.RemoveListener(HealthManager_OnPlayerDied);
     }
 
@@ -51,6 +63,13 @@ public class Player : Character, IDataPersistencer {
         Camera = GetComponent<PlayerCamera>();
         PlayerInput = GetComponent<PlayerInput>();
     }
+
+    public override void Start(){
+        base.Start();
+        LoadData();
+        PlayerManager.SetPlayer(this);
+    }
+    
 
     private void Update() {
 
@@ -95,10 +114,12 @@ public class Player : Character, IDataPersistencer {
 
     private void HandlePause(){
         if(!UnityEngine.Input.GetKeyDown(KeyCode.Escape)){return;}
-        if(GameController.Instance.PauseManager.IsPaused){
-            GameManager.Paused(GameController.Instance.DataManager.GameData, false);
+        if(_isPaused){
+            GameManager.Pause(false);
+            _isPaused = false;
         }else{
-            GameManager.Paused(GameController.Instance.DataManager.GameData, true);
+            GameManager.Pause(true);
+            _isPaused = true;
         }
     }
 
@@ -116,7 +137,7 @@ public class Player : Character, IDataPersistencer {
         transform.Rotate(Vector3.up * mouseX);
         Camera.CameraRotation(mouseY);
 
-        GameController.Instance.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
+        GameManager.UpdateRotationInput(mouseX, mouseY); //Update the rotation to can be used in gun by the Sway.cs
     }
 
     public override void HandleJump(){
@@ -126,7 +147,7 @@ public class Player : Character, IDataPersistencer {
     }
 
     public bool IsGrounded(){
-        Collider[] grounded = Physics.OverlapBox(checkGroundBox.position,checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));
+        Collider[] grounded = Physics.OverlapBox(_checkGroundBox.position,_checkGroundBoxSize, Quaternion.identity, LayerMask.GetMask("Ground"));
         if(grounded.Length > 0){
             return true;
         }else{
@@ -136,12 +157,16 @@ public class Player : Character, IDataPersistencer {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(checkGroundBox.position, checkGroundBoxSize);
+        Gizmos.DrawWireCube(_checkGroundBox.position, _checkGroundBoxSize);
     }
 
     public void SaveSpawnPosition(Vector3 spawnPosition){
         _lastCheckPointPosition = new Vector3(spawnPosition.x, spawnPosition.y + 1.2f, spawnPosition.z); //Add the off set so the player does not spawn into the ground
-        GameController.Instance.DataManager.SaveGame();
+        DataManager.SaveRespawnPoint(_lastCheckPointPosition);
+    }
+
+    public void LoadData(){
+        _lastCheckPointPosition = DataManager.LoadRespawnPoint();
     }
 #endregion
 
@@ -172,27 +197,21 @@ public class Player : Character, IDataPersistencer {
         yield return new WaitForSeconds(0.5f);
         PlayerInput.AllowInputs(true);
         Movement.Controller.enabled = true;
-        Movement.AllowUpdate();
+        Movement.AllowUpdate(true);
         yield return null;
     }
 
-    private void GameManager_OnGamePause(GameData data, bool isPaused){
+    private void GameManager_OnGamePause(bool isPaused){
         if(isPaused){
             PlayerInput.AllowInputs(false);
         }else{
             PlayerInput.AllowInputs(true);
         }
     }
-#endregion
 
-#region Interfaces
-    public void LoadData(GameData data){
-        _lastCheckPointPosition = data.RespawnPosition;
-    }
-
-    public void SaveData(ref GameData data){
-        data.RespawnPosition = _lastCheckPointPosition;
+    private void GameManager_OnGameFinished(){
+        PlayerInput.AllowInputs(false);
+        Movement.AllowUpdate(false);
     }
 #endregion
-
 }

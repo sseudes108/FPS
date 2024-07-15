@@ -3,21 +3,21 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerGun : MonoBehaviour {
-    [field:SerializeField] public AudioEventHandlerSO AudioManager  { get; private set;}
-    [field:SerializeField] public GunEventHandlerSO GunManager  { get; private set;}
-    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+    [field:SerializeField] public AudioManagerSO AudioManager  { get; private set;}
+    [field:SerializeField] public GunManagerSO GunManager  { get; private set;}
+    [field:SerializeField] public GameManagerSO GameManager { get; private set;}
 
     //Components
-    [SerializeField] private Gun _activeGun;
+    private Gun _activeGun;
     private PlayerWeapons _weapons;
     private Player _player;
     private Recoil _recoil;
 
     //Camera and Recoil
-    public Transform _firstPersonCameraTransform;
-    public FirstPersonCamera _firstPersonCamera;
-    public CinemachineImpulseSource _impulseSource;
-    public bool _resetZoom;
+    private Transform _firstPersonCameraTransform;
+    private FirstPersonCamera _firstPersonCamera;
+    private CinemachineImpulseSource _impulseSource;
+    private bool _resetZoom;
 
     //Shoot
     private IEnumerator _shotRoutine;
@@ -111,18 +111,19 @@ public class PlayerGun : MonoBehaviour {
     #region Shoot
     public void HandleShoot(){
         if(_isReloading){return;}
-        if(_player.Input.Shoot){
-            if(_activeGun.AmmoLeftInMag > 0){
-                if(_activeGun.GunData.CanAutoFire){
+
+        if(_player.Input.Shoot){//if player is shooting
+            if(_activeGun.AmmoLeftInMag > 0){//if has bullet to spend
+                if(_activeGun.GunData.CanAutoFire){//if the gun has autofire
                     if(_shotRoutine == null){
                         _shotRoutine = AutomaticFireRoutine();
                         StartCoroutine(_shotRoutine);
                     }
-                }else{
-                    if(!_canShoot){
+                }else{//if has no autofire
+                    if(!_canShoot){//if can't shoo
                         return;
                     }else{
-                        // ShootProjectile();
+                        ShootProjectile();
                         _canShoot = false;
                     }
                 }
@@ -197,7 +198,7 @@ public class PlayerGun : MonoBehaviour {
 
 #region Events
 
-    private void GameManager_OnGamePaused(GameData data, bool paused){
+    private void GameManager_OnGamePaused(bool paused){
         StartCoroutine(UpdateAmmoRoutine());
     }
     private IEnumerator UpdateAmmoRoutine(){

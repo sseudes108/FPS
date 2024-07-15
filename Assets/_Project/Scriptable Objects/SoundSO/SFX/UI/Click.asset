@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Click
   m_EditorClassIdentifier: 
   AudioType: 1
-  AudioClip: {fileID: 8300000, guid: c851aa4e27af0c94785239167a41cf99, type: 3}
+  AudioClip: {fileID: 8300000, guid: de70e72a84756524d91d39eb953fa875, type: 3}
   Loop: 0
   RandomizePitch: 1
   RandomPitchModifier: 0.1

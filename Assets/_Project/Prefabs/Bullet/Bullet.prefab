@@ -32,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.25, y: 0.9499999, z: -3.5}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -109,7 +109,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2776320417797658014
 Rigidbody:
@@ -134,10 +134,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
+  m_IsKinematic: 1
+  m_Interpolate: 2
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!96 &5098214686749827070
 TrailRenderer:
   serializedVersion: 3
@@ -266,6 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513b288685e0524409e6f14ea98b769c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VisualsManager: {fileID: 11400000, guid: c6f496c8583742645a011cc3a0ba5a2d, type: 2}
-  GunManager: {fileID: 11400000, guid: cda56da8cd6fcd744a42a19eb1f31805, type: 2}
-  _moveSpeed: 100
+  VisualsManager: {fileID: 11400000, guid: 379b69331a7c94241bc5acffe175ddd9, type: 2}
+  GunManager: {fileID: 11400000, guid: 7d26cbf725c26834eb5f1d6a800f9104, type: 2}
+  _playerManager: {fileID: 11400000, guid: 227c17459dd9baa46b01e178986b7c0a, type: 2}
+  _moveSpeed: 300

@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour, IDataPersistencer {
-    [field:SerializeField] public PauseMenuEventHandlerSO PauseMenuManager { get; private set; }
-    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+public class PlayerCamera : MonoBehaviour {
+    [field:SerializeField] public PauseMenuManagerSO PauseMenuManager { get; private set; }
+    [field:SerializeField] public GameManagerSO GameManager { get; private set;}
     private Transform _cameraTarget;
     private FirstPersonCamera _firstPersonCamera;
+
+    [field:SerializeField] public  DataManagerSO DataManager { get; private set;}
 
     [Range(0.01f, 18)]
     [SerializeField] private float _sensitivity;
@@ -12,16 +14,12 @@ public class PlayerCamera : MonoBehaviour, IDataPersistencer {
     private float _rotationValue = 0f;
 
     private void OnEnable() {
-        // UI_PauseMenu.OnSensivityChange += OnPauseMenu_OnSensivityChange;
         PauseMenuManager.OnSensivityChange.AddListener(PauseMenuManager_OnSensivityChange);
-        // GameController.OnGamePaused += GameManager_OnGamePaused;
         GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
     }
 
     private void OnDisable() {
-        // UI_PauseMenu.OnSensivityChange -= OnPauseMenu_OnSensivityChange;
         PauseMenuManager.OnSensivityChange.RemoveListener(PauseMenuManager_OnSensivityChange);
-        // GameController.OnGamePaused += GameManager_OnGamePaused;
         GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
     }
 
@@ -44,17 +42,9 @@ public class PlayerCamera : MonoBehaviour, IDataPersistencer {
         _sensitivity = value;
     }
 
-    private void GameManager_OnGamePaused(GameData data, bool paused){
+    private void GameManager_OnGamePaused(bool paused){
         if(!paused){
-            GameController.Instance.DataManager.SaveGame();
+            DataManager.SaveSensitivity(_sensitivity);
         }
-    }
-
-    public void LoadData(GameData gameData){
-        _sensitivity = gameData.Sensitivity;
-    }
-
-    public void SaveData(ref GameData gameData){
-        gameData.Sensitivity = _sensitivity;
     }
 }

@@ -3,15 +3,14 @@ using UnityEngine;
 
 // TimeStamp in Unity Project = 0.001
 public class Bullet : MonoBehaviour{
-    [SerializeField] private VisualsEventHandlerSO VisualsManager;
-    [SerializeField] private GunEventHandlerSO GunManager;
+    [SerializeField] private VisualManagerSO VisualsManager;
+    [SerializeField] private GunManagerSO GunManager;
+    [SerializeField] private PlayerStateMachineSO _playerManager;
 
     private int _damageValue;
     private Material _bulletMaterial;
     private TrailRenderer _trailRenderer;
     private Renderer _renderer;
-    private Gun _gun;
-    private Character _character;
 
     [SerializeField] private float _moveSpeed;
     private Rigidbody _rigidbody;
@@ -28,9 +27,8 @@ public class Bullet : MonoBehaviour{
         _rigidbody.MovePosition(_rigidbody.position + movement);
     }
 
-    public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint){
+    public void Init(Material material, int damageValue, Transform firePoint){
         SetDirectionAndPosition(firePoint);
-        SetGunAndCharacter(gun, character);
         SetMaterial(material);
         _damageValue = damageValue;
 
@@ -44,20 +42,16 @@ public class Bullet : MonoBehaviour{
         var objectTag = other.tag;
         
         switch (objectTag){
-            case "Enemy":
-                if(_character is Player){
-                    HandleImpact(other);
-                }
-            break;
+            // case "Enemy":
+            //     HandleImpact(other);
+            // break;
             
-            case "Player":
-                if(_character is Enemy){
-                    HandleImpact(other);
-                }
-            break;
+            // case "Player":
+            //     HandleImpact(other);
+            // break;
 
             case "NoHit":
-                Debug.Log("HIT");
+                // Debug.Log("HIT");
             break;
 
             default:
@@ -79,7 +73,8 @@ public class Bullet : MonoBehaviour{
     }
 
     private void HandleImpact(Collider other){
-        VisualsManager.BulletImpactEffect(this, _bulletMaterial);
+        var positionToImpactEffect = transform.position - transform.forward * 0.2f;
+        VisualsManager.BulletImpactEffect(_playerManager.Player, positionToImpactEffect, _bulletMaterial);
         if(other.TryGetComponent(out Health health)){
             health.TakeDamage(CalculateDamage());
         }
@@ -91,11 +86,6 @@ public class Bullet : MonoBehaviour{
             _damageValue *= 30;
         }
         return _damageValue;
-    }
-
-    private void SetGunAndCharacter(Gun gun, Character character){
-        _gun = gun;
-        _character = character;
     }
 
     private void SetMaterial(Material material){

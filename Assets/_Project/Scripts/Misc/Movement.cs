@@ -28,7 +28,7 @@ public class Movement : MonoBehaviour {
         _runSpeed = _defaultMoveSpeed + (_defaultMoveSpeed * 0.9f);
     }
 
-    private void LateUpdate() { //Was LateUpdate
+    private void LateUpdate() {
         if(!_allowUpdate){return;}
         if (Controller.enabled){
             if (_canMove){
@@ -76,5 +76,5 @@ public class Movement : MonoBehaviour {
 
     public void SetCharacterDirection(Vector3 direction){ _direction = direction; }
 
-    public void AllowUpdate(){_allowUpdate = true;}
+    public void AllowUpdate(bool allow){_allowUpdate = allow;}
 }

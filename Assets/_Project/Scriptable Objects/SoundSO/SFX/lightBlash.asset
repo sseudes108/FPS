@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ddb3254e456844baad2999a5e53374, type: 3}
   m_Name: lightBlash
   m_EditorClassIdentifier: 
-  AudioType: 1
+  AudioType: 0
   AudioClip: {fileID: 8300000, guid: 6338f4c609ca24d4cb45b685ed075f1e, type: 3}
   Loop: 0
   RandomizePitch: 1

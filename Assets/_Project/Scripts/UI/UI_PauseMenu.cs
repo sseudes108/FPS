@@ -4,15 +4,17 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI_PauseMenu : MonoBehaviour {
-    [field:SerializeField] public AudioEventHandlerSO AudioManager { get; private set; }
-    [field:SerializeField] public VisualsEventHandlerSO VisualsManager { get; private set; }
-    [field:SerializeField] public PauseMenuEventHandlerSO PauseMenuManager { get; private set; }
-    [field:SerializeField] public GameEventHandlerSO GameManager { get; private set;}
+    [field:SerializeField] public AudioManagerSO AudioManager { get; private set; }
+    [field:SerializeField] public VisualManagerSO VisualsManager { get; private set; }
+    [field:SerializeField] public PauseMenuManagerSO PauseMenuManager { get; private set; }
+    [field:SerializeField] public GameManagerSO GameManager { get; private set;}
+
+    [field:SerializeField] public  DataManagerSO DataManager { get; private set;}
 
     private Button _resume, _reset;
     private Slider _sensitivity;
     private float _currentSensitivity;
-    private List<Button> buttons = new ();
+    private List<Button> buttons = new();
 
     private void OnEnable() {
         GameManager.OnGamePaused.AddListener(GameManager_OnGamePaused);
@@ -22,20 +24,20 @@ public class UI_PauseMenu : MonoBehaviour {
         GameManager.OnGamePaused.RemoveListener(GameManager_OnGamePaused);
     }
 
-    private void GameManager_OnGamePaused(GameData data, bool paused){
+    private void GameManager_OnGamePaused(bool paused){
         if(paused){
             SetElements();
             _resume.clicked += ResumeClicked;
             _reset.clicked += MainMenuClicked;
 
-            _sensitivity.value = GameController.Instance.DataManager.GameData.Sensitivity;
+            _sensitivity.value = DataManager.LoadSensitivity();
             _sensitivity.RegisterCallback<ChangeEvent<float>>(SensitivityChanged);
 
             foreach(Button button in buttons){
                 button.clicked += () => OnCrossButtonClick(button);
             }
         }else{
-
+            
             _resume.clicked -= ResumeClicked;
             _reset.clicked -= MainMenuClicked;
 
@@ -66,13 +68,13 @@ public class UI_PauseMenu : MonoBehaviour {
 
     private void ResumeClicked(){
         AudioManager.PlayClickSound(this);
-        GameManager.Paused(GameController.Instance.DataManager.GameData, false);
+        GameManager.Pause(false);
     }
 
     private void MainMenuClicked(){
         AudioManager.PlayClickSound(this);
         VisualsManager.FadeToBlack(1f);
-        GameManager.End();
+        GameManager.GameOver();
         StartCoroutine(MainMenuRoutine());
     }
 

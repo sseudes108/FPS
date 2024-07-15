@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-public class FileDataHandler{
+public class FileDataHandler {
     private string _dataDirPath;
     private string _dataFileName;
 
@@ -31,7 +31,7 @@ public class FileDataHandler{
         }
         return loadedData;
     }
-
+    
     public void Save(GameData data){
         string fullPath  = Path.Combine(_dataDirPath, _dataFileName);
         try{

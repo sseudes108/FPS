@@ -1,0 +1,6 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="VictoryScreenText" style="flex-grow: 1; justify-content: center; align-items: center; opacity: 0; visibility: hidden;">
+        <engine:Label text="Congratulations. You did it." style="font-size: 108px; -unity-font-style: bold; color: rgb(41, 41, 41);" />
+        <engine:Label text="Now... you can do it again." style="font-size: 54px; -unity-font-style: bold-and-italic; color: rgb(77, 77, 77);" />
+    </engine:VisualElement>
+</engine:UXML>
