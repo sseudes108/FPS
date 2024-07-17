@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-
-[RequireComponent(typeof(Sway))]
 public class Gun : MonoBehaviour{
     [SerializeField] private GunManagerSO GunManager;
     
@@ -10,6 +8,8 @@ public class Gun : MonoBehaviour{
     
     [SerializeField] private bool _isAvailable;
     public bool IsAvailable => _isAvailable;
+
+    public bool isShooting;
 
 
     // *** SET PRIVATE *** ///
@@ -29,7 +29,6 @@ public class Gun : MonoBehaviour{
 #region UnityMethods
 
     private void Awake() {    
-        // _character = GetComponent<Character>();
         _hip = transform.Find("States/Hip");
         _aim = transform.Find("States/Aim");
         _model = transform.Find("Model");
@@ -74,7 +73,7 @@ public class Gun : MonoBehaviour{
     }
 
     private IEnumerator MuzzleFlashRoutine(){
-        _muzzleFlash.transform.rotation = Quaternion.Euler(0,0,Random.Range(-360, 360));
+        _muzzleFlash.transform.localRotation = Quaternion.Euler(0, 0, Random.Range(-360, 360));
         _muzzleFlash.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.05f);
         _muzzleFlash.gameObject.SetActive(false);

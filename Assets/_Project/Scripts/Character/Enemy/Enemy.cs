@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy : Character {
-
     public readonly int IDLE = Animator.StringToHash("Enemy_Idle");
     public readonly int RUN = Animator.StringToHash("Enemy_Run");
     public readonly int SHOOT = Animator.StringToHash("Enemy_Shoot");
@@ -10,7 +9,6 @@ public class Enemy : Character {
     public NavMeshAgent NavmeshAgent {get; private set;}
     public Vector3 InitialPosition {get; private set;}
 
-    public EnemyPatrol PatrolState;
     public Player Target;
 
 
@@ -29,6 +27,7 @@ public class Enemy : Character {
 
     public override void Start(){
         base.Start();
+        Target = null;
         InitialPosition = transform.position;
     }
 
@@ -36,21 +35,7 @@ public class Enemy : Character {
         Gun.FirePoint.LookAt(Target.transform.position);
         Gun.Shoot();
     }
-
-    public void HandlePlayerDetection(){
-        if(PlayerDetected()){
-            ChangeState(Move);
-        }
-    }
-
-    public override void SetStates(){
-        PatrolState = new();
-        StateMachine.SetStates(new StatesData{
-            Idle = new EnemyIdle(),
-            Move = new EnemyMove(),
-            Jump = null,
-        });
-    }
+    public override void SetStates() {}
 
     public bool PlayerDetected(){
         Collider[] target = new Collider[1];
@@ -62,6 +47,7 @@ public class Enemy : Character {
             }
             return true;
         }else{
+            Target = null;
             return false;
         }
     }

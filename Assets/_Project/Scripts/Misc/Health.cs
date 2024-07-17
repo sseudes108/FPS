@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -18,6 +19,16 @@ public class Health : MonoBehaviour{
 
     private void Start() {
         _currentHealth = _maxHealth;
+        Wait();
+    }
+
+    public void Wait(){
+        StartCoroutine(WaitRoutine());
+    }
+
+    public IEnumerator WaitRoutine(){
+        yield return new WaitForSeconds(0.5f);
+        HealthManager.HealthChange(_currentHealth);
     }
 
     public void HealDamage(int value){

@@ -47,6 +47,7 @@ public class FadeScreenShaderController : MonoBehaviour {
     }
 
     private void Start() {
+        VisualsManager.SetScreenShader(this);
         ChangeColor(Color.black);
         _currentRadius = -1;
         _fadeScreenMaterial.SetFloat("_VigneteRadius", _currentRadius);
@@ -154,6 +155,11 @@ public class FadeScreenShaderController : MonoBehaviour {
         ChangeColor(_redDefaultColor);
     }
 
+    public void FadeToBlackChePoint(float duration){
+        ChangeColor(Color.black);
+        StartCoroutine(FadeToBlackRoutine(duration));
+    }
+    
     private void FadeToWhite(float duration){
         ChangeColor(Color.white);
         StartCoroutine(FadeToWhiteRoutine(duration));

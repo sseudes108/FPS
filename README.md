@@ -11,6 +11,10 @@
 
 ---
 
-<p>Uses:</p>
-    <li> New UIToolkit
-    <li> Input System
+<p>Used:</p>
+    <li> UIToolkit
+    <li> Fullscreen Shader for the outline and fadeScreen effects
+    <li> An Scriptable Object based event system
+    <li> A Finite State Machine for the Player and the NPC's
+    <li> A simple save system
+    <li> Some free assets from https://www.cgtrader.com/welcome, https://itch.io/ and https://assetstore.unity.com/

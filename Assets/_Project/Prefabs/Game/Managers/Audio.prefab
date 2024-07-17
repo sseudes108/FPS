@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b689963369d3294592221f07ba8df18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioManager: {fileID: 11400000, guid: ec9ecb33efaca0941813bc44062dac01, type: 2}
+  _audioManager: {fileID: 11400000, guid: ec9ecb33efaca0941813bc44062dac01, type: 2}
+  _pauseManager: {fileID: 11400000, guid: d8775846d3b828a4086a7a82e04dcc43, type: 2}

@@ -9,8 +9,8 @@ public class Bullet : MonoBehaviour{
 
     private int _damageValue;
     private Material _bulletMaterial;
-    private TrailRenderer _trailRenderer;
-    private Renderer _renderer;
+    public TrailRenderer TrailRenderer { get; private set; }
+    public Renderer _renderer;
 
     [SerializeField] private float _moveSpeed;
     private Rigidbody _rigidbody;
@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour{
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
-        _trailRenderer  = GetComponent<TrailRenderer>();
+        TrailRenderer  = GetComponent<TrailRenderer>();
     }
 
     private void FixedUpdate() {
@@ -37,30 +37,11 @@ public class Bullet : MonoBehaviour{
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        
-        var objectTag = other.tag;
-        
-        switch (objectTag){
-            // case "Enemy":
-            //     HandleImpact(other);
-            // break;
-            
-            // case "Player":
-            //     HandleImpact(other);
-            // break;
-
-            case "NoHit":
-                // Debug.Log("HIT");
-            break;
-
-            default:
-                HandleImpact(other);
-            break;
-        }
+    public virtual void OnCollisionEnter(Collision other) {
+        HandleImpact(other);
     }
 
-    private IEnumerator ReleaseBulletRoutine(){
+    public IEnumerator ReleaseBulletRoutine(){
         //Time to release bullet case dont hit anything
         yield return new WaitForSeconds(5f);
         DisableBullet();
@@ -68,35 +49,36 @@ public class Bullet : MonoBehaviour{
     }
 
     private void DisableBullet(){
-        _trailRenderer.enabled = false;
+        TrailRenderer.enabled = false;
         GunManager.ReleaseBulletFromPool(this);
     }
 
-    private void HandleImpact(Collider other){
-        var positionToImpactEffect = transform.position - transform.forward * 0.2f;
-        VisualsManager.BulletImpactEffect(_playerManager.Player, positionToImpactEffect, _bulletMaterial);
-        if(other.TryGetComponent(out Health health)){
-            health.TakeDamage(CalculateDamage());
+    private void HandleImpact(Collision other){
+        ContactPoint contact = other.contacts[0];
+        contact.otherCollider.TryGetComponent<Health>(out Health health);
+        if(health != null){
+            health.TakeDamage(_damageValue);
         }
-        DisableBullet();
+        VisualsManager.BulletImpactEffect(_playerManager.Player, contact.point, _bulletMaterial);
     }
 
-    private int CalculateDamage(){
-        if(transform.position.y > 1.22){
-            _damageValue *= 30;
-        }
-        return _damageValue;
+    public void SetDamage(int value){
+        _damageValue = value;
     }
 
-    private void SetMaterial(Material material){
+    public void SetMaterial(Material material){
         _bulletMaterial = material;
         _renderer.material = _bulletMaterial;
-        _trailRenderer.material  = _bulletMaterial;
+        TrailRenderer.material  = _bulletMaterial;
     }
 
-    private void SetDirectionAndPosition(Transform firePoint){
+    public void SetDirectionAndPosition(Transform firePoint){
         transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
         _direction = firePoint.forward;
-        _trailRenderer.enabled = true;
+        TrailRenderer.enabled = true;
+    }
+
+    public void SetDirection(Transform firePoint){
+        _direction = firePoint.forward;
     }
 }

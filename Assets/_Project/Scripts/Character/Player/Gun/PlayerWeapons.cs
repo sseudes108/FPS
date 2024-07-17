@@ -6,7 +6,7 @@ public class PlayerWeapons : MonoBehaviour {
     [SerializeField] private GunManagerSO GunManager;
     [SerializeField] private AmmoInventorySO AmmoInventory;
 
-    [SerializeField] private List<Gun> _weapons = new();
+    private List<Gun> _weapons = new();
     private List<Gun> _availableGuns = new();
     private int _activeWeaponIndex;
     private Gun _activeGun;
@@ -21,6 +21,13 @@ public class PlayerWeapons : MonoBehaviour {
     private void OnDisable() {
         GunManager.OnWeaponPickUp.RemoveListener(GunManager_OnWeaponPickUp);
         GunManager.OnWeaponChange.RemoveListener(GunManager_OnWeaponChange);
+    }
+
+    private void Awake() {
+        var gunsArray = transform.Find("Model/Camera/CamTarget/GunHolder").GetComponentsInChildren<Gun>(true);
+        foreach(var gun in gunsArray) {
+            _weapons.Add(gun);
+        }
     }
 
     public void Start(){

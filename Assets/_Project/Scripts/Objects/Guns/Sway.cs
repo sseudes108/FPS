@@ -26,7 +26,7 @@ public class Sway : MonoBehaviour{
         float mouseX = GameManager.RotationInput.x;
         float mouseY = GameManager.RotationInput.y * -1;
 
-        if(_gun.IsAiming){
+        if(_gun.IsAiming || _gun.isShooting){
             intensity  /= 3;
         }else{
             intensity = _defaultIntensity;

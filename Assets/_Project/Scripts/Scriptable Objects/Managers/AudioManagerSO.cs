@@ -7,9 +7,8 @@ using UnityEngine.Pool;
 
 [CreateAssetMenu(fileName = "AudioManagerSO", menuName = "FPS/Managers/Audio", order = 0)]
 public class AudioManagerSO : ScriptableObject {
+    [SerializeField] private DataManagerSO _dataManager;
 
-    [SerializeField] private GameManagerSO _gameManager;
-    [SerializeField] private AudioManagerSO _audioManager;
     [HideInInspector] public UnityEvent OnGameStart;
     
     public ObjectPool<AudioSource> AudioPool { get; private set; }
@@ -22,11 +21,16 @@ public class AudioManagerSO : ScriptableObject {
 
     public List<SoundSO> MainMenuMusics, InGameMusics;
     public AudioSource MusicPlaying { get; private set; }
+
+    public float EffectVolume;
+    public float MusicVolume;
     
     private void OnEnable() {
         AudioPool ??= _objectPool.CreateAudioPool(_audioPrefab);
 
         OnGameStart ??= new UnityEvent();
+        EffectVolume = _dataManager.LoadEffectVolume() /100;
+        MusicVolume = _dataManager.LoadMusicVolume() /100;
     }
 
     public void PlayClickSound(MonoBehaviour caller) {
@@ -112,6 +116,7 @@ public class AudioManagerSO : ScriptableObject {
 
     public void PlayAudioEffect(MonoBehaviour caller, SoundSO soundSO){
         var newSound = CreateAudioSource(soundSO);
+        newSound.volume = EffectVolume;
         StartAudioSource(caller, newSound, soundSO);
     }
 
@@ -130,7 +135,18 @@ public class AudioManagerSO : ScriptableObject {
         MusicPlaying = musicPlaying;
     }
 
-    public void MuteGameMusic(MonoBehaviour caller){
-        caller.StartCoroutine(VolumeRoutine(MusicPlaying, MusicPlaying.volume, 0, 2f));
+    public void MuteGameMusic(MonoBehaviour caller, float duration){
+        caller.StartCoroutine(VolumeRoutine(MusicPlaying, MusicPlaying.volume, 0, duration));
+    }
+
+    public void SetMusicVolume(float value){
+        MusicVolume = value;
+        MusicPlaying.volume = MusicVolume;
+        _dataManager.SaveMusicVolume(MusicVolume);
+    }
+
+    public void SetEffectVolume(float value){
+        EffectVolume = value;
+        _dataManager.SaveEffectVolume(EffectVolume);
     }
 }

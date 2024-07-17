@@ -9,6 +9,22 @@ public class ObjectPoolManagerSO : ScriptableObject {
         InstancePosition = position;
     }
 
+    public ObjectPool<T> CreatePool<T>(T prefab) where T : MonoBehaviour{
+        var objectPool = new ObjectPool<T>(()=>{
+            return Instantiate(prefab);
+        }, newObject =>{
+            if(newObject != null){
+                newObject.gameObject.SetActive(true);
+            }
+        }, newObject =>{
+            newObject.gameObject.SetActive(false);
+        }, newObject =>{
+            Destroy(newObject);
+        }, false, 50, 70);
+
+        return objectPool;
+    }
+
     public ObjectPool<T> CreatePool<T>(T prefab, Vector3 position) where T : MonoBehaviour{
         SetPosition(position);
 

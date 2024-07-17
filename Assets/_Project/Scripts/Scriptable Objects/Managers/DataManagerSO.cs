@@ -33,4 +33,10 @@ public class DataManagerSO : ScriptableObject {
 
     public float LoadSensitivity() { return _gameData.Sensitivity; }
     public void SaveSensitivity(float sensitivity) { _gameData.Sensitivity = sensitivity; SaveGame(); }
+
+    public float LoadMusicVolume() { return _gameData.MusicVolume; }
+    public void SaveMusicVolume(float musicVolume) { _gameData.MusicVolume = musicVolume * 100; SaveGame(); }
+
+    public float LoadEffectVolume() { return _gameData.EffectVolume; }
+    public void SaveEffectVolume(float effectVolume) { _gameData.EffectVolume = effectVolume * 100; SaveGame(); }
 }

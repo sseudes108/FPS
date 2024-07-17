@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AnimationController), typeof(StateMachine))]
+[RequireComponent(typeof(StateMachine))]
 public abstract class Character : MonoBehaviour {
     public AnimationController Anim;
     public StateMachine StateMachine;
@@ -23,7 +23,9 @@ public abstract class Character : MonoBehaviour {
     public abstract void SetStates();
 
     public void ChangeAnimation(int newAnimation){
-        Anim.ChangeAnimation(newAnimation);
+        if(Anim != null){
+            Anim.ChangeAnimation(newAnimation);
+        }
     }
 
     public void ChangeState(AbstractState newState){

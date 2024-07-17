@@ -20,7 +20,7 @@ public class UI_VictoryScreen : MonoBehaviour {
 
     private IEnumerator OpacityRoutine(){
         _victoryScreenText.visible = true;
-        _audioManager.MuteGameMusic(this);
+        _audioManager.MuteGameMusic(this, 3f);
         yield return new WaitForSeconds(1.5f);
         float elapsedTime = 0f;
         var duration = 3f;

@@ -13,6 +13,8 @@ public class VisualManagerSO : ScriptableObject {
 
     public List<Texture2D> CrossesTextures;
 
+    public FadeScreenShaderController FadeScreenShader { get; private set; }
+
     [HideInInspector] public UnityEvent<float> OnFadeFromBlack, OnFadeToBlack;
 
     private void OnEnable() {
@@ -45,5 +47,9 @@ public class VisualManagerSO : ScriptableObject {
 
     public void ReleaseFromPool(ObjectPool<VisualHelper> objectPool, VisualHelper VFX){
         objectPool.Release(VFX);
+    }
+
+    public void SetScreenShader(FadeScreenShaderController fadeScreenShader){
+        FadeScreenShader = fadeScreenShader;
     }
 }

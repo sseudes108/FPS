@@ -3,18 +3,29 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour {
     private bool _playMusic;
-    [SerializeField] private AudioManagerSO AudioManager;
-
-    private AudioSource _currentMusicPlaying;
-
+    [SerializeField] private AudioManagerSO _audioManager;
+    [SerializeField] private PauseMenuManagerSO _pauseManager;
+    
     private void OnEnable() {
-        AudioManager.OnGameStart.AddListener(AudioManager_OnGameStart);
+        _audioManager.OnGameStart.AddListener(AudioManager_OnGameStart);
+        _pauseManager.OnMusicVolumeChange.AddListener(PauseManager_OnMusicVolumeChange);
+        _pauseManager.OnEffectVolumeChange.AddListener(PauseManager_OnEffectVolumeChange);
     }
 
     private void OnDisable() {
-        AudioManager.OnGameStart.RemoveListener(AudioManager_OnGameStart);
+        _audioManager.OnGameStart.RemoveListener(AudioManager_OnGameStart);
+        _pauseManager.OnMusicVolumeChange.RemoveListener(PauseManager_OnMusicVolumeChange);
+        _pauseManager.OnEffectVolumeChange.RemoveListener(PauseManager_OnEffectVolumeChange);
     }
-    
+
+    private void PauseManager_OnEffectVolumeChange(float value){
+        _audioManager.SetEffectVolume(value / 100);
+    }
+
+    private void PauseManager_OnMusicVolumeChange(float value){
+        _audioManager.SetMusicVolume(value / 100);
+    }
+
     private void Start() {
         _playMusic = true;
     }
@@ -25,20 +36,22 @@ public class MusicManager : MonoBehaviour {
 
     public IEnumerator StartMusic(){
         do{
-            SoundSO currentMusic = AudioManager.InGameMusics[Random.Range(0, AudioManager.InGameMusics.Count)];
+            SoundSO currentMusic = _audioManager.InGameMusics[Random.Range(0, _audioManager.InGameMusics.Count)];
             PlayMusic(currentMusic);
-            yield return new WaitForSeconds(currentMusic.AudioClip.length - 3f);
-            Debug.Log("currentMusic.AudioClip.length - 3f");
-            AudioManager.MuteGameMusic(this);
+            yield return new WaitForSeconds(currentMusic.AudioClip.length - 10f);
+            Debug.Log("currentMusic.AudioClip.length - 10f");
+            _audioManager.MuteGameMusic(this, 10f);
             Debug.Log("AudioManager.MuteGameMusic(this)");
-            yield return new WaitForSeconds(currentMusic.AudioClip.length + Random.Range(30f, 90f));
+            yield return new WaitForSeconds(Random.Range(30f, 90f));
         }while(_playMusic);
     }
 
     public void PlayMusic(SoundSO musicToPlay){
-        var newMusic = AudioManager.CreateAudioSource(musicToPlay);
-        AudioManager.SetMusicPlaying(newMusic);
+        var newMusic = _audioManager.CreateAudioSource(musicToPlay);
+        newMusic.volume = _audioManager.MusicVolume;
+        _audioManager.SetMusicPlaying(newMusic);
+        
         newMusic.transform.SetParent(transform);
-        AudioManager.StartAudioSource(this, newMusic, musicToPlay);
+        _audioManager.StartAudioSource(this, newMusic, musicToPlay);
     }
 }

@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f128187a12643744991f400f1590a246, type: 3}
   m_Name: AudioManagerSO
   m_EditorClassIdentifier: 
+  _dataManager: {fileID: 11400000, guid: 618a7df27cc90ec48aadcad2df5d4a71, type: 2}
+  OnGameStart:
+    m_PersistentCalls:
+      m_Calls: []
   _objectPool: {fileID: 11400000, guid: 0cc699a77e391fd4ea860f3f66e8d911, type: 2}
   _audioPrefab: {fileID: 8233159046283423093, guid: cf6d0811611e5ac4fa519d1e9502a97b, type: 3}
   _musicMixer: {fileID: 5527557725470123408, guid: ff96350e917ec6641b045500d8c76cf1, type: 2}
@@ -31,3 +35,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 50c1700cff147464e9917f342fa6d44b, type: 2}
   - {fileID: 11400000, guid: de343b04161455c42a9a115e5daec36d, type: 2}
   - {fileID: 11400000, guid: 750d6e36f89c1f94593565ca4475a9c5, type: 2}
+  EffectVolume: 0.72
+  MusicVolume: 0.72
