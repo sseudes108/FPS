@@ -1,40 +1,61 @@
-using System;
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class Health : MonoBehaviour{
-    public static Action<int> OnHealthChange;
-    public static Action OnPlayerDied;
+    [field:SerializeField] public HealthManagerSO HealthManager { get; private set; }
 
-    [SerializeField] private int _maxHealth;
-    [SerializeField] private int _currentHealth;
+    [SerializeField] private int _maxHealth = 100;
+    public int CurrentHealth { get; private set; }
     private Character _character;
+
+    private CinemachineImpulseSource _cinemachineImpulse;
+    public bool IsDead = false;
 
     private void Awake() {
         _character = GetComponent<Character>();
+        _cinemachineImpulse = GetComponent<CinemachineImpulseSource>();
     }
 
     private void Start() {
-        _currentHealth = _maxHealth;
+        IsDead = false;
+        CurrentHealth = _maxHealth;
+        Wait();
+    }
+
+    public void Wait(){
+        StartCoroutine(WaitRoutine());
+    }
+
+    public IEnumerator WaitRoutine(){
+        yield return new WaitForSeconds(0.5f);
+        if(_character is Player){
+            HealthManager.HealthChange(CurrentHealth);
+        }
     }
 
     public void HealDamage(int value){
-        _currentHealth += value;
-        if(_currentHealth > _maxHealth){
-            _currentHealth = _maxHealth;
+        CurrentHealth += value;
+        if(CurrentHealth > _maxHealth){
+            CurrentHealth = _maxHealth;
         }
-        OnHealthChange?.Invoke(_currentHealth);
+        HealthManager.HealthChange(CurrentHealth);
     }
 
     public void TakeDamage(int value){
-        _currentHealth -= value;
+        if(IsDead) { return; }
+        CurrentHealth -= value;
 
         if(_character is Player){
-            OnHealthChange?.Invoke(_currentHealth);
+            HealthManager.HealthChange(CurrentHealth);
+            HealthManager.PlayerDamaged();
+            _cinemachineImpulse.GenerateImpulseWithVelocity(new Vector3(0.3f, 0.1f, 0.3f));
         }
-        
-        if( _currentHealth <= 0 ){
+
+        if( CurrentHealth <= 0 ){
             if(_character is Player){
-                OnPlayerDied?.Invoke();
+                HealthManager.PlayerDied();
+                IsDead = true;
             }else{
                 Die();
             }

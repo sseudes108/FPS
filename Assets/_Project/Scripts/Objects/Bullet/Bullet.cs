@@ -1,58 +1,47 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
+// TimeStamp in Unity Project = 0.001
 public class Bullet : MonoBehaviour{
-    public static Action<Bullet, Material> OnBulletImpact;
-    
+    [SerializeField] private VisualManagerSO VisualsManager;
+    [SerializeField] private GunManagerSO GunManager;
+    [SerializeField] private PlayerStateMachineSO _playerManager;
+
     private int _damageValue;
     private Material _bulletMaterial;
-    private TrailRenderer _trailRenderer;
-    private Renderer _renderer;
-    private BulletMovement _movement;
-    private Gun _gun;
-    private Character _character;
+    public TrailRenderer TrailRenderer { get; private set; }
+    public Renderer _renderer;
+
+    [SerializeField] private float _moveSpeed;
+    private Rigidbody _rigidbody;
+    private Vector3 _direction;
 
     private void Awake() {
-        _movement = GetComponent<BulletMovement>();
+        _rigidbody = GetComponent<Rigidbody>();
         _renderer = GetComponent<Renderer>();
-        _trailRenderer  = GetComponent<TrailRenderer>();
+        TrailRenderer  = GetComponent<TrailRenderer>();
     }
 
-    public void Init(Gun gun, Material material, int damageValue, Character character, Transform firePoint) {
-        SetGunAndCharacter(gun, character);
+    private void FixedUpdate() {
+        Vector3 movement = _moveSpeed * Time.deltaTime * _direction;
+        _rigidbody.MovePosition(_rigidbody.position + movement);
+    }
+
+    public void Init(Material material, int damageValue, Transform firePoint){
+        SetDirectionAndPosition(firePoint);
         SetMaterial(material);
-        SetDirection(firePoint);
         _damageValue = damageValue;
-        StartCoroutine(ReleaseBulletRoutine());
-    }
 
-    private void OnTriggerEnter(Collider other) {
-        var objectTag = other.tag;
-
-        switch (objectTag){
-            case "Enemy":
-                if(_character is Player){
-                    HandleImpact(other);
-                }
-            break;
-            
-            case "Player":
-                if(_character is Enemy){
-                    HandleImpact(other);
-                }
-            break;
-
-            case "NoHit":
-            break;
-
-            default:
-                HandleImpact(other);
-            break;
+        if(gameObject.activeSelf){
+            StartCoroutine(ReleaseBulletRoutine());
         }
     }
 
-    private IEnumerator ReleaseBulletRoutine(){
+    public virtual void OnCollisionEnter(Collision other) {
+        HandleImpact(other);
+    }
+
+    public IEnumerator ReleaseBulletRoutine(){
         //Time to release bullet case dont hit anything
         yield return new WaitForSeconds(5f);
         DisableBullet();
@@ -60,40 +49,37 @@ public class Bullet : MonoBehaviour{
     }
 
     private void DisableBullet(){
-        _trailRenderer.enabled = false;
-        _gun.ReleaseFromPool(this);
+        TrailRenderer.enabled = false;
+        GunManager.ReleaseBulletFromPool(this);
     }
 
-    private void HandleImpact(Collider other){
-        // OnBulletImpact?.Invoke(this, _bulletMaterial);
-        if(other.TryGetComponent(out Health health)){
-            health.TakeDamage(CalculateDamage());
+    private void HandleImpact(Collision other){
+        ContactPoint contact = other.contacts[0];
+        contact.otherCollider.TryGetComponent<Health>(out Health health);
+        if(health != null){
+            health.TakeDamage(_damageValue);
         }
-        DisableBullet();
+        VisualsManager.BulletImpactEffect(_playerManager.Player, contact.point, _bulletMaterial);
+        // DisableBullet();
     }
 
-    private int CalculateDamage(){
-        if(transform.position.y > 1.22){
-            _damageValue *= 30;
-        }
-        return _damageValue;
+    public void SetDamage(int value){
+        _damageValue = value;
     }
 
-    private void SetGunAndCharacter(Gun gun, Character character){
-        _gun = gun;
-        _character = character;
-    }
-
-    private void SetMaterial(Material material){
+    public void SetMaterial(Material material){
         _bulletMaterial = material;
         _renderer.material = _bulletMaterial;
-        _trailRenderer.material  = _bulletMaterial;
+        TrailRenderer.material  = _bulletMaterial;
     }
 
-    private void SetDirection(Transform firePoint){
+    public void SetDirectionAndPosition(Transform firePoint){
         transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
-        Vector3 direction = firePoint.forward;
-        _movement.SetDirection(direction);
-        _trailRenderer.enabled = true;
+        _direction = firePoint.forward;
+        TrailRenderer.enabled = true;
+    }
+
+    public void SetDirection(Transform firePoint){
+        _direction = firePoint.forward;
     }
 }

@@ -1,0 +1,14 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI%20Toolkit/USS/TileScreen.uss?fileID=7433441132597879392&amp;guid=e1fb1889d79983f41b5cb50bc3d7d4f7&amp;type=3#TileScreen" />
+    <engine:VisualElement name="MainContainer" style="flex-grow: 1; opacity: 1;">
+        <engine:VisualElement name="Name" style="flex-grow: 1; height: 50%; margin-top: 0; align-content: auto; align-self: center; justify-content: center;">
+            <engine:Label text="Shooty Shoot" style="font-size: 216px; -unity-text-align: upper-center; -unity-text-outline-color: rgb(195, 195, 195); -unity-text-outline-width: 9px; -unity-font-style: bold;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="ButtonsBox" style="flex-grow: 1; height: 50%; align-content: center; align-self: auto; justify-content: center;">
+            <engine:Button text="Play" name="Play" style="width: 30%; align-self: center; align-content: auto; height: 20%; border-top-left-radius: 33px; border-top-right-radius: 33px; border-bottom-right-radius: 33px; border-bottom-left-radius: 33px; font-size: 81px; -unity-font-style: bold; -unity-text-align: middle-center;" />
+            <engine:Button text="Quit" name="Quit" style="width: 30%; align-self: center; align-content: auto; height: 20%; border-top-left-radius: 33px; border-top-right-radius: 33px; border-bottom-right-radius: 33px; border-bottom-left-radius: 33px; font-size: 81px; -unity-font-style: bold; margin-top: 54px;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="Overlay" style="flex-grow: 1; visibility: visible; opacity: 0;" />
+    </engine:VisualElement>
+    <engine:VisualElement name="Ovelay" style="flex-grow: 1; position: absolute; right: 0; bottom: 0; left: 0; top: 0; background-color: rgba(255, 255, 255, 0); opacity: 0; display: none;" />
+</engine:UXML>

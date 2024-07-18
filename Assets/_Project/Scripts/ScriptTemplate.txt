@@ -1,0 +1,17 @@
+#region UnityMethods
+
+#endregion
+
+#region Custom Methods
+
+#endregion
+
+#region Events
+
+#endregion
+
+/// <summary>
+///  Returns a number
+/// </summary>
+/// <param name="num"></param>
+/// <returns></returns>

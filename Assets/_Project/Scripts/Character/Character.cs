@@ -1,9 +1,9 @@
 using UnityEngine;
 
+[RequireComponent(typeof(StateMachine))]
 public abstract class Character : MonoBehaviour {
-    public AnimationController Anim {get; private set;}
-
-    public StateMachine StateMachine {get; private set;}
+    public AnimationController Anim;
+    public StateMachine StateMachine;
     public IdleState Idle => StateMachine.IdleState;
     public JumpState Jump => StateMachine.JumpState;
     public MoveState Move => StateMachine.MoveState;
@@ -23,14 +23,13 @@ public abstract class Character : MonoBehaviour {
     public abstract void SetStates();
 
     public void ChangeAnimation(int newAnimation){
-        Anim.ChangeAnimation(newAnimation);
+        if(Anim != null){
+            Anim.ChangeAnimation(newAnimation);
+        }
     }
 
     public void ChangeState(AbstractState newState){
         StateMachine.ChangeState(newState);
-        // if(this is Player){
-        //     GameManager.Instance.Testing.UpdateDebugStateLabel(newState.ToString());
-        // }
     }
 
     public virtual void HandleMovement(){}

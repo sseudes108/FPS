@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f128187a12643744991f400f1590a246, type: 3}
+  m_Name: AudioManagerSO
+  m_EditorClassIdentifier: 
+  _dataManager: {fileID: 11400000, guid: 618a7df27cc90ec48aadcad2df5d4a71, type: 2}
+  OnGameStart:
+    m_PersistentCalls:
+      m_Calls: []
+  _objectPool: {fileID: 11400000, guid: 0cc699a77e391fd4ea860f3f66e8d911, type: 2}
+  _audioPrefab: {fileID: 8233159046283423093, guid: cf6d0811611e5ac4fa519d1e9502a97b, type: 3}
+  _musicMixer: {fileID: 5527557725470123408, guid: ff96350e917ec6641b045500d8c76cf1, type: 2}
+  _gameEffectMixer: {fileID: 1385986709991578551, guid: ff96350e917ec6641b045500d8c76cf1, type: 2}
+  _uIEffectMixer: {fileID: 8195309055385554532, guid: ff96350e917ec6641b045500d8c76cf1, type: 2}
+  Click: {fileID: 11400000, guid: e8d7c2e5ddec64c4cb8617852d35b6ea, type: 2}
+  Step: {fileID: 11400000, guid: 57e2bd87d27f85b4c8fa12b0c5817f5a, type: 2}
+  CrossHairChange: {fileID: 11400000, guid: 04f90d88215e1b047b4e585194132617, type: 2}
+  MainMenuMusics:
+  - {fileID: 11400000, guid: 2745da27f9dd74246a544ffb4f8c0c23, type: 2}
+  - {fileID: 11400000, guid: fb889097dff74684dae0fa7c923ecdf4, type: 2}
+  InGameMusics:
+  - {fileID: 11400000, guid: 9b7da2925d98d8e4f968c3157180b00d, type: 2}
+  - {fileID: 11400000, guid: 660c7d8b836e8f047a8c8cbf1292086d, type: 2}
+  - {fileID: 11400000, guid: fe9bddd48a58e884caa06b92c82852d1, type: 2}
+  - {fileID: 11400000, guid: bd413fa13c1102040b6a12e165205f54, type: 2}
+  - {fileID: 11400000, guid: b8c09b289a168d94bbedbaf27c20d2b6, type: 2}
+  - {fileID: 11400000, guid: 50c1700cff147464e9917f342fa6d44b, type: 2}
+  - {fileID: 11400000, guid: de343b04161455c42a9a115e5daec36d, type: 2}
+  - {fileID: 11400000, guid: 750d6e36f89c1f94593565ca4475a9c5, type: 2}
+  EffectVolume: 1
+  MusicVolume: 0.28

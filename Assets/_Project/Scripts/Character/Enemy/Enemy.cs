@@ -9,7 +9,6 @@ public class Enemy : Character {
     public NavMeshAgent NavmeshAgent {get; private set;}
     public Vector3 InitialPosition {get; private set;}
 
-    public EnemyPatrol PatrolState;
     public Player Target;
 
 
@@ -28,28 +27,15 @@ public class Enemy : Character {
 
     public override void Start(){
         base.Start();
+        Target = null;
         InitialPosition = transform.position;
     }
 
     public override void HandleShot(){
-        Gun.GetFirePoint().LookAt(Target.transform.position);
+        Gun.FirePoint.LookAt(Target.transform.position);
         Gun.Shoot();
     }
-
-    public void HandlePlayerDetection(){
-        if(PlayerDetected()){
-            ChangeState(Move);
-        }
-    }
-
-    public override void SetStates(){
-        PatrolState = new();
-        StateMachine.SetStates(new StatesData{
-            Idle = new EnemyIdle(),
-            Move = new EnemyMove(),
-            Jump = null,
-        });
-    }
+    public override void SetStates() {}
 
     public bool PlayerDetected(){
         Collider[] target = new Collider[1];
@@ -61,6 +47,7 @@ public class Enemy : Character {
             }
             return true;
         }else{
+            Target = null;
             return false;
         }
     }

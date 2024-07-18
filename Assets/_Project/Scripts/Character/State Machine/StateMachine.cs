@@ -1,8 +1,7 @@
 using UnityEngine;
-
 public class StateMachine : MonoBehaviour {
     private Character _character;
-    public AbstractState CurrentState {get; private set;}
+    public AbstractState CurrentState;
 
     public IdleState IdleState;
     public MoveState MoveState;

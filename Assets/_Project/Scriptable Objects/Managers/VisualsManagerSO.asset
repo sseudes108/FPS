@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58e8cc2d909c0ec42a30d4717166542f, type: 3}
+  m_Name: VisualsManagerSO
+  m_EditorClassIdentifier: 
+  _objectPool: {fileID: 11400000, guid: 0cc699a77e391fd4ea860f3f66e8d911, type: 2}
+  _bulletImpactPrefab: {fileID: 593372492942271378, guid: bc23ab1b0b01bf3429d1e8c0d959bdd8, type: 3}
+  CrossesTextures:
+  - {fileID: 2800000, guid: d2567ca41d75fe4479d277f4038ab2c3, type: 3}
+  - {fileID: 2800000, guid: cb51610f1993edb408560331ee47acc4, type: 3}
+  - {fileID: 2800000, guid: f4de8b3aa3c77314598c0086588ff662, type: 3}
+  - {fileID: 2800000, guid: 84097584f6bec4e4b99350c273d6500a, type: 3}
+  - {fileID: 2800000, guid: ac7374c23df1eda45af41ada07f26ac4, type: 3}
+  - {fileID: 2800000, guid: 0ecc7fa837a3d8046acd1c551c3a59e5, type: 3}
+  OnFadeFromBlack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFadeToBlack:
+    m_PersistentCalls:
+      m_Calls: []

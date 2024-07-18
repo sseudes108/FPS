@@ -1,67 +1,150 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Pool;
+public class Gun : MonoBehaviour{
+    [SerializeField] private GunManagerSO GunManager;
+    
+    [SerializeField] protected GunSO _gunData;
+    public GunSO GunData => _gunData;
+    
+    [SerializeField] private bool _isAvailable;
+    public bool IsAvailable => _isAvailable;
 
-public abstract class Gun : MonoBehaviour{
+    public bool isShooting;
 
-    public enum WeaponTypes{
-        Pistol = 0,
-        Rifle = 1,
-        MachineGun = 2,
-        RocketLauncher = 3
-    }
 
-    [SerializeField] protected float _zoomAmount;
-    [SerializeField] protected WeaponTypes _weaponType;
-    [SerializeField] protected float _recoilForce;
+    // *** SET PRIVATE *** ///
+    private int _ammoLeftInMag;
+    public int AmmoLeftInMag => _ammoLeftInMag;
     [SerializeField] protected Transform _firePoint;
-    [SerializeField] protected Bullet _bulletPrefab;
-    [SerializeField] protected float _firerate;
-    [SerializeField] private bool _canAutoFire;
-    [SerializeField] private int _magazine;
-    [SerializeField] private SoundSO _shootSound;
+    public Transform FirePoint => _firePoint;
+    private Transform _muzzleFlash;
+    private Transform _hip;
+    private Transform _aim;
+    private Transform _model;
+    private bool _isAiming;
+    public bool IsAiming => _isAiming;
+    private bool _playerInRange = true;
+    private bool _isActive = false;
 
-    public float ZoomAmount => _zoomAmount;
-    public float Firerate => _firerate;
-    public float RecoilForce => _recoilForce;
-    public bool CanAutoFire => _canAutoFire;
-    public int Magazine => _magazine;
-    public SoundSO ShootSound => _shootSound;
-    public WeaponTypes WeaponType => _weaponType;
+#region UnityMethods
 
-    [SerializeField] protected Material _bulletMaterial;
-    [SerializeField] protected int _damageValue;
-
-    protected ObjectPool<Bullet> _bulletPool;
-    protected Character _character;
-
-
-    private void Awake() {
-        CreateBulletPool();
-        _character = GetComponent<Character>();
+    private void Awake() {    
+        _hip = transform.Find("States/Hip");
+        _aim = transform.Find("States/Aim");
+        _model = transform.Find("Model");
+        _firePoint = transform.Find("Model/FirePoint");
+        _muzzleFlash = transform.Find("Model/FirePoint/MuzzleFlash");
     }
 
-    public Transform GetFirePoint(){
-        return _firePoint;
+    private void Start() {
+        ReloadMagazine(_gunData.Magazine);
     }
+
+    private void Update() { 
+        DetectPlayer();
+    }
+
+    private void FixedUpdate() { 
+       Aim();
+    }
+#endregion
+
+#region Custom Methods
+    #region Shoot
 
     public void Shoot(){
-        var newBullet = _bulletPool.Get();
-        newBullet.Init(this, _bulletMaterial, _damageValue, _character, _firePoint);
+        StartCoroutine(ShootRoutine());
     }
 
-    private void CreateBulletPool(){
-        _bulletPool = new ObjectPool<Bullet>(()=>{
-            return Instantiate(_bulletPrefab);
-        }, newBullet =>{
-            newBullet.gameObject.SetActive(true);
-        }, newBullet =>{
-            newBullet.gameObject.SetActive(false);
-        }, newBullet =>{
-            Destroy(newBullet);
-        }, false, 50, 70);
+    public IEnumerator ShootRoutine(){
+        _ammoLeftInMag--;
+        StartCoroutine(MuzzleFlashRoutine());
+        yield return null;
+
+        GunManager.SetFirePosition(FirePoint.position);
+
+        Bullet newBullet;
+        do{
+            newBullet = GunManager.BulletPool.Get();
+        }while(newBullet == null);
+        
+        newBullet.transform.SetPositionAndRotation(FirePoint.position, Quaternion.identity);
+        newBullet.Init(_gunData.BulletMaterial, _gunData.DamageValue, FirePoint);
     }
 
-    public void ReleaseFromPool(Bullet bullet){
-        _bulletPool.Release(bullet);
+    private IEnumerator MuzzleFlashRoutine(){
+        _muzzleFlash.transform.localRotation = Quaternion.Euler(0, 0, Random.Range(-360, 360));
+        _muzzleFlash.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.05f);
+        _muzzleFlash.gameObject.SetActive(false);
     }
+
+    public void ReleaseBulletFromPool(Bullet bullet){
+        GunManager.ReleaseBulletFromPool(bullet);
+    }
+
+    #endregion
+    
+    #region Interaction
+
+    private void DetectPlayer(){
+        if(_isAvailable){
+            return;
+        }
+
+        Collider[] player = new Collider[1];
+        var playerInRange = Physics.OverlapSphereNonAlloc(transform.position, 1.5f, player, LayerMask.GetMask("Player"));
+
+        if(playerInRange > 0 && player[0] != null){
+            _playerInRange = true;
+            GunManager.PlayerClosePickUp(this);
+        }else{
+            if(!_playerInRange){return;}
+            _playerInRange = false;
+            GunManager.OnPlayerMoveOutRange?.Invoke(false);
+
+        }
+    }
+
+    public void PickUpGun(){
+        gameObject.SetActive(false);
+        Destroy(gameObject, 5f);
+        GunManager.OnPlayerMoveOutRange?.Invoke(false);
+    }
+
+    #endregion
+
+    #region Aim
+
+    public void Aim(){
+        if(!_isAvailable || !_isActive){return;};
+        if(_isAiming){
+            _model.position = Vector3.Lerp(_model.position, _aim.position, _gunData.AimSpeed * Time.deltaTime);
+        }else{
+            _model.position = Vector3.Lerp(_model.position, _hip.position, _gunData.AimSpeed * Time.deltaTime);
+        }
+    }
+
+    public void SetIsAiming(bool isAiming){
+        _isAiming = isAiming;
+    }
+
+    #endregion
+    
+    #region Settings
+
+    public void ReloadMagazine(int amount){
+        _ammoLeftInMag += amount;
+        if(_ammoLeftInMag > _gunData.Magazine){
+            _ammoLeftInMag = _gunData.Magazine;
+        }
+    }
+
+    public void SetAvailable(){_isAvailable = true;}
+    public void ActiveGun(){_isActive = true;}
+    public void DeactiveGun(){ _isActive = false;}
+
+    #endregion
+
+#endregion
 }

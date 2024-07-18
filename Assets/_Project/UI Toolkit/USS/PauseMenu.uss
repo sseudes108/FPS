@@ -1,0 +1,9 @@
+#Container > #VisualElement > #Slider > .unity-slider__label {
+    align-self: center;
+    -unity-font-style: bold;
+    font-size: 18px;
+    -unity-text-align: middle-center;
+}
+
+#Container > #VisualElement > #Slider > .unity-slider__label {
+}
