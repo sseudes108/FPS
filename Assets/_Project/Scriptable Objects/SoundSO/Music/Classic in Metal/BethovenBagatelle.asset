@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37ddb3254e456844baad2999a5e53374, type: 3}
-  m_Name: SoundSO 2
+  m_Name: BethovenBagatelle
   m_EditorClassIdentifier: 
   AudioType: 2
-  AudioClip: {fileID: 8300000, guid: 75e5e402139c58848adab1b2835320e1, type: 3}
+  AudioClip: {fileID: 8300000, guid: 032f8b7e672a51a4dba5cecf8ea12011, type: 3}
   Loop: 0
   RandomizePitch: 0
   RandomPitchModifier: 0.1
-  Volume: 1.1
-  Pitch: 0
+  Volume: 0.5
+  Pitch: 0.1

@@ -6,7 +6,7 @@ public class PlayerCamera : MonoBehaviour {
     private Transform _cameraTarget;
     private FirstPersonCamera _firstPersonCamera;
 
-    [field:SerializeField] public  DataManagerSO DataManager { get; private set;}
+    [field:SerializeField] public DataManagerSO DataManager { get; private set;}
 
     [Range(0.01f, 18)]
     [SerializeField] private float _sensitivity;

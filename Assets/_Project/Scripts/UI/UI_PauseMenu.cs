@@ -44,14 +44,12 @@ public class UI_PauseMenu : MonoBehaviour {
                 button.clicked += () => OnCrossButtonClick(button);
             }
         }else{
-            
             _resume.clicked -= ResumeClicked;
             _reset.clicked -= MainMenuClicked;
 
             foreach(Button button in buttons){
                 button.clicked -= () => OnCrossButtonClick(button);
             }
-
         }
     }
 

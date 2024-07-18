@@ -4,8 +4,8 @@ using UnityEngine.UIElements;
 public class UI_HealthBar : MonoBehaviour {
     [field:SerializeField] public HealthManagerSO HealthManager { get; private set;}
     private VisualElement _HBforeground;
-    private int _lentgh = 100;
-
+    private int _lenght = 100;
+    
     private void OnEnable() {
         HealthManager.OnHealthChange.AddListener(HealthManager_OnHealthChange);
     }
@@ -15,19 +15,19 @@ public class UI_HealthBar : MonoBehaviour {
     }
 
     private void Start() {
-        _HBforeground = GameController.Instance.UIManager.Root.Q("HBFore");
         UpdateHealthBar();
     }
 
     private void HealthManager_OnHealthChange(int currentHP){
-        _lentgh = currentHP;
-        if (_lentgh <= 0){
-            _lentgh = 0;
+        _lenght = currentHP;
+        if (_lenght <= 0){
+            _lenght = 0;
         }
         UpdateHealthBar();
     }
 
-    private void UpdateHealthBar(){
-        _HBforeground.style.width = Length.Percent(_lentgh);
+    public void UpdateHealthBar(){
+        _HBforeground = GameController.Instance.UIManager.Root.Q("HBFore");
+        _HBforeground.style.width = Length.Percent(_lenght);
     }
 }

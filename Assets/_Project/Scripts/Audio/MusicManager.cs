@@ -36,9 +36,9 @@ public class MusicManager : MonoBehaviour {
 
     public IEnumerator StartMusic(){
         do{
-            SoundSO currentMusic = _audioManager.InGameMusics[Random.Range(0, _audioManager.InGameMusics.Count)];
-            PlayMusic(currentMusic);
-            yield return new WaitForSeconds(currentMusic.AudioClip.length - 10f);
+            SoundSO newMusic = _audioManager.InGameMusics[Random.Range(0, _audioManager.InGameMusics.Count)];
+            PlayMusic(newMusic);
+            yield return new WaitForSeconds(newMusic.AudioClip.length - 10f);
             Debug.Log("currentMusic.AudioClip.length - 10f");
             _audioManager.MuteGameMusic(this, 10f);
             Debug.Log("AudioManager.MuteGameMusic(this)");

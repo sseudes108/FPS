@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37ddb3254e456844baad2999a5e53374, type: 3}
-  m_Name: SoundSO 3
+  m_Name: MainMenu1
   m_EditorClassIdentifier: 
   AudioType: 2
-  AudioClip: {fileID: 8300000, guid: 76a3b9ea3e209ee4f89a951c6d3f1bde, type: 3}
+  AudioClip: {fileID: 8300000, guid: efe6f04241fb02b46a4398198f201927, type: 3}
   Loop: 0
   RandomizePitch: 0
   RandomPitchModifier: 0.1
-  Volume: 1.1
-  Pitch: 0
+  Volume: 0.5
+  Pitch: 0.1

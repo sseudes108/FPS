@@ -443,11 +443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54fbd4a770d6e5f4b8b885b817bf1109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recoilX: -2
-  recoilY: 2
-  recoilZ: 0.35
-  snappiness: 6
-  returnSpeed: 2
+  _recoilX: -2
+  _recoilY: 2
+  _recoilZ: 0.35
+  _snappiness: 10
+  _returnSpeed: 2
 --- !u!1 &7385550834426154660
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,7 +522,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9009483311806831626}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.1305268, z: -0, w: 0.9914448}
+  m_LocalRotation: {x: 0, y: 0.13052616, z: 0, w: 0.9914449}
   m_LocalPosition: {x: -6.252265, y: 1.2, z: 2.020046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -642,8 +642,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <HealthManager>k__BackingField: {fileID: 11400000, guid: 2118b88095752894194dbfe2350bfba6, type: 2}
-  _maxHealth: 5
-  _currentHealth: 0
+  _maxHealth: 100
+  IsDead: 0
 --- !u!114 &6575831477432329405
 MonoBehaviour:
   m_ObjectHideFlags: 0

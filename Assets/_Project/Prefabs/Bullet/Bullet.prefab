@@ -121,7 +121,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -269,4 +269,5 @@ MonoBehaviour:
   VisualsManager: {fileID: 11400000, guid: 379b69331a7c94241bc5acffe175ddd9, type: 2}
   GunManager: {fileID: 11400000, guid: 7d26cbf725c26834eb5f1d6a800f9104, type: 2}
   _playerManager: {fileID: 11400000, guid: 227c17459dd9baa46b01e178986b7c0a, type: 2}
-  _moveSpeed: 300
+  _renderer: {fileID: 0}
+  _moveSpeed: 100

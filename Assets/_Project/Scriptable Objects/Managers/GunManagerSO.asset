@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectPool: {fileID: 11400000, guid: 0cc699a77e391fd4ea860f3f66e8d911, type: 2}
   _bulletPrefab: {fileID: 3429045405079578221, guid: 86de78c728f4e2447a3ac1902dc65d9b, type: 3}
-  _bulletTurretPrefab: {fileID: 7980574092902173726, guid: 9a15d4f19c61b5d4d86a0b0a743f7896, type: 3}
   OnWeaponPickUp:
     m_PersistentCalls:
       m_Calls: []

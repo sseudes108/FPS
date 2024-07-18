@@ -120,7 +120,7 @@ public class PlayerGun : MonoBehaviour {
                         StartCoroutine(_shotRoutine);
                     }
                 }else{//if has no autofire
-                    if(!_canShoot){//if can't shoo
+                    if(!_canShoot){//if can't shoot
                         return;
                     }else{
                         ShootProjectile();
@@ -150,15 +150,16 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void ShootProjectile(){
+        if(_player.GetComponent<Health>().IsDead){return;}
         if (_firstPersonCameraTransform == null){
             _firstPersonCameraTransform = _player.Camera.GetCameraTransform();
         }
 
         int layerMask = ~LayerMask.GetMask("NoHit"); // Cria uma máscara para todas as camadas exceto a "NoHitLayer"
-        if (Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit, Mathf.Infinity, layerMask)){
+        if (Physics.Raycast(_firstPersonCameraTransform.position, _firstPersonCameraTransform.forward, out RaycastHit hit, 1000f, layerMask)){
             _activeGun.FirePoint.LookAt(hit.point);
         }else{
-            _activeGun.FirePoint.LookAt(_firstPersonCameraTransform.position + (_firstPersonCameraTransform.forward * 30f));
+            _activeGun.FirePoint.LookAt(_firstPersonCameraTransform.position + (_firstPersonCameraTransform.forward * 300f));
         }
 
         ShootFired();

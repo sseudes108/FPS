@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 
 public class Player : Character {
     [field:SerializeField] public GunManagerSO GunManager { get; private set;}
@@ -10,7 +8,6 @@ public class Player : Character {
     [field:SerializeField] public GameManagerSO GameManager { get; private set;}
     [field:SerializeField] public DataManagerSO DataManager { get; private set;}
     [field:SerializeField] public PlayerStateMachineSO PlayerManager { get; private set;}
-
     [field:SerializeField] public PlayerAnimationsSO Animations { get; private set;}
 
 
@@ -72,15 +69,6 @@ public class Player : Character {
     
 
     private void Update() {
-
-        if(UnityEngine.Input.GetKeyDown(KeyCode.Y)){
-            GetComponent<Health>().TakeDamage(1);
-        }
-
-        if(UnityEngine.Input.GetKeyDown(KeyCode.U)){
-            SceneManager.LoadScene("Locus");
-        }
-
         HandleGun();
         HandlePause();
         HandleRotation();
@@ -113,10 +101,12 @@ public class Player : Character {
     }
 
     private void HandlePause(){
+        if(GetComponent<Health>().IsDead){return;}
         if(!UnityEngine.Input.GetKeyDown(KeyCode.Escape)){return;}
         if(_isPaused){
             GameManager.Pause(false);
             _isPaused = false;
+            // HealthManager.HealthChange(GetComponent<Health>().CurrentHealth);
         }else{
             GameManager.Pause(true);
             _isPaused = true;

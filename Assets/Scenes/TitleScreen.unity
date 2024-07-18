@@ -442,6 +442,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VisualsManager: {fileID: 11400000, guid: 379b69331a7c94241bc5acffe175ddd9, type: 2}
   AudioManager: {fileID: 11400000, guid: ec9ecb33efaca0941813bc44062dac01, type: 2}
+  DataManager: {fileID: 11400000, guid: 618a7df27cc90ec48aadcad2df5d4a71, type: 2}
 --- !u!1 &1160234425
 GameObject:
   m_ObjectHideFlags: 0

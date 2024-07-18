@@ -51,6 +51,8 @@ public class UI_Locus : MonoBehaviour {
     private void GameManager_OnGamePaused(bool paused){ //Reset The elements after the change in style asset from pause menu
         if(!paused){
             SetElements();
+            CrossHairStyleConfig();
+            GetComponent<UI_HealthBar>().UpdateHealthBar();
             if(crossChanged){
                 _crossHair.style.backgroundImage = _updatedCrossHair;
                 crossChanged = false;
@@ -69,6 +71,7 @@ public class UI_Locus : MonoBehaviour {
     }
 
     private void CrossHairStyleConfig(){
+        LoadData();
         _crossHair.style.backgroundImage = _updatedCrossHair;
         _crossHair.style.unityBackgroundImageTintColor = _crosshairColor;
     }
@@ -82,6 +85,7 @@ public class UI_Locus : MonoBehaviour {
 
     //Background newCross
     private void PauseMenuManager_OnCrossChange(Background newCross, int crossIndex){
+        Debug.Log("CrossChanged");
         _updatedCrossHair = newCross;
         _crosshairIndex = crossIndex;
         crossChanged = true;

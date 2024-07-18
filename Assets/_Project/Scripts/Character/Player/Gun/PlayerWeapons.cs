@@ -68,6 +68,7 @@ public class PlayerWeapons : MonoBehaviour {
             }
         }
     }
+    
     private void ChangeWeapon(PlayerGun playerGun, int index){
         foreach(var gun in _weapons){
             gun.SetIsAiming(false);
@@ -117,7 +118,6 @@ public class PlayerWeapons : MonoBehaviour {
         }else{//when start game
             _activeWeaponIndex = 0;
         }
-
         ChangeWeapon(playerGun, _activeWeaponIndex);
     }
 

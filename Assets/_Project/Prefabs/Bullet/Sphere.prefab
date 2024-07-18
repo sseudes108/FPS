@@ -136,7 +136,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 2
-  m_Constraints: 36
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!96 &7278403585191359932
 TrailRenderer:
@@ -270,4 +270,4 @@ MonoBehaviour:
   GunManager: {fileID: 11400000, guid: 7d26cbf725c26834eb5f1d6a800f9104, type: 2}
   _playerManager: {fileID: 11400000, guid: 227c17459dd9baa46b01e178986b7c0a, type: 2}
   _renderer: {fileID: 8725747938681246457}
-  _moveSpeed: 50
+  _moveSpeed: 100

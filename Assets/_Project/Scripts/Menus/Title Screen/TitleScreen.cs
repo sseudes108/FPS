@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -6,6 +7,7 @@ using UnityEngine.UIElements;
 public class TitleScreen : MonoBehaviour{
     [SerializeField] private VisualManagerSO VisualsManager;
     [SerializeField] private AudioManagerSO AudioManager;
+    [SerializeField] private DataManagerSO DataManager;
 
     private UIDocument _uiDocument;
     private VisualElement _root;
@@ -19,6 +21,7 @@ public class TitleScreen : MonoBehaviour{
 
     private AudioSource _musicPlaying;
     private bool _playMusic;
+    private bool _canclick;
 
     private void OnEnable() {
         _uiDocument = GetComponent<UIDocument>();
@@ -47,8 +50,10 @@ public class TitleScreen : MonoBehaviour{
 
 #region Button Clicks
     private void OnPlay(){
+        if(!_canclick){return;}
         AudioManager.MuteTitleScreenMusic(this, _musicPlaying);
         StartCoroutine(OnPlay_StartGameRoutine());
+        _canclick = false;
     }
     
     private IEnumerator OnPlay_StartGameRoutine(){
@@ -60,12 +65,10 @@ public class TitleScreen : MonoBehaviour{
         SceneManager.LoadScene("Locus");
     }
 
-    private void OnOptions(){
-        Debug.Log("OnOptions");
-    }
-
     private void OnQuit(){
-        Debug.Log("OnQuit");
+        Debug.Log("Quit!!");
+        DataManager.SaveRespawnPoint(new Vector3(-20.15f, 1.2f, -23.4f));
+        Application.Quit();
     }
 #endregion
 
@@ -107,6 +110,7 @@ public class TitleScreen : MonoBehaviour{
         _overLay.style.display = DisplayStyle.None;
         StartCoroutine(FadeRoutine(_buttonsBox, 0f, 1f, 2f));
         yield return null;
+        _canclick = true;
     }
 
     private IEnumerator FadeRoutine(VisualElement element, float start, float end, float duration){

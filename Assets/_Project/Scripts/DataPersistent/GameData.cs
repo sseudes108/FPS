@@ -12,6 +12,7 @@ public class GameData {
     public float EffectVolume;
 
     public GameData(){
+        RespawnPosition = new Vector3(-20.15f, 1.2f, -23.4f);
         CrossHair = 0;
         Sensitivity = 10;
         MusicVolume = 72f;

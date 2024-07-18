@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour{
@@ -6,6 +5,7 @@ public class PlayerInput : MonoBehaviour{
     private InputAction _move,_aim,_look,_shoot,_jump,_run,_crouch,_previous,_next,_reload, _interact;
     public FrameInput FrameInput;
     private bool _allowInputs;
+    public bool CanHaveInputs => _allowInputs;
 
     private void OnEnable() {
         _inputActions.Enable();

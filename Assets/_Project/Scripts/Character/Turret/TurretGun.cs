@@ -2,11 +2,11 @@ using System.Collections;
 using UnityEngine;
 
 public class TurretGun : MonoBehaviour {
-    public ObjectPoolManagerSO _poolManager;
-    public Transform[] FirePoints;
-    public Material _bulletMaterial;
-    public TurretBullet _bulletPrefab;
-    public int _damage;
+    [SerializeField] private ObjectPoolManagerSO _poolManager;
+    [SerializeField] private Transform[] FirePoints;
+    [SerializeField] private Material _bulletMaterial;
+    [SerializeField] private TurretBullet _bulletPrefab;
+    [SerializeField] private int _damage;
 
     public void Shoot(){
         StartCoroutine(ShootRoutine());
@@ -16,8 +16,8 @@ public class TurretGun : MonoBehaviour {
         foreach(var point in FirePoints){
             var target = GetComponent<Turret>().Target;
             if(target == null) { break; }
-            point.LookAt(target.transform.position + new Vector3(0f, 1.2f, 0f));
-            var newBullet = Instantiate(_bulletPrefab, point.position, point.rotation);
+            point.LookAt(target.Camera.transform.position + new Vector3(0f, 1.2f, 0f));
+            var newBullet = Instantiate(_bulletPrefab, point.position, point.rotation); //Used the instantiation because of some strange behaviour in getting the bullets from a pool
             newBullet.SetDamage(_damage);
             newBullet.SetMaterial(_bulletMaterial);
             newBullet.SetDirection(point);

@@ -60,6 +60,7 @@ public class Bullet : MonoBehaviour{
             health.TakeDamage(_damageValue);
         }
         VisualsManager.BulletImpactEffect(_playerManager.Player, contact.point, _bulletMaterial);
+        // DisableBullet();
     }
 
     public void SetDamage(int value){

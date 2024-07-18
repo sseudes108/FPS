@@ -29,8 +29,10 @@ public class AudioManagerSO : ScriptableObject {
         AudioPool ??= _objectPool.CreateAudioPool(_audioPrefab);
 
         OnGameStart ??= new UnityEvent();
-        EffectVolume = _dataManager.LoadEffectVolume() /100;
-        MusicVolume = _dataManager.LoadMusicVolume() /100;
+        if(_dataManager != null){
+            EffectVolume = _dataManager.LoadEffectVolume() /100;
+            MusicVolume = _dataManager.LoadMusicVolume() /100;
+        }
     }
 
     public void PlayClickSound(MonoBehaviour caller) {
@@ -128,7 +130,7 @@ public class AudioManagerSO : ScriptableObject {
     }
 
     public void MuteTitleScreenMusic(MonoBehaviour caller, AudioSource audio){
-        caller.StartCoroutine(VolumeRoutine(audio, 1f, 0f, 2f));
+        caller.StartCoroutine(VolumeRoutine(audio, audio.volume, 0f, 2f));
     }
 
     public void SetMusicPlaying(AudioSource musicPlaying){
